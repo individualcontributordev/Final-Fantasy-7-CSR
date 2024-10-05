@@ -26,19 +26,19 @@ These patches remove most if not all FMVs, shortens some in-game cutscenes, and 
 Make sure your FF7 .bin and .cue files for all discs are in the same directory, and the .bin and .cue for each disc are named exactly the same. e.g. 
 
 ```text
-- FF7 Disc1 (patched).bin  
-- FF7 Disc1 (patched).cue  
-- FF7 Disc2 (patched).bin  
-- FF7 Disc2 (patched).cue  
-- FF7 Disc3.bin  
-- FF7 Disc3.cue
+- Final Fantasy VII (Disc 1) CSR (patched).bin  
+- Final Fantasy VII (Disc 1) CSR (patched).cue  
+- Final Fantasy VII (Disc 2) CSR (patched).bin  
+- Final Fantasy VII (Disc 2) CSR (patched).cue  
+- Final Fantasy VII (Disc 3).bin  
+- Final Fantasy VII (Disc 3).cue
 ```
 
 You should also verify that .cue file references the correct filename of the .bin file, edit the .cue file if you change the name of the files. e.g.
 
-**Final Fantasy VII (Disc 1) CSR Patch.cue**
+**Final Fantasy VII (Disc 1) CSR (patched).cue**
 ```text
-FILE "Final Fantasy VII (Disc 1) CSR Patch.bin" BINARY
+FILE "Final Fantasy VII (Disc 1) CSR (patched).bin" BINARY
   TRACK 01 MODE2/2352
     INDEX 01 00:00:00
 ```
@@ -46,7 +46,7 @@ FILE "Final Fantasy VII (Disc 1) CSR Patch.bin" BINARY
 And if you use a .m3u file like I do in DuckStation make sure to update this file to point to the correct patched version of the discs. e.g.
 
 ```text
-C:\Users\Deez\FF7\FF7 Disc1 (patched).cue
-C:\Users\Deez\FF7\FF7 Disc2 (patched).cue
-C:\Users\Deez\FF7\FF7 Disc3.cue
+C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 1) CSR (patched).cue
+C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 2) CSR (patched).cue
+C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 3).cue
 ```
