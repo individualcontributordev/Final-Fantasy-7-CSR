@@ -1,8 +1,15 @@
-# Final Fantasy 7 PS1 Disc CSR Patches (IndividualContributor)
+![](image.png)
+*Artist: @Cronosart99*
 
-Apply the patches to your FF7 NTSC/US PS1 .bin files.
+## Final Fantasy 7 PS1 Disc CSR Patches
+Created by IndividualContributor
+
+All "skill checks" remain in this CSR, if not let me know and I'll fix it. A skill check is any action a player must perform in game, e.g. choosing an option in diaglogues, skips, manipulating RNG, etc. Most FMVs are removed, some cutscenes are shorter, and long mashing sequences have been reduced.
+
 
 ## Steps
+
+Apply the patches to your FF7 NTSC/US PS1 .bin files.
 
 1. Go to https://www.romhacking.net/patch/
 2. Select your original .bin file, ignore the "file too big" warning
@@ -14,12 +21,6 @@ Your browser should download a new patched version of the disc.
 You can burn the patched version to disc or load it up in an emulator (I used duckstation version 0.1-7371-gb2577ef8b (dev) for testing). I used ImgBurn with write speed 16x on Verbatim CD-R 700MB discs.
 
 Make sure to choose the correct patch .ppf file for the correct disc you are trying to patch.
-
-## Details
-
-These patches remove most if not all FMVs, shortens some in-game cutscenes, and reduces some mashing sequences. The idea with this CSR is to provide a stable practice version of the game so I've avoided removing anything that requires the player to interact with the controls. 
-
-**All "skill checks" are present in this CSR, if not let me know and I'll fix it.**
 
 ## Troubleshooting
 
