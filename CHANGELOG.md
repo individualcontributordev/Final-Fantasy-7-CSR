@@ -10,10 +10,12 @@ md1stin 116 > 0 dir > S0 - Init
 nivl_e1 294 > 1 kakehu > S0 - Main
 
 - removed 7th heaven cutscene (Cloud's promise)
+- you can now rename Aerith when you get to Wall Market
 
 pillar_3 160 > 0 dir > S0 - Main
 
 - removed pillar exploding cutscene
+- shortened dialogues in this section
 
 blin70_1 > 0 dir > S0 - Init
 
