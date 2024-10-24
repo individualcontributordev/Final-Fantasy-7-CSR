@@ -8,18 +8,33 @@ Examples:
 - Minor: new sections or FMVs removed but localised
 - Patch: fixing bugs
 
-# v0.1.1
+## v0.2.0
 
-- fixed a bug where the game would not start on newly patched .bin file for disc 1
+- trimmed opening gate to reactor 
+- trimmed entering 7th heaven
+- trimmed basement of 7th heaven with B punching bag
+- trimmed Don's den a bit more
+- removed renaming Aerith opportunity
+- pillar explosion to playground and trimmed
+- broken road scenes with cloud trimmed
+- bottomswell section trimmed
+- cpr game trimmed
+- getting shiva section trimmed
+- dolphin training trimmed
+- jenny from the block section trimmed a bit more
+
+## v0.1.1
+
 - trimmed up to Guard Scorpion
 - trimmed after reactor explosion
 - trimmed 7th heaven
 - trimmed Wall Market
 - trimmed Don Corneo's
+- fixed a bug where the game would not start on newly patched .bin file for disc 1
 
-# v0.1.0
+## Initial changes
 
-## Disc 1
+### Disc 1
 
 md1stin 116 > 0 dir > S0 - Init
 
@@ -28,7 +43,10 @@ md1stin 116 > 0 dir > S0 - Init
 nivl_e1 294 > 1 kakehu > S0 - Main
 
 - removed 7th heaven cutscene (Cloud's promise)
-- you can now rename Aerith when you get to Wall Market
+
+mrkt2 195 > 13 earith > S3 
+
+- you can now rename Aerith when you get to Wall Market (check for specific game moment 108 and show menu change name of Aerith)
 
 pillar_3 160 > 0 dir > S0 - Main
 
@@ -121,7 +139,7 @@ blue_2 641 > 0 dir > S0 - Main
 
 - removed some scenes where Aeris dies
 
-## Disc 2
+### Disc 2
 
 trnad_4 705 > 17 discver > S2 - Move
 
