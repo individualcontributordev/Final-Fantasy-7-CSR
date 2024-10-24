@@ -10,6 +10,7 @@ Examples:
 
 # v0.1.1
 
+- fixed a bug where the game would not start on newly patched .bin file for disc 1
 - trimmed up to Guard Scorpion
 - trimmed after reactor explosion
 - trimmed 7th heaven
