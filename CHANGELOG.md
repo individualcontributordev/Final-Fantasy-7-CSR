@@ -1,6 +1,13 @@
 
 # FF7 CSR Change log
 
+v(Major).(Minor).(Patch)
+
+Examples: 
+- Major: significant changes made to the CSR that warrant a distinction
+- Minor: new sections or FMVs removed but localised
+- Patch: fixing bugs
+
 # v0.1.1
 
 - trimmed up to Guard Scorpion
