@@ -1,6 +1,16 @@
 
 # FF7 CSR Change log
 
+# v0.1.1
+
+- trimmed up to Guard Scorpion
+- trimmed after reactor explosion
+- trimmed 7th heaven
+- trimmed Wall Market
+- trimmed Don Corneo's
+
+# v0.1.0
+
 ## Disc 1
 
 md1stin 116 > 0 dir > S0 - Init
