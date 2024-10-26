@@ -8,6 +8,14 @@ Examples:
 - Minor: new sections or FMVs removed but localised
 - Patch: fixing bugs
 
+## v0.3.0
+
+- trimmed Gold Saucer first trip and dates alot more
+- trimmed Rocket town a bit mroe
+- trimmed Temple again
+- trimmed CoTA and JLife
+- some smaller updates too
+
 ## v0.2.0
 
 - trimmed opening gate to reactor 
