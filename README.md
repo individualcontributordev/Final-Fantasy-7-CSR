@@ -28,6 +28,7 @@ All "skill checks" remain in this CSR (if not let me know and I'll fix it). A sk
 - AwesomeWaves
 - Teeejj
 - Shoutblaster
+- HopeDRG
 
 ## Steps
 
