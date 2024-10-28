@@ -8,6 +8,12 @@ Examples:
 - Minor: new sections or FMVs removed but localised
 - Patch: fixing bugs
 
+## v0.3.2
+
+- fixed audio issue from Ultima Weapon to Cloud's dream to 
+- fixed audio issue at Scarlet and Tifa slap fight to Highwind
+- Included "Sister Ray!" text box during CoTA FD Manip
+
 ## v0.3.1
 
 - fixed bug where Cloud turns into a Chocobo on the World Map after arriving to Costa Del Sol for the first time. Had to re-add the World Map cutscene from Boat to Costa
