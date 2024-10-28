@@ -3,11 +3,6 @@
 
 v(Major).(Minor).(Patch)
 
-Examples: 
-- Major: significant changes made to the CSR that warrant a distinction
-- Minor: new sections or FMVs removed but localised
-- Patch: fixing bugs
-
 ## v0.3.2
 
 - fixed audio issue from Ultima Weapon to Cloud's dream to 
