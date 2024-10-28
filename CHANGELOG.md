@@ -8,6 +8,10 @@ Examples:
 - Minor: new sections or FMVs removed but localised
 - Patch: fixing bugs
 
+## v0.3.1
+
+- fixed bug where Cloud turns into a Chocobo on the World Map after arriving to Costa Del Sol for the first time. Had to re-add the World Map cutscene from Boat to Costa
+
 ## v0.3.0
 
 - trimmed Gold Saucer first trip and dates alot more
