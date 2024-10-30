@@ -3,6 +3,10 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.0
+
+- added 5 minute break scene after Demon's Gate fight that is skippable if you select the "Continue run" option
+
 ## v0.3.2
 
 - fixed audio issue from Ultima Weapon to Cloud's dream to 
