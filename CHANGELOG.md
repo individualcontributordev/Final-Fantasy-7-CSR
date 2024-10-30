@@ -3,51 +3,55 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.1
+
+- When changing music the 4th track is actually "Stop playing music", the intention is to allow players to play their own music on YouTube or something without messing with their audio configurations. Selecting "Change music" again will play the next track.
+
 ## v0.4.0
 
-- added 5 minute break scene after Demon's Gate fight that is skippable if you select the "Continue run" option
+- Added 5 minute break scene after Demon's Gate fight that is skippable if you select the "Continue run" option
 
 ## v0.3.2
 
-- fixed audio issue from Ultima Weapon to Cloud's dream to 
-- fixed audio issue at Scarlet and Tifa slap fight to Highwind
+- Fixed audio issue from Ultima Weapon to Cloud's dream to 
+- Fixed audio issue at Scarlet and Tifa slap fight to Highwind
 - Included "Sister Ray!" text box during CoTA FD Manip
 
 ## v0.3.1
 
-- fixed bug where Cloud turns into a Chocobo on the World Map after arriving to Costa Del Sol for the first time. Had to re-add the World Map cutscene from Boat to Costa
+- Fixed bug where Cloud turns into a Chocobo on the World Map after arriving to Costa Del Sol for the first time. Had to re-add the World Map cutscene from Boat to Costa
 
 ## v0.3.0
 
-- trimmed Gold Saucer first trip and dates alot more
-- trimmed Rocket town a bit mroe
-- trimmed Temple again
-- trimmed CoTA and JLife
+- Trimmed Gold Saucer first trip and dates alot more
+- Trimmed Rocket town a bit mroe
+- Trimmed Temple again
+- Trimmed CoTA and JLife
 - some smaller updates too
 
 ## v0.2.0
 
-- trimmed opening gate to reactor 
-- trimmed entering 7th heaven
-- trimmed basement of 7th heaven with B punching bag
-- trimmed Don's den a bit more
-- removed renaming Aerith opportunity
-- pillar explosion to playground and trimmed
-- broken road scenes with cloud trimmed
-- bottomswell section trimmed
-- cpr game trimmed
-- getting shiva section trimmed
-- dolphin training trimmed
-- jenny from the block section trimmed a bit more
+- Trimmed opening gate to reactor 
+- Trimmed entering 7th heaven
+- Trimmed basement of 7th heaven with B punching bag
+- Trimmed Don's den a bit more
+- Removed renaming Aerith opportunity
+- Pillar explosion to playground and trimmed
+- Broken road scenes with cloud trimmed
+- Bottomswell section trimmed
+- CPR game trimmed
+- Getting shiva section trimmed
+- Dolphin training trimmed
+- Jenny from the block section trimmed a bit more
 
 ## v0.1.1
 
-- trimmed up to Guard Scorpion
-- trimmed after reactor explosion
-- trimmed 7th heaven
-- trimmed Wall Market
-- trimmed Don Corneo's
-- fixed a bug where the game would not start on newly patched .bin file for disc 1
+- Trimmed up to Guard Scorpion
+- Trimmed after reactor explosion
+- Trimmed 7th heaven
+- Trimmed Wall Market
+- Trimmed Don Corneo's
+- Fixed a bug where the game would not start on newly patched .bin file for disc 1
 
 ## Initial changes
 
