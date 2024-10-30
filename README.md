@@ -15,7 +15,7 @@ any%     | 🔄
 
 These patches can be applied to the following platforms
 
-- Playstation 1 and 2 (PSX Disc)
+- Playstation 1 and 2 (PSX Disc) [How? MechaPwn](https://github.com/MechaResearch/MechaPwn)
 - Emulator (Digital)
 
 ## Definition
