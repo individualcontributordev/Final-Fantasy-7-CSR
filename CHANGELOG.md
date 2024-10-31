@@ -3,6 +3,10 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.4
+
+- Added back in the scene where Cloud is upside down and Sephiroth is in a big blue egg (after JDeath)
+
 ## v0.4.3
 
 - Fixed bug where elevator in Reactor 5 goes down instead of up, seen in NMS
