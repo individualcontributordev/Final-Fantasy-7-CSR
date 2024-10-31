@@ -3,6 +3,10 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.2
+
+- 5 minute break moved to end of Disc 1
+
 ## v0.4.1
 
 - When changing music the 4th track is actually "Stop playing music", the intention is to allow players to play their own music on YouTube or something without messing with their audio configurations. Selecting "Change music" again will play the next track.
