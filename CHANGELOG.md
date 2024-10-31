@@ -3,6 +3,11 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.3
+
+- Fixed bug where elevator in Reactor 5 goes down instead of up, seen in NMS
+- Disc 2: Shortened after JDeath to Highwind (going to Mideel to see sick Cloud)
+
 ## v0.4.2
 
 - 5 minute break moved to end of Disc 1
@@ -17,7 +22,7 @@ v(Major).(Minor).(Patch)
 
 ## v0.3.2
 
-- Fixed audio issue from Ultima Weapon to Cloud's dream to 
+- Fixed audio issue from Ultima Weapon to Cloud's dream
 - Fixed audio issue at Scarlet and Tifa slap fight to Highwind
 - Included "Sister Ray!" text box during CoTA FD Manip
 
