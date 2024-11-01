@@ -3,6 +3,11 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.5
+
+- Fixed bug with 5 minute break scene where the Game Moment was being incorrectly set after the timer ended causing an issue on Disc 2
+- Added a version number to the first scene in Disc 1 and Disc 2
+
 ## v0.4.4
 
 - Added back in the scene where Cloud is upside down and Sephiroth is in a big blue egg (after JDeath)
