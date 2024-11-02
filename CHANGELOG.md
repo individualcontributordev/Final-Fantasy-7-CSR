@@ -3,6 +3,13 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.6
+
+- Lots of new trimming from Start to Don's
+- Trimmed Reactor 5 and Airbuster
+- More trimming of JDeath to before Mideel and Cloud's Dream
+- Remove version number from Disc 2 because too much effort to keep updating it
+
 ## v0.4.5
 
 - Fixed bug with 5 minute break scene where the Game Moment was being incorrectly set after the timer ended causing an issue on Disc 2
