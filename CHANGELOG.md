@@ -1,5 +1,5 @@
 
-# FF7 CSR Change log
+# FF7 CutScenes Removed Change log
 
 v(Major).(Minor).(Patch)
 
