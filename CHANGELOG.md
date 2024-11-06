@@ -3,6 +3,14 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.7
+
+- Moved the break scene to before the spiral hut scene to test a bug fix on PSX where D2 wouldn't load correctly after putting it into the console. Suspected issue with the music still playing from the break scene when disc is being changed. Not an issue on Emulator. 
+- Trimmed Reno text box
+- Trimmed Slap skip (2 frame time save if you're lucky)
+- Updates to Jessie skip
+- Reverted Honey Bee Inn fat guy text boxes because they felt weird
+
 ## v0.4.6
 
 - Lots of new trimming from Start to Don's
