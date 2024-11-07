@@ -3,6 +3,15 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.8
+
+- Fixed console error which may be causing the Disc 2 loading issues after the Break Scene, testing on PSX disc needed to verify
+- Restored scene where Cloud is carrying Aeris in the water
+- Trimmed Rocket town first visit a bit more
+- Fixed "Shake it" scene after Red Dragon
+- Trimmed Gold Saucer a bit more
+- Fixed Junon down right scene missing and restored the command game tutorial section with text box queues
+
 ## v0.4.7
 
 - Moved the break scene to before the spiral hut scene to test a bug fix on PSX where D2 wouldn't load correctly after putting it into the console. Suspected issue with the music still playing from the break scene when disc is being changed. Not an issue on Emulator. 
