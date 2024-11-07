@@ -3,6 +3,10 @@
 
 v(Major).(Minor).(Patch)
 
+## v0.4.9
+
+- Removed the CSR version number from the first scene because it softlocks when you try pick up a potion of the guard, like wtf
+
 ## v0.4.8
 
 - Fixed console error which may be causing the Disc 2 loading issues after the Break Scene, testing on PSX disc needed to verify
