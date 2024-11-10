@@ -1,4 +1,4 @@
-![](image.png)
+![](images/banner.png)
 *Artist: @Cronosart99*
 
 ## Final Fantasy 7 PSX CSR Patches
