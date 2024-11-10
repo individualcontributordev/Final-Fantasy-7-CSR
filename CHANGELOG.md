@@ -1,7 +1,11 @@
 
 # FF7 CutScenes Removed Change log
 
-v(Major).(Minor).(Patch)
+v(release).(feature).(bugfix)
+
+## v0..4.10
+
+- Fixed the Disc 1 to Disc 2 swapping issue. After the JenovaLife fight disc 2 would not load correctly, this patch fixes this issue by making a change to the blackbgb_103 script to revert some changes made at motorball
 
 ## v0.4.9
 
