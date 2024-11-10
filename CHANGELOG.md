@@ -3,7 +3,18 @@
 
 v(release).(feature).(bugfix)
 
-## v0..4.10
+## v0.4.11
+
+- Removed the Junon to Jenova boat World Map scene again
+- Removed the slow scroll when you first get to the Shinra building
+- Top of Wall Market first visit talking to the doorman, 1 text box added back when talking to Aeris
+- Sped up handing over the energy drink in wall market
+- Added 1 text box before Cid raises hand in the Hotal Lobby for Golden Saucer keystone visit, some runners use Cid as the queue instead of Barret raising his two hands for the option choice
+- In Junon after the Dolphin, added back in Cloud shrug when talking to the leader about getting dressed
+- Trimmed after Rufus mood mini-game at Junon a bit more 
+
+
+## v0.4.10
 
 - Fixed the Disc 1 to Disc 2 swapping issue. After the JenovaLife fight disc 2 would not load correctly, this patch fixes this issue by making a change to the blackbgb_103 script to revert some changes made at motorball
 
