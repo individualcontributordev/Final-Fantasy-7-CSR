@@ -3,6 +3,17 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.0
+
+- Added back in the scene after Demons Gate where Cloud gives the Black Materia to Sephiroth
+- Added 1 text box before Barret leaves hut in Gongaga where Cloud is lying down
+- Jump down the hole to Battle Square and land in Prison after naming Cait Sith
+- 1.5 seconds added back in before Ester enters the bottom of the scene before the Chocobo race
+- Added back in 1 text box before Bottomswell fight
+- Trimmed bottom of tower
+- Added back in 1 text box on Broken Road
+- Added 4 text boxes back in after Jenova fight on the boat when arm disappears
+
 ## v0.4.11
 
 - Removed the Junon to Jenova boat World Map scene again
