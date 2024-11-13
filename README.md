@@ -1,9 +1,9 @@
 ![](images/banner.png)
 *Artist: @Cronosart99*
 
-## Final Fantasy 7 PSX CSR Patches
+## Final Fantasy 7 PSX CutScenes Removed
 
-Works with the following categories including variants, e.g. No Major Skips, Glitchless, Slots, All Bosses etc.
+Works with all the variants, e.g. No Major Skips, Glitchless, Slots, All Bosses etc.
 
 Category | Status
 -------- | ------
@@ -75,3 +75,15 @@ C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 1) CSR (patched).cue
 C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 2) CSR (patched).cue
 C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 3).cue
 ```
+
+# Unofficial Leaderboard
+
+Submit your speedrun time https://forms.gle/byFWCT85gFWS2Vtp6
+
+Current Leaderboard https://docs.google.com/spreadsheets/d/19y6yHtODjS5R-VyvtHUKjAo3FL9Fif56p1REQsUzGWg
+
+# Feature Requests and Bug Fixes
+
+Feature Requests and Bug Fixes https://forms.gle/dW9rMCD9kQ3eBPSM8
+
+
