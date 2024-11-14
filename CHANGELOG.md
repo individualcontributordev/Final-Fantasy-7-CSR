@@ -5,9 +5,10 @@ v(release).(feature).(bugfix)
 
 ## v0.5.2
 
-- Lots of small mashing/turbo 1 text boxes added back in
+- Lots of small mashing/turbo 1 text boxes added back in, removed, or moved
+- Don's basement sped up a bit
 - Batteries shop trimmed
-- Keycoard in shinra building trimmed
+- Keycard in Shinra building trimmed
 - Mayor's password trimmed
 - Seeing Jenova in Shinra building sections sped up
 - Bottomswell fight trimmed
