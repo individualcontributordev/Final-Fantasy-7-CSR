@@ -3,6 +3,17 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.2
+
+- Lots of small mashing/turbo 1 text boxes added back in
+- Batteries shop trimmed
+- Keycoard in shinra building trimmed
+- Mayor's password trimmed
+- Seeing Jenova in Shinra building sections sped up
+- Bottomswell fight trimmed
+- Arriving at Costa off the boat, cue for options restored
+- Barret's house in Corel Prison cues fixed
+
 ## v0.5.1
 
 - Fixed an issue where JenovaBirth fight was skipped, oops
