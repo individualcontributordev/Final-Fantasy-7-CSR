@@ -3,6 +3,10 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.1
+
+- Fixed an issue where JenovaBirth fight was skipped, oops
+
 ## v0.5.0
 
 - Added back in the scene after Demons Gate where Cloud gives the Black Materia to Sephiroth
