@@ -3,6 +3,22 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.3
+
+- When first entering rocket town the scrolling to view the rocket was removed
+- Seeing bronco for the first time is sped up
+- Getting the Yoshiyuki from old man in rocket town is faster
+- No scroll in Gongaga fro "a ruined reactor" section
+- Entering temple for the first time, removed entire scene with Aeris running up and back to Cloud, party splits and joins then play resumes
+- When entinring Temple where Tseng is, added back in 1 text box where Aeris is crying
+- Added back in 1 text box entering template on the weird field with steps
+- Added 1 text box back in for Aeris at the fountain after rolling rocks
+- In temple, first entering cliff with lots of doors, removed text boxes after Aeris asks you a question and joins party again
+- At Demon's gate Cloud now just runs back as DG is coming out of the wall
+- Leaving the hut in Gongaga after Temple, added 1 text box
+- Reactor 5 train added 1 text box for Jessie in 2nd carridge
+- Removed R word on stairs
+
 ## v0.5.2
 
 - Lots of small mashing/turbo 1 text boxes added back in, removed, or moved
