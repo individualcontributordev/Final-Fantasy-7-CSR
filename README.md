@@ -30,6 +30,7 @@ All "skill checks" remain in this CSR (if not let me know and I'll fix it). A sk
 - Shoutblaster
 - HopeDRG
 - Doumeis
+- Cornfed69
 
 ## Steps
 
