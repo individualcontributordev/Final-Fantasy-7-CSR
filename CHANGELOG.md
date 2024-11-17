@@ -3,6 +3,12 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.4
+
+- Trimmed Reno fight even more
+- Trimmed Barret throwing 1500 gil at Cloud
+- Reverted most of the Yoshiyuki man in Rocket Town interaction, scroll to see rocket remains
+
 ## v0.5.3
 
 - When first entering rocket town the scrolling to view the rocket was removed
