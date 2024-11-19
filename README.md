@@ -15,7 +15,7 @@ any%     | 🔄
 
 These patches can be applied to the following platforms
 
-- Playstation 1 and 2 (PSX Disc) [How? MechaPwn](https://github.com/MechaResearch/MechaPwn)
+- Playstation 1 and 2 (PSX Disc)
 - Emulator (Digital)
 
 ## Definition
@@ -32,7 +32,7 @@ All "skill checks" remain in this CSR (if not let me know and I'll fix it). A sk
 - Doumeis
 - Cornfed69
 
-## Steps
+## Getting Started
 
 Apply the patches to your FF7 NTSC/US PS1 .bin files.
 
@@ -41,15 +41,35 @@ Apply the patches to your FF7 NTSC/US PS1 .bin files.
 3. Select the patch .ppf file
 4. Click the "Apply patch" button
 
-Your browser should download a new patched version of the disc.
+Your browser should download a new patched version of the disc, just load it up using the latest [Duckstation](https://github.com/stenzek/duckstation/releases) release. 
 
-You can burn the patched version to disc or load it up in an emulator (I used duckstation version 0.1-7371-gb2577ef8b (dev) for testing). I used ImgBurn with write speed 16x on Verbatim CD-R 700MB discs.
+See [Troubleshoting](#troubleshooting) to make sure your patch files correctly named.
 
-Make sure to choose the correct patch .ppf file for the correct disc you are trying to patch.
+## Play on PSX
+
+You'll need to first use something like [MechaPwn](https://github.com/MechaResearch/MechaPwn) to soft-mod your PS2 Slim in order to play your backup discs.
+
+Then, you can burn the patched .bin file to disc, make sure to select the associated .cue file in your CD burning software. I use ImgBurn with write speed 16x on Verbatim CD-R 700MB discs.
+
+# Unofficial Leaderboard
+
+![](images/leaderboard.PNG)
+
+[Submit your speedrun time here](https://forms.gle/byFWCT85gFWS2Vtp6)
+
+[Current Leaderboard](https://docs.google.com/spreadsheets/d/19y6yHtODjS5R-VyvtHUKjAo3FL9Fif56p1REQsUzGWg)
+
+
+# Feature Requests and Bug Fixes
+
+Feature Requests and Bug Fixes https://forms.gle/dW9rMCD9kQ3eBPSM8
+
 
 ## Troubleshooting
 
-Make sure your FF7 .bin and .cue files for all discs are in the same directory, and the .bin and .cue for each disc are named exactly the same. e.g. 
+Make sure to choose the correct patch .ppf file for the correct disc you are trying to patch.
+
+Also check your FF7 .bin and .cue files for all discs are in the same directory, and the .bin and .cue for each disc are named exactly the same. e.g. 
 
 ```text
 - Final Fantasy VII (Disc 1) CSR (patched).bin  
@@ -77,14 +97,6 @@ C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 2) CSR (patched).cue
 C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 3).cue
 ```
 
-# Unofficial Leaderboard
 
-Submit your speedrun time https://forms.gle/byFWCT85gFWS2Vtp6
-
-Current Leaderboard https://docs.google.com/spreadsheets/d/19y6yHtODjS5R-VyvtHUKjAo3FL9Fif56p1REQsUzGWg
-
-# Feature Requests and Bug Fixes
-
-Feature Requests and Bug Fixes https://forms.gle/dW9rMCD9kQ3eBPSM8
 
 
