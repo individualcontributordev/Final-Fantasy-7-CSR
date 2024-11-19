@@ -3,6 +3,10 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.5
+
+- Fixed bug with the Break Scene where if you choose music option 3 to mute then if the timer runs out there is no music for Disc 2, whoopsies
+
 ## v0.5.4
 
 - Trimmed Reno fight even more
