@@ -3,6 +3,17 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.6
+
+Disc 1
+- Fixed Reno glitching when he jumps over the rail after the fight
+
+Disc 2
+- Fort Condor old guy trimmed
+- Fort Condor mini-game battle guy trimmed
+- Fort Condor after mini-game battel trimmed
+- Cloud chillin' with Hojo fixed
+
 ## v0.5.5
 
 - Fixed bug with the Break Scene where if you choose music option 3 to mute then if the timer runs out there is no music for Disc 2, whoopsies
