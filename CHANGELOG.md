@@ -6,12 +6,12 @@ v(release).(feature).(bugfix)
 ## v0.5.6
 
 Disc 1
-- Fixed Reno glitching when he jumps over the rail after the fight
+- Fixed Reno glitching when he jumps over the rail after the fight on the tower
 
 Disc 2
 - Fort Condor old guy trimmed
 - Fort Condor mini-game battle guy trimmed
-- Fort Condor after mini-game battel trimmed
+- Fort Condor after mini-game battle trimmed
 - Cloud chillin' with Hojo fixed
 
 ## v0.5.5
