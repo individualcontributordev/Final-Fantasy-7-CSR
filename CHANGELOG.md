@@ -3,6 +3,16 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.7
+
+- Start of Disc 2 Sephiroth walking north cut
+- After snowboarding landing in snow trimmed
+- Big Shoes field walking in trimmed
+- After Big Shoes field misty floor scene trimmed
+- Trains, after fight with two guards at the entrance trimmed
+- Trains section trimmed
+- Cloud's dream trimmed a bit more
+
 ## v0.5.6
 
 Disc 1
