@@ -3,6 +3,17 @@
 
 v(release).(feature).(bugfix)
 
+## v0.5.8
+
+Disc 1
+- Speed up entering Gold Saucer for the first time
+
+Disc 2
+- Trains, trimmed small animations by party before fighting two guards
+- Flashback after JenovaDeath with Sephrioth burning down Nibelheim, added some text boxes back in
+- Trimmed Carry Armor
+- Trimmed Submarine before mini-game and getting Key of the Ancients
+
 ## v0.5.7
 
 - Start of Disc 2 Sephiroth walking north cut
