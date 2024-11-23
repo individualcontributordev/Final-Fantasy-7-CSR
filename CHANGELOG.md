@@ -3,6 +3,17 @@
 
 v(release).(feature).(bugfix)
 
+
+## v0.6.0
+
+Disc 1
+- No changes
+
+Disc 2
+- Rocket town cutscenes trimmed even further
+- Highway before Cosmo Canyon trimmed down a bit more
+- Fixed an issue with FD manip on Hojo skip cutscene where 55 wait frames were missing compared to original disc 2
+
 ## v0.5.8
 
 Disc 1
