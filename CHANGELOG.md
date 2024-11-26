@@ -3,6 +3,12 @@
 
 v(release).(feature).(bugfix)
 
+## v0.6.1
+
+- Updates to Barret throwing gil at Cloud in 7th Heaven
+- Sped up the granny in Junon after Bottomswell
+- Put back in some of the Rufus mini-game tutorial in the locker room to provide a queue before the options
+- Trimmed Sample fight a bit more
 
 ## v0.6.0
 
