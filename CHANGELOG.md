@@ -3,6 +3,21 @@
 
 v(release).(feature).(bugfix)
 
+## v0.6.2
+
+Disc 1
+- Trimmed getting the Diamond Tiara a bit more
+- Trimmed the clothes shop a bit more
+- Trimmed Barret text boxes and animations on the Jenova boat where he is looking in at Rufus and Heidegger
+- Trimmed pre-Jessie skip scene more
+- Trimmed Don Corneo picking a girl a bit more
+
+Disc 2
+- Big shoes screen party split and join slowed down a little to be less weird
+- Scene before Hojo skip trimmed
+- Trimmed scenes between Rocket town rocket taking off, escape pod, and meteor, to being on the Highwind again and the planet screaming
+
+
 ## v0.6.1
 
 Disc 1
