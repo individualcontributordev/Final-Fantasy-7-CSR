@@ -7,8 +7,12 @@ Works with all the variants, e.g. No Major Skips, Glitchless, Slots, All Bosses 
 
 Category | Status
 -------- | ------
-any%     | 🔄    
-100%     | 🔄    
+any%     | 🟢  
+any% No Slots | 🟢  
+any% Slots | 🔄
+any% No Major Skips | 🔄
+any% All Bosses | 🔄
+100% No Slots | 🔄    
 
 🔄 Work in Progress  
 🟢 Done
