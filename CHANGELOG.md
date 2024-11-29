@@ -3,6 +3,20 @@
 
 v(release).(feature).(bugfix)
 
+## v0.7.0
+
+Disc 1
+- no changes
+
+Disc 2
+- no changes
+
+Disc 3
+- Trimmed text boxes before Jenova fight
+- Trimmed after Jenova where Cloud is doing a base jump
+- Trimmed Sephiroth pushing the party with green waves
+- Removed the FMV of Cloud flying down to fight nake Sephiroth
+
 ## v0.6.2
 
 Disc 1
