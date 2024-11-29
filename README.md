@@ -7,15 +7,12 @@ Works with all the variants, e.g. No Major Skips, Glitchless, Slots, All Bosses 
 
 Category | Status
 -------- | ------
-any%     | 🟢  
-any% No Slots | 🟢  
-any% Slots | 🔄
-any% No Major Skips | 🔄
-any% All Bosses | 🔄
-100% No Slots | 🔄    
+any% No Slots | 🟢 Done
+any% Slots | 🔄 Work in Progress 
+any% No Major Skips | 🔄 Work in Progress 
+any% All Bosses | 🔄 Work in Progress 
+100% No Slots | 🔄 Work in Progress 
 
-🔄 Work in Progress  
-🟢 Done
 
 These patches can be applied to the following platforms
 
