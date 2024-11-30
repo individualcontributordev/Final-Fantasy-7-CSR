@@ -3,6 +3,19 @@
 
 v(release).(feature).(bugfix)
 
+## v0.7.1
+
+Disc 1
+- Fixed queue at Barret and Biggs opening the first reactor 1 gate
+- Sped up Aerith in clothes shop before wig
+
+Disc 2
+- no changes
+
+Disc 3
+- no changes
+
+
 ## v0.7.0
 
 Disc 1
