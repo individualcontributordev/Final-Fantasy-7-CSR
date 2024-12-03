@@ -3,6 +3,22 @@
 
 v(release).(feature).(bugfix)
 
+## v0.7.2
+
+Disc 1
+- 7th Heaven train to Reactor 5 trimmed
+- Reactor 5 tunnels and reactor scene trimmed
+- Airbuster trimmed
+- Aerith's church trimmed
+- Aerith's house trimmed up to Playground Skip
+
+Disc 2
+- no changes
+
+Disc 3
+- no changes
+
+
 ## v0.7.1
 
 Disc 1
