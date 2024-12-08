@@ -3,6 +3,18 @@
 
 v(release).(feature).(bugfix)
 
+## v0.7.3
+
+Disc 1
+- First half of Kalm trimmed
+
+Disc 2
+- no changes
+
+Disc 3
+- no changes
+
+
 ## v0.7.2
 
 Disc 1
