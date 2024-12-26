@@ -3,6 +3,18 @@
 
 v(release).(feature).(bugfix)
 
+## v0.8.0
+
+Disc 1
+- (NMS) Kalm visit done
+
+Disc 2
+- no changes
+
+Disc 3
+- no changes
+
+
 ## v0.7.4
 
 Disc 1
