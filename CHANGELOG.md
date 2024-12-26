@@ -3,6 +3,23 @@
 
 v(release).(feature).(bugfix)
 
+## v0.7.4
+
+Disc 1
+- Added a text box back in after blowing up reactor 1 and meeting Aerith
+- (NMS) Fixed bug in Aerith's house for boyfriend skip, choosing option 1 triggers a loop you can't get out of
+- Sped up the restaurant scene in Wall Market
+- Removed meeting Rufus scene after President Shinra found dead
+- Removed scene where Cait gives the Keystone to the turks helicopter in the Gold Saucer
+- (NMS) 1 text box entering Kalm added back in
+
+Disc 2
+- Fixed issue on Highwind after Junon escape where Cid is not in position quick enough after talking to Red
+
+Disc 3
+- no changes
+
+
 ## v0.7.3
 
 Disc 1
