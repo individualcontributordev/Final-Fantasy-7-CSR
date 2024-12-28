@@ -32,6 +32,9 @@ All "skill checks" remain in this CSR (if not let me know and I'll fix it). A sk
 - HopeDRG
 - Doumeis
 - Cornfed69
+- Phek1200
+- MuscleBelt
+- Rendall
 
 ## Getting Started
 
