@@ -35,6 +35,7 @@ All "skill checks" remain in this CSR (if not let me know and I'll fix it). A sk
 - Phek1200
 - MuscleBelt
 - Rendall
+- Expans3
 
 ## Getting Started
 
