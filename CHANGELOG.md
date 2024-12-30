@@ -3,6 +3,22 @@
 
 v(release).(feature).(bugfix)
 
+## v0.9.0
+
+Disc 1
+- Fixed model glithes after Reno fight on the tower
+- Fixed bug with Aerith getting stuck in Dress shop
+- Fixed graphics glitch after Mighty Grunts when Cloud leaves elevators
+- (NMS) Cosmo Canyon trimmed
+
+Disc 2
+- Trimmed before J-Death fight
+- Fixed issue with Rocket Town escape pod FMVs and cutscene playing
+
+Disc 3
+- no changes
+
+
 ## v0.8.0
 
 Disc 1
