@@ -3,6 +3,18 @@
 
 v(release).(feature).(bugfix)
 
+## v0.9.1
+
+Disc 1
+- no changes
+
+Disc 2
+- (Revert) Trimmed before J-Death fight
+- (Revert) Fixed issue with Rocket Town escape pod FMVs and cutscene playing
+
+Disc 3
+- no changes
+
 ## v0.9.0
 
 Disc 1
