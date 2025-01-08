@@ -3,6 +3,18 @@
 
 v(release).(feature).(bugfix)
 
+## v0.10.0
+
+Disc 1
+- no changes
+
+Disc 2
+- (NMS) Midgar Raid trimmed
+
+Disc 3
+- no changes
+
+
 ## v0.9.3
 
 Disc 1
