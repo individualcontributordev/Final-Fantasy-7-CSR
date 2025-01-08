@@ -3,6 +3,20 @@
 
 v(release).(feature).(bugfix)
 
+## v0.9.3
+
+Disc 1
+- Sped up Don Corneo's a bit more
+- Removed old woman walking really slowly in the Junon house after Bottomswell
+- Added back in 1 text box entering Rocket Town for the first time
+
+Disc 2
+- Sped up before Jenova Death fight
+
+Disc 3
+- no changes
+
+
 ## v0.9.2
 
 Disc 1
