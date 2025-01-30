@@ -3,6 +3,26 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.0
+
+Disc 1
+- Fixed door when first seeing Hojo in Shinra HQ
+- Trimmed text boxes at Honey Bee Inn
+- Trimmed "Black Materia!" section after Red Dragon
+- Fixed issue in Nibel where the black cloak dude is in the way
+- (NMS) Trimmed Turks in Mythril Mines
+
+Disc 2
+- Trimmed Guards in elevator text boxes for UWR
+- Fixed audio issues in UWR after Cloud's dream section
+- (NMS) Fixed audio issues during Raid on Midgar
+- (NMS) Trimmed Raid on Midgar Turks
+- (NMS) Trimmed Raid on Midgar Proud Clod
+
+Disc 3
+- no changes
+
+
 ## v0.10.0
 
 Disc 1
