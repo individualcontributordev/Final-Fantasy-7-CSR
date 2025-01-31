@@ -3,6 +3,26 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.1
+
+Disc 1
+- Added back in 1 text box when entering Wall Market
+- Removed Cloud bending down at vending machine in the Wall Market Inn
+- Trimmed Don's basement again
+- Sped up Don's choice
+- Trimmed Don's bedroom a bit more
+- Fixed bug in Costa Del Sol first visit where you could run back into the boat scene and re-trigger the crew getting off the boat 
+- Fixed the music in Costa to not stop and start on boat scene exit
+- Aerith's church scene before beams in attic put back in for timing
+- Trimmed Pricilla scene in Junon getting Shiva materia
+
+Disc 2
+- no changes
+
+Disc 3
+- no changes
+
+
 ## v0.11.0
 
 Disc 1
