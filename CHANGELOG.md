@@ -3,6 +3,26 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.3
+
+Disc 1
+- (NMS) Reno stepping on flowers in Aerith's church cut
+- Wall Market outside Honey Bee Inn reverted to original (4 text boxes after talking to pink guy)
+- (NMS) Kalm flashback break, 4 text boxes before save option
+- Junon Granny's house, fixed bug if you leave and go back in to rest triggers the dream dialogue
+- After JBirth fight, put 7 text boxes in before option choice
+- Reverted boat docking in Costa scene to original (under review)
+- Dyne fight trimmed even more
+- Trimmed before JLife fight
+- Reverted Submarine friends to include 11 text boxes before the menu (under review)
+
+Disc 2
+- Trimmed the Rocket cockpit scene after Rude where Cid mentions the huge materia
+- Trimmed Cosmo Canyon revisit after UWR
+
+Disc 3
+- no changes
+
 ## v0.11.2
 
 Disc 1
