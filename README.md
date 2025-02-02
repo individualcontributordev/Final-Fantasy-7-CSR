@@ -49,7 +49,7 @@ Apply the patches to your FF7 NTSC/US PS1 .bin files.
 3. Select the patch .ppf file
 4. Click the "Apply patch" button
 
-Your browser should download a new patched version of the disc, just load it up using the latest [Duckstation](https://github.com/stenzek/duckstation/releases) release. 
+Your browser should download a new patched version of the disc, just load it up using the latest [Duckstation](https://github.com/stenzek/duckstation/releases) or [RetroArch](https://www.retroarch.com/?page=platforms) release. 
 
 See [Troubleshoting](#troubleshooting) to make sure your patch files correctly named.
 
@@ -97,7 +97,7 @@ FILE "Final Fantasy VII (Disc 1) CSR (patched).bin" BINARY
     INDEX 01 00:00:00
 ```
 
-And if you use a .m3u file like I do in DuckStation make sure to update this file to point to the correct patched version of the discs. e.g.
+And if you use a .m3u file like I do make sure to update this file to point to the correct patched version of the discs. e.g.
 
 ```text
 C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 1) CSR (patched).cue
