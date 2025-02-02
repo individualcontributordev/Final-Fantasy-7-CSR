@@ -3,6 +3,18 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.2
+
+Disc 1
+- (NMS) Reverted changes to Reactor scene during Kalm flashback
+- (NMS) Fixed Mythril Mines Turks scene
+
+Disc 2
+- no changes
+
+Disc 3
+- no changes
+
 ## v0.11.1
 
 Disc 1
