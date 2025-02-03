@@ -3,6 +3,20 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.4
+
+Disc 1
+- Trimmed post Jessie skip Cloud and Barret on train scene
+- Junon Granny's speed reverted back to original to avoid bonking her with latest trims
+- Trimmed before Bike minigame in Shinra HQ
+- Trimmed old man carrying Priscilla to house after Bottomswell
+
+Disc 2
+- Trimmed Cait Sith on Highway after Cloud's dream section
+
+Disc 3
+- no changes
+
 ## v0.11.3
 
 Disc 1
