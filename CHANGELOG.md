@@ -3,6 +3,19 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.5
+
+Disc 1
+- no changes
+
+Disc 2
+- Added text boxes back after JDeath fight where Cloud picks up the Black Materia
+- Fixed Cloud getting stuck on Highwind cockpit after Rocket Town escape pod scene skips
+
+Disc 3
+- no changes
+
+
 ## v0.11.4
 
 Disc 1
