@@ -3,6 +3,21 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.6
+
+Disc 1
+- Sped up NPCs in Shinra HQ after vent scene where Hojo walks up the stairs to compensate for trims
+- Trim between Don's bedroom and Aps fight more to remove long wait
+- Trimmed Don's basement a bit more
+- Cut text boxes outside Honey Bee Inn pink guy to 1 after menu
+- Fixed talking to the kid at the "Shiny Wire of Hope" (climbing up to Shinra HQ) and the music transition
+
+Disc 2
+- no changes
+
+Disc 3
+- no changes
+
 ## v0.11.5
 
 Disc 1
