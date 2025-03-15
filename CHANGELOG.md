@@ -3,6 +3,19 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.7
+
+Disc 1
+- (NMS) Increased movement speed of guards and Aerith in Aerith's Church
+- Removed text boxes and movement coming out of the elevator before Sample Fight
+- Added Tiny Bronco scene after it crashes for Bronco manip
+
+Disc 2
+- no changes
+
+Disc 3
+- no changes
+
 ## v0.11.6
 
 Disc 1
