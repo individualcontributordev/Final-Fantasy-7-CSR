@@ -3,6 +3,21 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.8
+
+Disc 1
+- Fixed train scene before 7th Heaven, last text box is on Barret
+- Reverted some animation trims for Barret after reactor explodes
+- Fixed Aerith movement when talking to the Don Corneo guard for the first time
+- Trimmed 7th Heaven Cloud and Tifa dialogue a bit more
+
+Disc 2
+- After Big shoes added a fade to black and back again when the highwind scene is mean to play. (previously just regained control of Cloud and no fade in/out)
+
+Disc 3
+- no changes
+
+
 ## v0.11.7
 
 Disc 1
