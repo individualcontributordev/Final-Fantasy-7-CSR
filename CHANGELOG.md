@@ -3,6 +3,18 @@
 
 v(release).(feature).(bugfix)
 
+## v0.11.9
+
+Disc 1
+- no changes
+
+Disc 2
+- Schizo fight starts immediately
+
+Disc 3
+- no changes
+
+
 ## v0.11.8
 
 Disc 1
