@@ -6,6 +6,22 @@ v(release).(feature).(bugfix)
 ## v0.11.9
 
 Disc 1
+- Before elevator fights, sped up Tifa running to Aerith
+- Trimmed the dolphin before jumping up to Junon
+- Trimmed after Force Stealer mini-game
+- Added some text boxes back into scene before Red Dragon
+- Trimmed the scene between the Break scene and end of disc 1, now Jenova Life is end of the disc 1
+
+Disc 2
+- Added text boxes back in for Scarlet getting gased in Escape from Junon section
+
+Disc 3
+- no changes
+
+
+## v0.11.9
+
+Disc 1
 - no changes
 
 Disc 2
