@@ -3,7 +3,19 @@
 
 v(release).(feature).(bugfix)
 
-## v0.11.9
+## v0.13.0
+
+Disc 1
+- Trimmed after Jenova-Life fight
+- Moved break scene to start of disc 2
+
+Disc 2
+- Break scene added to start of this disc
+
+Disc 3
+- no changes
+
+## v0.12.0
 
 Disc 1
 - Before elevator fights, sped up Tifa running to Aerith
