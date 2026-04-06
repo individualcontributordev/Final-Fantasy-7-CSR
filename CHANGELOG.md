@@ -3,6 +3,18 @@
 
 v(release).(feature).(bugfix)
 
+## v0.13.1
+
+Disc 1
+- Updated "Daddy Pedro Pascal" to "Mango Mussolini" because the original text is a slur meant to be offensive, and Pedro is nice.
+
+Disc 2
+- No changes
+
+Disc 3
+- no changes
+
+
 ## v0.13.0
 
 Disc 1
