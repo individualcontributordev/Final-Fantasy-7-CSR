@@ -3,6 +3,18 @@
 
 v(release).(feature).(bugfix)
 
+## v0.13.2
+
+Disc 1
+- Fixed the Don Corneo Doorman interaction, now Cloud and Aerith will walk to the spot before the next scene loads
+
+Disc 2
+- No changes
+
+Disc 3
+- no changes
+
+
 ## v0.13.1
 
 Disc 1
