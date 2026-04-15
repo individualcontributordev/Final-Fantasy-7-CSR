@@ -9,7 +9,7 @@ Category | Status
 -------- | ------
 any% | 🟢 Done
 any% No Slots | 🟢 Done
-any% Slots | 🔄 Work in Progress 
+any% Slots | 🟢 Done
 any% No Major Skips | 🟢 Done
 any% All Bosses | 🔄 Work in Progress 
 100% No Slots | 🔄 Work in Progress 
