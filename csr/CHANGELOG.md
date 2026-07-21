@@ -1,7 +1,19 @@
 
-# FF7 CutScenes Removed Change log
+# FF7 CSR Change log
 
 v(release).(feature).(bugfix)
+
+## v0.14.0
+
+Disc 1
+- Removed boat trip to Costa Del Sol
+
+Disc 2
+- No changes
+
+Disc 3
+- no changes
+
 
 ## v0.13.3
 
