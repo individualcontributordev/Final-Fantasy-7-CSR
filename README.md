@@ -3,28 +3,39 @@
 
 ## Final Fantasy 7 PSX CutScenes Removed
 
-Works with all the variants, e.g. No Major Skips, Glitchless, Slots, All Bosses etc.
+Category | CSR | CSR+ | CSR++
+-------- | ------ | ------ | ------
+any% | 🟢 Done | 🔄 WIP | 🔄 WIP
+any% No Slots | 🟢 Done | 🔄 WIP | 🔄 WIP
+any% Slots | 🟢 Done | 🔄 WIP | 🔄 WIP
+any% No Major Skips | 🟢 Done | 🔄 WIP | 🔄 WIP
+any% All Bosses | 🔄 WIP | 🔄 WIP | 🔄 WIP
+100% No Slots | 🔄 WIP | 🔄 WIP | 🔄 WIP
 
-Category | Status
--------- | ------
-any% | 🟢 Done
-any% No Slots | 🟢 Done
-any% Slots | 🟢 Done
-any% No Major Skips | 🟢 Done
-any% All Bosses | 🔄 Work in Progress 
-100% No Slots | 🔄 Work in Progress 
-
+*Est. Completion Time: 1 bazillion years*
 
 These patches can be applied to the following platforms
 
 - Playstation 1 and 2 (PSX Disc)
 - Emulator (Digital)
+- // add link to PC port installer
 
-## Definition
+## Definitions
+
+### CSR
 
 All "skill checks" remain in this CSR (if not let me know and I'll fix it). A skill check is any action a player must perform in game, e.g. choosing an option in dialogues, movement in cutscenes, skips, manipulating RNG, etc. Most FMVs are removed, some cutscenes are shorter, and long mashing sequences have been reduced. This CSR is exactly like a non-CSR run, just shorter.
 
+### CSR+
+
+Same as CSR but removes all cutscenes regardless of impact on existing strats and skips.
+
+### CSR++
+
+Same as CSR+ with alot of "nonsense" removed like mashing through a dialogue only to select the first option, meeting Aerith for the first time after blowing up Reactor 1, Jessie getting her leg stuck and having to help her to progress, etc. Boring filler stuff basically.
+
 ## Contributors
+
 - IndividualContributor
 - Okamikaze
 - AwesomeWaves
@@ -49,7 +60,11 @@ Apply the patches to your FF7 NTSC/US PS1 .bin files.
 3. Select the patch .ppf file
 4. Click the "Apply patch" button
 
-Your browser should download a new patched version of the disc, just load it up using the latest [Duckstation](https://github.com/stenzek/duckstation/releases) or [RetroArch + SwanStation Core](https://www.retroarch.com/?page=platforms) release. 
+Your browser should download a new patched version of the disc
+
+## Play on Emulator
+
+Just load up the .cue/.bin file using the latest [Duckstation](https://github.com/stenzek/duckstation/releases) or [RetroArch + SwanStation Core](https://www.retroarch.com/?page=platforms) release.
 
 See [Troubleshoting](#troubleshooting) to make sure your patch files correctly named.
 
