@@ -32,7 +32,7 @@ Same as CSR but removes all cutscenes regardless of impact on existing strats an
 
 ### CSR++
 
-Same as CSR+ with alot of "nonsense" removed like mashing through a dialogue only to select the first option, meeting Aerith for the first time after blowing up Reactor 1, Jessie getting her leg stuck and having to help her to progress, etc. Boring filler stuff basically.
+Same as CSR+ with alot of "filler" removed like mashing through a dialogue only to select the first option, meeting Aerith for the first time after blowing up Reactor 1, Jessie getting her leg stuck and having to help her to progress through Reactor 1, etc. 
 
 ## Contributors
 
