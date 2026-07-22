@@ -7,10 +7,10 @@ v(release).(feature).(bugfix)
 - Created FF7 CSR+ based on FF7 CSR v0.14.0
 
 Disc 1
-- no changes
+- Aerith's house cutscene removed
 
 Disc 2
-- no changes
+- Hojo FD manip cutscene removed
 
 Disc 3
 - no changes
