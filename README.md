@@ -18,7 +18,7 @@ These patches can be applied to the following platforms
 
 - Playstation 1 and 2 (PSX Disc)
 - Emulator (Digital)
-- // add link to PC port installer
+- PC using TMD's [Windows installer](https://discord.com/channels/936291902133796955/1307919162534006854/1529458598747443410)
 
 ## Definitions
 
