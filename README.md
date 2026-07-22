@@ -120,7 +120,3 @@ C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 1) CSR (patched).cue
 C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 2) CSR (patched).cue
 C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 3).cue
 ```
-
-
-
-
