@@ -1,7 +1,7 @@
 ![](images/banner.png)
 *Artist: @Cronosart99*
 
-## Final Fantasy 7 PSX CutScenes Removed
+## Final Fantasy 7 PSX & PC CutScenes Removed (CSR)
 
 Category | CSR | CSR+ | CSR++
 -------- | ------ | ------ | ------
