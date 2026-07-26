@@ -96,6 +96,37 @@
 				}
 			}
 
+			function downloadCue(cueFileName, binFileName) {
+				var cueText =
+					'FILE "' + binFileName + '" BINARY\n' +
+					'  TRACK 01 MODE2/2352\n' +
+					'    INDEX 01 00:00:00\n';
+				var blob = new Blob([cueText], { type: 'text/plain' });
+				var url = URL.createObjectURL(blob);
+				var link = document.createElement('a');
+				link.href = url;
+				link.download = cueFileName;
+				document.body.appendChild(link);
+				link.click();
+				link.remove();
+				setTimeout(function () {
+					URL.revokeObjectURL(url);
+				}, 2000);
+			}
+
+			function setApplyBusy(isBusy, label) {
+				var applyBtn = document.getElementById('rom-patcher-button-apply');
+				if (!applyBtn) return;
+				applyBtn.disabled = !!isBusy;
+				if (isBusy) {
+					applyBtn.innerHTML = '<span class="rom-patcher-spinner"></span> ' + (label || 'Working…');
+					applyBtn.classList.add('is-busy');
+				} else {
+					applyBtn.textContent = 'Apply patch';
+					applyBtn.classList.remove('is-busy');
+				}
+			}
+
 			function loadSelectedPatch() {
 				var token = ++loadToken;
 				selectedPatch = PATCHES[parseInt(patchSelect.value, 10)] || PATCHES[0];
@@ -142,9 +173,29 @@
 						loadSelectedPatch();
 					},
 					onpatch: function (patchedRom) {
-						patchedRom.fileName = selectedPatch.outputName + '.bin';
+						var binName = selectedPatch.outputName + '.bin';
+						var cueName = selectedPatch.outputName + '.cue';
+
+						patchedRom.fileName = binName;
+						setApplyBusy(true, 'Preparing downloads…');
+						setStatus('Saving ' + binName + ' and ' + cueName + '…');
+
+						// Cue first (tiny), then RomPatcher saves the .bin right after onpatch returns.
+						downloadCue(cueName, binName);
+
+						setTimeout(function () {
+							setApplyBusy(false);
+							setStatus('Downloaded ' + binName + ' + matching .cue — keep them in the same folder.');
+						}, 1000);
 					}
 				});
+
+				var nativeApply = RomPatcherWeb.applyPatch.bind(RomPatcherWeb);
+				RomPatcherWeb.applyPatch = function () {
+					setApplyBusy(true, 'Applying patch…');
+					setStatus('Applying patch… large discs can take a minute.');
+					nativeApply();
+				};
 			} catch (err) {
 				var message = err.message;
 				if (/incompatible browser/i.test(message) || /variable RomPatcherWeb/i.test(message)) {
