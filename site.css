@@ -305,6 +305,16 @@ a:hover { color: var(--ff7-text); }
 	cursor: not-allowed;
 }
 
+#rom-patcher-container #rom-patcher-button-apply.is-busy {
+	opacity: 1;
+	cursor: wait;
+	min-width: 220px;
+}
+
+#rom-patcher-container #rom-patcher-button-apply .rom-patcher-spinner:before {
+	background-color: var(--ff7-link);
+}
+
 #rom-patcher-container #rom-patcher-error-message {
 	color: #ff6b8a !important;
 }
