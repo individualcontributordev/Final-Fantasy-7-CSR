@@ -2,9 +2,11 @@
 
 Do this on the PC that has pristine discs and your CSR-patched images.
 
-Goal: one `ic-layer-v1` JSON per disc flavor (CSR / CSR+ / CSR++), Diffed from **pristine**.
+Goal: one `ic-layer-v1` JSON per disc flavor (CSR / CSR+ / CSR++), diffed from **pristine**.
 
 These layers can be large (many field files). That is OK for a first cut; we may switch to file-packs later.
+
+Scripts accept any paths; **quote** names that contain spaces.
 
 ---
 
@@ -17,16 +19,16 @@ git pull
 
 Python 3 on PATH. Put images under `workspace\` (gitignored — see repo `.gitignore`).
 
-You need, for each disc you ship:
+Example layout (matches the `.m3u` playlists under `workspace\csr*\`):
 
 | Role | Example path |
 |------|----------------|
-| Pristine Disc N | `workspace\pristine\disc1.bin` |
-| CSR Disc N | `workspace\csr\FINALFANTASY7_D1 (patched).bin` |
-| CSR+ Disc N | `workspace\csr-plus\disc1.bin` |
-| CSR++ Disc N | `workspace\csr-plusplus\disc1.bin` |
+| Pristine Disc 1 | `workspace\pristine\FINALFANTASY7_D1.bin` (+ `.cue`) |
+| CSR Disc 1 | `workspace\csr\FINALFANTASY7_D1 (patched).bin` (+ `.cue`) |
+| CSR+ Disc 1 | `workspace\csr-plus\FINALFANTASY7_D1 (patched).bin` (+ `.cue`) |
+| CSR++ Disc 1 | `workspace\csr-plusplus\FINALFANTASY7_D1 (patched).bin` (+ `.cue`) |
 
-Use the same region (NTSC-U) everywhere.
+Same pattern for D2 / D3. Use NTSC-U everywhere.
 
 ---
 
@@ -36,8 +38,8 @@ Use the same region (NTSC-U) everywhere.
 cd C:\path\to\Final-Fantasy-7-CSR
 
 python scripts\bin_diff_to_layer.py ^
-  workspace\pristine\FINALFANTASY7_D1.bin ^
-  workspace\csr\FINALFANTASY7_D1 (patched).bin ^
+  "workspace\pristine\FINALFANTASY7_D1.bin" ^
+  "workspace\csr\FINALFANTASY7_D1 (patched).bin" ^
   -o builder\csr-v0.14.0\layers\disc1.layer.json ^
   --id csr-disc1-v0.14.0 ^
   --description "CSR v0.14.0 — NTSC-U Disc 1"
@@ -49,9 +51,9 @@ Adjust version folder / id to match the CSR version you are shipping.
 
 ```bat
 python scripts\apply_layer.py ^
-  workspace\pristine\FINALFANTASY7_D1.bin ^
+  "workspace\pristine\FINALFANTASY7_D1.bin" ^
   builder\csr-v0.14.0\layers\disc1.layer.json ^
-  --expect workspace\csr\FINALFANTASY7_D1 (patched).bin
+  --expect "workspace\csr\FINALFANTASY7_D1 (patched).bin"
 ```
 
 Must print `OK — layer apply matches --expect`.
@@ -76,14 +78,14 @@ Update `pack.json` version strings if yours differ.
 Edit `builder\manifest.json`:
 
 - Set `"enabled": true` on packs that have real `disc*.layer.json` files  
-- Remove or leave `enabled: false` for unfinished flavors  
+- Leave `"enabled": false` for unfinished flavors  
 
 ---
 
 ## 4. Commit and push (JSON only)
 
 ```bat
-git add builder scripts
+git add builder\manifest.json builder\csr-v0.14.0\layers\disc1.layer.json
 git status
 git commit -m "Add CSR builder layers for disc builder."
 git push
