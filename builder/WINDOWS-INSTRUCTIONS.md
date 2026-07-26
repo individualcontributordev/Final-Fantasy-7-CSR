@@ -83,3 +83,6 @@ CSR layers are large (~13MB JSON / disc). Browser download may be slow. Disc 1 f
 ## Encounter add-on
 
 Built in **Final-Fantasy-7-Modding** — see that repo’s `builder/WINDOWS-INSTRUCTIONS.md`.
+
+- Retail Encounter → Unmodified base only  
+- CSR / CSR+ / CSR++ each need their **own** Encounter layer (`--against csr|csr-plus|csr-plusplus`), built from the patched images in this repo’s `workspace/csr*` folders  
