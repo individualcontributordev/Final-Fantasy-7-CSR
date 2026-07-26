@@ -22,7 +22,7 @@ You need, for each disc you ship:
 | Role | Example path |
 |------|----------------|
 | Pristine Disc N | `workspace\pristine\disc1.bin` |
-| CSR Disc N | `workspace\csr\disc1.bin` |
+| CSR Disc N | `workspace\csr\FINALFANTASY7_D1 (patched).bin` |
 | CSR+ Disc N | `workspace\csr-plus\disc1.bin` |
 | CSR++ Disc N | `workspace\csr-plusplus\disc1.bin` |
 
@@ -36,8 +36,8 @@ Use the same region (NTSC-U) everywhere.
 cd C:\path\to\Final-Fantasy-7-CSR
 
 python scripts\bin_diff_to_layer.py ^
-  workspace\pristine\disc1.bin ^
-  workspace\csr\disc1.bin ^
+  workspace\pristine\FINALFANTASY7_D1.bin ^
+  workspace\csr\FINALFANTASY7_D1 (patched).bin ^
   -o builder\csr-v0.14.0\layers\disc1.layer.json ^
   --id csr-disc1-v0.14.0 ^
   --description "CSR v0.14.0 — NTSC-U Disc 1"
@@ -49,9 +49,9 @@ Adjust version folder / id to match the CSR version you are shipping.
 
 ```bat
 python scripts\apply_layer.py ^
-  workspace\pristine\disc1.bin ^
+  workspace\pristine\FINALFANTASY7_D1.bin ^
   builder\csr-v0.14.0\layers\disc1.layer.json ^
-  --expect workspace\csr\disc1.bin
+  --expect workspace\csr\FINALFANTASY7_D1 (patched).bin
 ```
 
 Must print `OK — layer apply matches --expect`.
