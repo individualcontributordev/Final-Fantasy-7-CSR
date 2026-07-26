@@ -85,7 +85,7 @@ CSR layers are large (~13MB JSON / disc). Browser download may be slow. Disc 1 f
 Built in **Final-Fantasy-7-Modding**.
 
 Preferred (no local CSR bins): that repo’s  
-`python scripts/build_encounter_on_base.py --against csr-plus --discs 1 --version 0.1.0`  
-downloads **this** repo’s published base layer from Pages, stubs `FIELD.BIN`, writes `encounter-on-*` packs.
+`python scripts/build_encounter_on_base.py --against csr-plus --discs 1`  
+(version from Modding `builder/ENCOUNTER_VERSION`; base id from this repo’s published manifest).
 
 Details: Modding `builder/WINDOWS-INSTRUCTIONS.md`.
