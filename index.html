@@ -11,69 +11,138 @@
 	<script type="text/javascript" src="./rom-patcher-js/RomPatcher.webapp.js"></script>
 	<script type="text/javascript">
 		window.addEventListener('load', function () {
+			var PATCHES = [
+				{
+					file: './patcher/csr-disc1-v0.14.0.ppf',
+					name: 'CSR — Disc 1 (v0.14.0)',
+					description: 'Cutscenes Removed (skill checks kept). NTSC-U Disc 1 .bin',
+					outputName: 'Final Fantasy VII (Disc 1) CSR v0.14.0'
+				},
+				{
+					file: './patcher/csr-disc2-v0.14.0.ppf',
+					name: 'CSR — Disc 2 (v0.14.0)',
+					description: 'Cutscenes Removed (skill checks kept). NTSC-U Disc 2 .bin',
+					outputName: 'Final Fantasy VII (Disc 2) CSR v0.14.0'
+				},
+				{
+					file: './patcher/csr-disc3-v0.14.0.ppf',
+					name: 'CSR — Disc 3 (v0.14.0)',
+					description: 'Cutscenes Removed (skill checks kept). NTSC-U Disc 3 .bin',
+					outputName: 'Final Fantasy VII (Disc 3) CSR v0.14.0'
+				},
+				{
+					file: './patcher/csrplus-disc1-v0.1.0.ppf',
+					name: 'CSR+ — Disc 1 (v0.1.0)',
+					description: 'CSR+ removes cutscenes more aggressively. NTSC-U Disc 1 .bin',
+					outputName: 'Final Fantasy VII (Disc 1) CSR+ v0.1.0'
+				},
+				{
+					file: './patcher/csrplus-disc2-v0.1.0.ppf',
+					name: 'CSR+ — Disc 2 (v0.1.0)',
+					description: 'CSR+ removes cutscenes more aggressively. NTSC-U Disc 2 .bin',
+					outputName: 'Final Fantasy VII (Disc 2) CSR+ v0.1.0'
+				},
+				{
+					file: './patcher/csrplus-disc3-v0.1.0.ppf',
+					name: 'CSR+ — Disc 3 (v0.1.0)',
+					description: 'CSR+ removes cutscenes more aggressively. NTSC-U Disc 3 .bin',
+					outputName: 'Final Fantasy VII (Disc 3) CSR+ v0.1.0'
+				},
+				{
+					file: './patcher/csrplusplus-disc1-v0.1.0.ppf',
+					name: 'CSR++ — Disc 1 (v0.1.0)',
+					description: 'CSR++ also strips filler dialogue / sequences. NTSC-U Disc 1 .bin',
+					outputName: 'Final Fantasy VII (Disc 1) CSR++ v0.1.0'
+				},
+				{
+					file: './patcher/csrplusplus-disc2-v0.1.0.ppf',
+					name: 'CSR++ — Disc 2 (v0.1.0)',
+					description: 'CSR++ also strips filler dialogue / sequences. NTSC-U Disc 2 .bin',
+					outputName: 'Final Fantasy VII (Disc 2) CSR++ v0.1.0'
+				},
+				{
+					file: './patcher/csrplusplus-disc3-v0.1.0.ppf',
+					name: 'CSR++ — Disc 3 (v0.1.0)',
+					description: 'CSR++ also strips filler dialogue / sequences. NTSC-U Disc 3 .bin',
+					outputName: 'Final Fantasy VII (Disc 3) CSR++ v0.1.0'
+				}
+			];
+
+			var patchSelect = document.getElementById('csr-patch-select');
+			var patchStatus = document.getElementById('csr-patch-status');
+			var patchDescription = document.getElementById('rom-patcher-patch-description');
+			var patchDescriptionRow = document.getElementById('rom-patcher-row-patch-description');
+			var selectedPatch = PATCHES[0];
+			var patchCache = {};
+			var loadToken = 0;
+
+			PATCHES.forEach(function (patch, index) {
+				var option = document.createElement('option');
+				option.value = String(index);
+				option.textContent = patch.name;
+				patchSelect.appendChild(option);
+			});
+
+			function setStatus(text) {
+				patchStatus.textContent = text || '';
+			}
+
+			function showDescription(text) {
+				patchDescription.textContent = text || '';
+				if (text) {
+					patchDescriptionRow.classList.add('show');
+				} else {
+					patchDescriptionRow.classList.remove('show');
+				}
+			}
+
+			function loadSelectedPatch() {
+				var token = ++loadToken;
+				selectedPatch = PATCHES[parseInt(patchSelect.value, 10)] || PATCHES[0];
+				showDescription(selectedPatch.description);
+				setStatus('Loading patch…');
+				patchSelect.disabled = true;
+
+				var cached = patchCache[selectedPatch.file];
+				var pending = cached
+					? Promise.resolve(cached)
+					: fetch(selectedPatch.file).then(function (response) {
+						if (!response.ok) {
+							throw new Error('Could not download ' + selectedPatch.file + ' (' + response.status + ')');
+						}
+						return response.arrayBuffer();
+					}).then(function (buffer) {
+						var binFile = new BinFile(buffer);
+						binFile.fileName = selectedPatch.file.split('/').pop();
+						patchCache[selectedPatch.file] = binFile;
+						return binFile;
+					});
+
+				pending.then(function (binFile) {
+					if (token !== loadToken) return;
+					RomPatcherWeb.providePatchFile(binFile);
+					setStatus('');
+					patchSelect.disabled = false;
+				}).catch(function (err) {
+					if (token !== loadToken) return;
+					setStatus('Failed to load patch');
+					patchSelect.disabled = false;
+					document.getElementById('rom-patcher-error-message').textContent = err.message;
+					document.getElementById('rom-patcher-row-error-message').classList.add('show');
+				});
+			}
+
 			try {
 				RomPatcherWeb.initialize({
 					language: 'en',
 					requireValidation: false,
-					allowDropFiles: true
-				}, {
-					file: './patcher/patches.zip',
-					patches: [
-						{
-							file: 'csr-disc1-v0.14.0.ppf',
-							name: 'CSR — Disc 1 (v0.14.0)',
-							description: 'Cutscenes Removed (skill checks kept). NTSC-U Disc 1 .bin',
-							outputName: 'Final Fantasy VII (Disc 1) CSR v0.14.0'
-						},
-						{
-							file: 'csr-disc2-v0.14.0.ppf',
-							name: 'CSR — Disc 2 (v0.14.0)',
-							description: 'Cutscenes Removed (skill checks kept). NTSC-U Disc 2 .bin',
-							outputName: 'Final Fantasy VII (Disc 2) CSR v0.14.0'
-						},
-						{
-							file: 'csr-disc3-v0.14.0.ppf',
-							name: 'CSR — Disc 3 (v0.14.0)',
-							description: 'Cutscenes Removed (skill checks kept). NTSC-U Disc 3 .bin',
-							outputName: 'Final Fantasy VII (Disc 3) CSR v0.14.0'
-						},
-						{
-							file: 'csrplus-disc1-v0.1.0.ppf',
-							name: 'CSR+ — Disc 1 (v0.1.0)',
-							description: 'CSR+ removes cutscenes more aggressively. NTSC-U Disc 1 .bin',
-							outputName: 'Final Fantasy VII (Disc 1) CSR+ v0.1.0'
-						},
-						{
-							file: 'csrplus-disc2-v0.1.0.ppf',
-							name: 'CSR+ — Disc 2 (v0.1.0)',
-							description: 'CSR+ removes cutscenes more aggressively. NTSC-U Disc 2 .bin',
-							outputName: 'Final Fantasy VII (Disc 2) CSR+ v0.1.0'
-						},
-						{
-							file: 'csrplus-disc3-v0.1.0.ppf',
-							name: 'CSR+ — Disc 3 (v0.1.0)',
-							description: 'CSR+ removes cutscenes more aggressively. NTSC-U Disc 3 .bin',
-							outputName: 'Final Fantasy VII (Disc 3) CSR+ v0.1.0'
-						},
-						{
-							file: 'csrplusplus-disc1-v0.1.0.ppf',
-							name: 'CSR++ — Disc 1 (v0.1.0)',
-							description: 'CSR++ also strips filler dialogue / sequences. NTSC-U Disc 1 .bin',
-							outputName: 'Final Fantasy VII (Disc 1) CSR++ v0.1.0'
-						},
-						{
-							file: 'csrplusplus-disc2-v0.1.0.ppf',
-							name: 'CSR++ — Disc 2 (v0.1.0)',
-							description: 'CSR++ also strips filler dialogue / sequences. NTSC-U Disc 2 .bin',
-							outputName: 'Final Fantasy VII (Disc 2) CSR++ v0.1.0'
-						},
-						{
-							file: 'csrplusplus-disc3-v0.1.0.ppf',
-							name: 'CSR++ — Disc 3 (v0.1.0)',
-							description: 'CSR++ also strips filler dialogue / sequences. NTSC-U Disc 3 .bin',
-							outputName: 'Final Fantasy VII (Disc 3) CSR++ v0.1.0'
-						}
-					]
+					allowDropFiles: true,
+					oninitialize: function () {
+						loadSelectedPatch();
+					},
+					onpatch: function (patchedRom) {
+						patchedRom.fileName = selectedPatch.outputName + '.bin';
+					}
 				});
 			} catch (err) {
 				var message = err.message;
@@ -82,7 +151,10 @@
 				}
 				document.getElementById('rom-patcher-container').innerHTML = message;
 				document.getElementById('rom-patcher-container').style.color = '#ff6b8a';
+				return;
 			}
+
+			patchSelect.addEventListener('change', loadSelectedPatch);
 		});
 	</script>
 </head>
@@ -124,6 +196,14 @@
 				Disc images are large (~700&nbsp;MB). Give the tab a minute; ignore any “file too big” warnings from the OS file picker if the file still selects.
 			</p>
 
+			<div class="rom-patcher-row margin-bottom csr-patch-row">
+				<div class="text-right"><label for="csr-patch-select">Patch:</label></div>
+				<div class="rom-patcher-container-input">
+					<select id="csr-patch-select"></select>
+					<div id="csr-patch-status" class="csr-patch-status" aria-live="polite"></div>
+				</div>
+			</div>
+
 			<div id="rom-patcher-container">
 				<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-rom">
 					<div class="text-right"><label for="rom-patcher-input-file-rom" data-localize="yes">ROM file:</label></div>
@@ -150,12 +230,14 @@
 					</div>
 				</div>
 
-				<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-patch">
-					<div class="text-right"><label for="rom-patcher-select-patch" data-localize="yes">Patch:</label></div>
+				<!-- Required by RomPatcher when not using an embedded zip; kept hidden. -->
+				<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-patch" hidden>
+					<div class="text-right"><label for="rom-patcher-input-file-patch">Patch file:</label></div>
 					<div class="rom-patcher-container-input">
-						<select id="rom-patcher-select-patch"></select>
+						<input type="file" id="rom-patcher-input-file-patch" accept=".ppf,.ips,.bps,.ups,.ups,.xdelta" />
 					</div>
 				</div>
+
 				<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-patch-description">
 					<div class="text-right text-mono text-muted" data-localize="yes">Description:</div>
 					<div class="text-truncate" id="rom-patcher-patch-description"></div>
