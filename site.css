@@ -202,38 +202,12 @@ a:hover { color: var(--ff7-text); }
 }
 
 /* Override RomPatcher.js default light theme */
-.csr-patch-row {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-bottom: 12px;
-}
-
-.csr-patch-row > div:first-child { width: 25%; }
-.csr-patch-row > div:last-child { width: 73%; }
-
-.csr-patch-row select {
-	width: 100%;
-	background: rgba(0, 0, 40, 0.55);
-	color: var(--ff7-text);
-	border: 2px solid var(--ff7-text);
-	border-radius: 6px;
-	padding: 8px 10px;
-	font-family: "DogicaPixelRegular", Arial, sans-serif;
-	font-size: 12px;
-	letter-spacing: 1px;
-}
-
-.csr-patch-row select option {
-	background: #000051;
-	color: var(--ff7-text);
-}
-
 .csr-patch-status {
-	min-height: 1.4em;
-	margin-top: 6px;
+	min-height: 1.2em;
+	margin-top: 4px;
 	color: var(--ff7-link);
 	font-size: 0.8rem;
+	line-height: 1.4;
 }
 
 #rom-patcher-container {
@@ -249,6 +223,30 @@ a:hover { color: var(--ff7-text); }
 
 #rom-patcher-row-file-patch[hidden] {
 	display: none !important;
+}
+
+#csr-patch-row {
+	align-items: flex-start;
+}
+
+#csr-patch-row .text-right {
+	padding-top: 10px;
+}
+
+#rom-patcher-row-patch-description {
+	align-items: flex-start;
+}
+
+#rom-patcher-row-patch-description .text-right {
+	padding-top: 2px;
+}
+
+#rom-patcher-patch-description {
+	white-space: normal !important;
+	overflow: visible !important;
+	text-overflow: unset !important;
+	line-height: 1.7;
+	font-size: 0.9rem;
 }
 
 #rom-patcher-container .text-mono {
