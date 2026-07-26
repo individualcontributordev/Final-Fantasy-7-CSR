@@ -197,14 +197,6 @@
 				Disc images are large (~700&nbsp;MB). Give the tab a minute; ignore any “file too big” warnings from the OS file picker if the file still selects.
 			</p>
 
-			<div class="rom-patcher-row margin-bottom csr-patch-row">
-				<div class="text-right"><label for="csr-patch-select">Patch:</label></div>
-				<div class="rom-patcher-container-input">
-					<select id="csr-patch-select"></select>
-					<div id="csr-patch-status" class="csr-patch-status" aria-live="polite"></div>
-				</div>
-			</div>
-
 			<div id="rom-patcher-container">
 				<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-rom">
 					<div class="text-right"><label for="rom-patcher-input-file-rom" data-localize="yes">ROM file:</label></div>
@@ -231,17 +223,25 @@
 					</div>
 				</div>
 
+				<div class="rom-patcher-row margin-bottom" id="csr-patch-row">
+					<div class="text-right"><label for="csr-patch-select">Patch:</label></div>
+					<div class="rom-patcher-container-input">
+						<select id="csr-patch-select"></select>
+						<div id="csr-patch-status" class="csr-patch-status" aria-live="polite"></div>
+					</div>
+				</div>
+
 				<!-- Required by RomPatcher when not using an embedded zip; kept hidden. -->
 				<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-patch" hidden>
 					<div class="text-right"><label for="rom-patcher-input-file-patch">Patch file:</label></div>
 					<div class="rom-patcher-container-input">
-						<input type="file" id="rom-patcher-input-file-patch" accept=".ppf,.ips,.bps,.ups,.ups,.xdelta" />
+						<input type="file" id="rom-patcher-input-file-patch" accept=".ppf,.ips,.bps,.ups,.xdelta" />
 					</div>
 				</div>
 
 				<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-patch-description">
 					<div class="text-right text-mono text-muted" data-localize="yes">Description:</div>
-					<div class="text-truncate" id="rom-patcher-patch-description"></div>
+					<div id="rom-patcher-patch-description"></div>
 				</div>
 				<div class="rom-patcher-row margin-bottom text-selectable text-mono text-muted"
 					id="rom-patcher-row-patch-requirements">
