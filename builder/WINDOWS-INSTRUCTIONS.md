@@ -2,116 +2,84 @@
 
 Use **Git Bash** on the PC that has pristine discs and your CSR-patched images.
 
-Goal: one `ic-layer-v1` JSON per disc flavor (CSR / CSR+ / CSR++), diffed from **pristine**.
+## Quick path (recommended)
 
-These layers can be large (many field files). That is OK for a first cut; we may switch to file-packs later.
-
-Scripts accept any paths. Prefer **forward slashes**. **Quote** names that contain spaces.
-
----
-
-## 0. Setup
+One command per base. Point at the workspace folder and set the version:
 
 ```bash
-cd /c/path/to/Final-Fantasy-7-CSR   # e.g. cd ~/Final-Fantasy-7-CSR
+cd /c/path/to/Final-Fantasy-7-CSR   # or ~/Final-Fantasy-7-CSR
 git pull
+
+# CSR — every disc pair that exists under pristine/ + this folder
+python scripts/build_csr_base_layers.py workspace/csr --version 0.14.0
+
+# CSR+
+python scripts/build_csr_base_layers.py workspace/csr-plus --version 0.1.0
+
+# CSR++
+python scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.0
+
+# Only Disc 1:
+python scripts/build_csr_base_layers.py workspace/csr --version 0.14.0 --discs 1
 ```
 
-`python` (or `py`) on PATH. Put images under `workspace/` (gitignored — see repo `.gitignore`).
+The script will:
 
-Example layout (matches the `.m3u` playlists under `workspace/csr*/`):
+1. Diff `workspace/pristine/FINALFANTASY7_DN.bin` vs `<base>/FINALFANTASY7_DN (patched).bin`
+2. Write `builder/<slug>-v<version>/layers/discN.layer.json`
+3. Verify each layer applies cleanly
+4. Update that pack’s `pack.json` and set `"enabled": true` in `builder/manifest.json`
 
-| Role | Example path |
-|------|----------------|
-| Pristine Disc 1 | `workspace/pristine/FINALFANTASY7_D1.bin` (+ `.cue`) |
-| CSR Disc 1 | `workspace/csr/FINALFANTASY7_D1 (patched).bin` (+ `.cue`) |
-| CSR+ Disc 1 | `workspace/csr-plus/FINALFANTASY7_D1 (patched).bin` (+ `.cue`) |
-| CSR++ Disc 1 | `workspace/csr-plusplus/FINALFANTASY7_D1 (patched).bin` (+ `.cue`) |
+Then commit **JSON only** and push:
 
-Same pattern for D2 / D3. Use NTSC-U everywhere.
+```bash
+git add builder/
+git status   # confirm no .bin/.cue
+git commit -m "Add CSR builder layers."
+git push
+```
 
 ---
 
-## 1. Diff one flavor (example: CSR Disc 1)
+## Expected files
+
+| Role | Path |
+|------|------|
+| Pristine Disc N | `workspace/pristine/FINALFANTASY7_DN.bin` (+ `.cue`) |
+| CSR | `workspace/csr/FINALFANTASY7_DN (patched).bin` |
+| CSR+ | `workspace/csr-plus/FINALFANTASY7_DN (patched).bin` |
+| CSR++ | `workspace/csr-plusplus/FINALFANTASY7_DN (patched).bin` |
+
+Prefer **forward slashes**. Quote paths with spaces if you run the low-level scripts by hand.
+
+---
+
+## Manual commands (optional)
+
+Same as what `build_csr_base_layers.py` runs under the hood — see `notes.md` for past examples.
 
 ```bash
-cd /c/path/to/Final-Fantasy-7-CSR
-
 python scripts/bin_diff_to_layer.py \
   "workspace/pristine/FINALFANTASY7_D1.bin" \
   "workspace/csr/FINALFANTASY7_D1 (patched).bin" \
   -o builder/csr-v0.14.0/layers/disc1.layer.json \
   --id csr-disc1-v0.14.0 \
   --description "CSR v0.14.0 — NTSC-U Disc 1"
-```
 
-Adjust version folder / id to match the CSR version you are shipping.
-
-### Verify
-
-```bash
 python scripts/apply_layer.py \
   "workspace/pristine/FINALFANTASY7_D1.bin" \
   builder/csr-v0.14.0/layers/disc1.layer.json \
   --expect "workspace/csr/FINALFANTASY7_D1 (patched).bin"
 ```
 
-Must print `OK — layer apply matches --expect`.
-
-Repeat for Disc 2 / Disc 3 into the same pack folder (`disc2.layer.json`, `disc3.layer.json`).
-
 ---
 
-## 2. CSR+ and CSR++
+## Size warning
 
-Same pattern into:
-
-- `builder/csr-plus-v0.1.0/layers/discN.layer.json`  
-- `builder/csr-plusplus-v0.1.0/layers/discN.layer.json`  
-
-Update `pack.json` version strings if yours differ.
-
----
-
-## 3. Enable in manifest
-
-Edit `builder/manifest.json`:
-
-- Set `"enabled": true` on packs that have real `disc*.layer.json` files  
-- Leave `"enabled": false` for unfinished flavors  
-
----
-
-## 4. Commit and push (JSON only)
-
-```bash
-git add builder/manifest.json builder/csr-v0.14.0/layers/disc1.layer.json
-git status
-git commit -m "Add CSR builder layers for disc builder."
-git push
-```
-
-Do **not** add `.bin` / `.cue`.
-
----
-
-## 5. Size warning
-
-If the script prints `WARNING: large layer`, the browser can still apply it, but download may be slow. Ship Disc 1 first if needed; tell the agent so the main builder can start with Disc 1 only.
+CSR layers are large (~13MB JSON / disc). Browser download may be slow. Disc 1 first is fine.
 
 ---
 
 ## Encounter add-on
 
 Built in **Final-Fantasy-7-Modding** — see that repo’s `builder/WINDOWS-INSTRUCTIONS.md`.
-
----
-
-## Git Bash notes
-
-| Avoid (cmd) | Use (Git Bash) |
-|-------------|----------------|
-| `scripts\foo.py` | `scripts/foo.py` |
-| `^` line continue | `\` at end of line |
-| `C:\path\to\repo` | `/c/path/to/repo` or `~/…` |
-| Unquoted `(patched)` | `"workspace/csr/FINALFANTASY7_D1 (patched).bin"` |
