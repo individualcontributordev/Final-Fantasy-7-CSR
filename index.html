@@ -121,6 +121,7 @@
 				pending.then(function (binFile) {
 					if (token !== loadToken) return;
 					RomPatcherWeb.providePatchFile(binFile);
+					showDescription(selectedPatch.description);
 					setStatus('');
 					patchSelect.disabled = false;
 				}).catch(function (err) {
