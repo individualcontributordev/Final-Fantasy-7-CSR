@@ -1,0 +1,14 @@
+{
+  "id": "csr-plus-v0.1.0",
+  "name": "CSR+",
+  "kind": "base",
+  "exclusiveGroup": "cutscenes",
+  "version": "0.1.0",
+  "blurb": "More aggressive cutscene removal.",
+  "format": "ic-layer-v1",
+  "discs": {
+    "1": "./layers/disc1.layer.json",
+    "2": "./layers/disc2.layer.json",
+    "3": "./layers/disc3.layer.json"
+  }
+}
