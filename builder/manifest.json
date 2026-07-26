@@ -33,7 +33,7 @@
       "format": "ic-layer-v1",
       "disc": 1,
       "url": "./csr-plusplus-v0.1.0/layers/disc1.layer.json",
-      "enabled": false
+      "enabled": true
     }
   ],
   "addons": []
