@@ -1,7 +1,7 @@
 {
   "format": "ic-layer-v1",
-  "id": "csr-plusplus-disc3-v0.1.0",
-  "description": "CSR++ v0.1.0 \u2014 NTSC-U Disc 3",
+  "id": "csr-plusplus-disc3-v0.1.1",
+  "description": "CSR++ v0.1.1 \u2014 NTSC-U Disc 3",
   "target": "disc-image",
   "stats": {
     "originalBytes": 659561952,

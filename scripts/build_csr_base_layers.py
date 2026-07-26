@@ -140,13 +140,16 @@ def update_manifest(info: dict, version: str, discs: list[int]) -> None:
     }
 
     bases = data.setdefault("bases", [])
+    version_prefix = f"{info['slug']}-v"
     replaced = False
     for i, existing in enumerate(bases):
         ex_id = str(existing.get("id", ""))
-        if ex_id == pack_id or ex_id.startswith(f"{info['slug']}-v"):
+        if ex_id == pack_id:
             bases[i] = entry
             replaced = True
-            break
+        elif ex_id.startswith(version_prefix):
+            existing["enabled"] = False
+            existing["note"] = f"Superseded by {pack_id}."
     if not replaced:
         bases.append(entry)
 

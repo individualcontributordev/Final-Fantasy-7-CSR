@@ -1,91 +1,44 @@
 # Windows (Git Bash): build CSR base layers for the disc builder
 
-Use **Git Bash** on the PC that has pristine discs and your CSR-patched images.
+## This release
 
-## Quick path (recommended)
+| Base | Version | Builder id | PPF short name |
+|------|---------|------------|----------------|
+| CSR | `0.14.1` | `csr-v0.14.1` | `patcher/csr-discN-v0.14.1.ppf` |
+| CSR+ | `0.1.1` | `csr-plus-v0.1.1` | `patcher/csrplus-discN-v0.1.1.ppf` |
+| CSR++ | `0.1.1` | `csr-plusplus-v0.1.1` | `patcher/csrplusplus-discN-v0.1.1.ppf` |
 
-One command per base. Point at the workspace folder and set the version:
+## Rebuild layers from your patched images
 
 ```bash
-cd /c/path/to/Final-Fantasy-7-CSR   # or ~/Final-Fantasy-7-CSR
+cd /c/path/to/Final-Fantasy-7-CSR
 git pull
 
-# CSR — every disc pair that exists under pristine/ + this folder
-python scripts/build_csr_base_layers.py workspace/csr --version 0.14.0
-
-# CSR+
-python scripts/build_csr_base_layers.py workspace/csr-plus --version 0.1.0
-
-# CSR++
-python scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.0
-
-# Only Disc 1:
-python scripts/build_csr_base_layers.py workspace/csr --version 0.14.0 --discs 1
+python scripts/build_csr_base_layers.py workspace/csr --version 0.14.1
+python scripts/build_csr_base_layers.py workspace/csr-plus --version 0.1.1
+python scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.1
 ```
 
-The script will:
-
-1. Diff `workspace/pristine/FINALFANTASY7_DN.bin` vs `<base>/FINALFANTASY7_DN (patched).bin`
-2. Write `builder/<slug>-v<version>/layers/discN.layer.json`
-3. Verify each layer applies cleanly
-4. Update that pack’s `pack.json` and set `"enabled": true` in `builder/manifest.json`
-
-Then commit **JSON only** and push:
-
-```bash
-git add builder/
-git status   # confirm no .bin/.cue
-git commit -m "Add CSR builder layers."
-git push
-```
-
----
-
-## Expected files
+Needs:
 
 | Role | Path |
 |------|------|
-| Pristine Disc N | `workspace/pristine/FINALFANTASY7_DN.bin` (+ `.cue`) |
+| Pristine Disc N | `workspace/pristine/FINALFANTASY7_DN.bin` |
 | CSR | `workspace/csr/FINALFANTASY7_DN (patched).bin` |
-| CSR+ | `workspace/csr-plus/FINALFANTASY7_DN (patched).bin` |
-| CSR++ | `workspace/csr-plusplus/FINALFANTASY7_DN (patched).bin` |
+| CSR+ | `workspace/csr-plus/… (patched).bin` |
+| CSR++ | `workspace/csr-plusplus/… (patched).bin` |
 
-Prefer **forward slashes**. Quote paths with spaces if you run the low-level scripts by hand.
+## PPFs + site
 
----
+Long names under `csr/`, `csr+/`, `csr++/` and short names under `patcher/` must match the versions above. `index.html` `PATCHES` entries must point at the short names.
 
-## Manual commands (optional)
-
-Same as what `build_csr_base_layers.py` runs under the hood — see `notes.md` for past examples.
+If you regenerate PPFs from pristine→patched, overwrite those files; then:
 
 ```bash
-python scripts/bin_diff_to_layer.py \
-  "workspace/pristine/FINALFANTASY7_D1.bin" \
-  "workspace/csr/FINALFANTASY7_D1 (patched).bin" \
-  -o builder/csr-v0.14.0/layers/disc1.layer.json \
-  --id csr-disc1-v0.14.0 \
-  --description "CSR v0.14.0 — NTSC-U Disc 1"
-
-python scripts/apply_layer.py \
-  "workspace/pristine/FINALFANTASY7_D1.bin" \
-  builder/csr-v0.14.0/layers/disc1.layer.json \
-  --expect "workspace/csr/FINALFANTASY7_D1 (patched).bin"
+git add builder/ csr/ csr+/ csr++/ patcher/ index.html
+git status
+git commit -m "Release CSR v0.14.1, CSR+ v0.1.1, CSR++ v0.1.1."
+git push
 ```
 
----
-
-## Size warning
-
-CSR layers are large (~13MB JSON / disc). Browser download may be slow. Disc 1 first is fine.
-
----
-
-## Encounter add-on
-
-Built in **Final-Fantasy-7-Modding**.
-
-Preferred (no local CSR bins): that repo’s  
-`python scripts/build_encounter_on_base.py --against csr-plus --discs 1`  
-(version from Modding `builder/ENCOUNTER_VERSION`; base id from this repo’s published manifest).
-
-Details: Modding `builder/WINDOWS-INSTRUCTIONS.md`.
+Wait for Pages, then build Encounter in **Final-Fantasy-7-Modding** (`builder/WINDOWS-INSTRUCTIONS.md`).

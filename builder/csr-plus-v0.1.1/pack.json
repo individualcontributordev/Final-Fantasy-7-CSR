@@ -1,9 +1,9 @@
 {
-  "id": "csr-plus-v0.1.0",
+  "id": "csr-plus-v0.1.1",
   "name": "CSR+",
   "kind": "base",
   "exclusiveGroup": "cutscenes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "blurb": "More aggressive cutscene removal.",
   "format": "ic-layer-v1",
   "discs": {
