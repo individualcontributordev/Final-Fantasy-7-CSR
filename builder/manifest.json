@@ -7,12 +7,11 @@
       "name": "CSR v0.14.0",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "CutScenes Removed — skill checks kept.",
+      "blurb": "CutScenes Removed \u2014 skill checks kept.",
       "format": "ic-layer-v1",
       "disc": 1,
       "url": "./csr-v0.14.0/layers/disc1.layer.json",
-      "enabled": false,
-      "note": "Enable after disc1.layer.json is generated and verified."
+      "enabled": true
     },
     {
       "id": "csr-plus-v0.1.0",
