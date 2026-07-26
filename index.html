@@ -5,9 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>FF7 CSR Patcher</title>
 	<meta name="description" content="Apply Final Fantasy VII CSR / CSR+ / CSR++ PPF patches to your own NTSC-U PS1 .bin files in the browser." />
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+	<link rel="icon" href="./assets/meteor.png" type="image/png" />
 	<link type="text/css" rel="stylesheet" href="./rom-patcher-js/style.css" media="all" />
 	<link type="text/css" rel="stylesheet" href="./site.css" media="all" />
 	<script type="text/javascript" src="./rom-patcher-js/RomPatcher.webapp.js"></script>
@@ -83,13 +81,29 @@
 					message = 'Your browser is outdated and is not compatible with this patcher.';
 				}
 				document.getElementById('rom-patcher-container').innerHTML = message;
-				document.getElementById('rom-patcher-container').style.color = '#ff8a8a';
+				document.getElementById('rom-patcher-container').style.color = '#ff6b8a';
 			}
 		});
 	</script>
 </head>
 <body>
+	<div id="space">
+		<div class="stars"></div>
+		<div class="stars"></div>
+		<div class="stars"></div>
+		<div class="stars"></div>
+		<div class="stars"></div>
+	</div>
+
 	<div class="page">
+		<div class="header-bar">
+			<div class="nav-links">
+				<a href="https://individualcontributor.dev/">Home</a>
+				<a href="https://github.com/individualcontributordev/Final-Fantasy-7-CSR">GitHub</a>
+			</div>
+			<img src="./assets/meteor.png" alt="IndividualContributor" class="site-logo" />
+		</div>
+
 		<header class="hero">
 			<img class="banner" src="./images/banner.png" alt="Final Fantasy VII CSR" width="960" height="240" />
 			<h1>FF7 CSR Patcher</h1>
@@ -170,6 +184,7 @@
 					Powered by Rom Patcher JS
 				</a>
 			</div>
+			<p>IndividualContributor &copy; 1998</p>
 		</footer>
 	</div>
 </body>
