@@ -126,8 +126,6 @@ def update_manifest(info: dict, version: str, discs: list[int]) -> None:
         raise SystemExit(f"Missing {MANIFEST_PATH}")
     data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     pack_id = f"{info['slug']}-v{version}"
-    # Prefer disc 1 URL in the top-level chooser; builder can grow multi-disc later
-    primary = discs[0]
     entry = {
         "id": pack_id,
         "name": f"{info['name']} v{version}",
@@ -135,8 +133,9 @@ def update_manifest(info: dict, version: str, discs: list[int]) -> None:
         "exclusiveGroup": "cutscenes",
         "blurb": info["blurb"],
         "format": "ic-layer-v1",
-        "disc": primary,
-        "url": f"./{pack_id}/layers/disc{primary}.layer.json",
+        "discs": {
+            str(d): f"./{pack_id}/layers/disc{d}.layer.json" for d in discs
+        },
         "enabled": True,
     }
 

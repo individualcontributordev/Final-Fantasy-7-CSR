@@ -7,10 +7,13 @@
       "name": "CSR v0.14.0",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "CutScenes Removed \u2014 skill checks kept.",
+      "blurb": "CutScenes Removed — skill checks kept.",
       "format": "ic-layer-v1",
-      "disc": 1,
-      "url": "./csr-v0.14.0/layers/disc1.layer.json",
+      "discs": {
+        "1": "./csr-v0.14.0/layers/disc1.layer.json",
+        "2": "./csr-v0.14.0/layers/disc2.layer.json",
+        "3": "./csr-v0.14.0/layers/disc3.layer.json"
+      },
       "enabled": true
     },
     {
@@ -20,8 +23,11 @@
       "exclusiveGroup": "cutscenes",
       "blurb": "More aggressive cutscene removal.",
       "format": "ic-layer-v1",
-      "disc": 1,
-      "url": "./csr-plus-v0.1.0/layers/disc1.layer.json",
+      "discs": {
+        "1": "./csr-plus-v0.1.0/layers/disc1.layer.json",
+        "2": "./csr-plus-v0.1.0/layers/disc2.layer.json",
+        "3": "./csr-plus-v0.1.0/layers/disc3.layer.json"
+      },
       "enabled": true
     },
     {
@@ -31,8 +37,11 @@
       "exclusiveGroup": "cutscenes",
       "blurb": "CSR+ plus filler dialogue trimmed.",
       "format": "ic-layer-v1",
-      "disc": 1,
-      "url": "./csr-plusplus-v0.1.0/layers/disc1.layer.json",
+      "discs": {
+        "1": "./csr-plusplus-v0.1.0/layers/disc1.layer.json",
+        "2": "./csr-plusplus-v0.1.0/layers/disc2.layer.json",
+        "3": "./csr-plusplus-v0.1.0/layers/disc3.layer.json"
+      },
       "enabled": true
     }
   ],
