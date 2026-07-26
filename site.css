@@ -1,0 +1,123 @@
+:root {
+	--bg: #0e1210;
+	--panel: #171c18;
+	--text: #e8eee6;
+	--muted: #9aa89a;
+	--accent: #c4a35a;
+	--line: #2a332c;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+	margin: 0;
+	min-height: 100%;
+	background:
+		radial-gradient(ellipse 80% 50% at 50% -10%, #1a2a1c 0%, transparent 55%),
+		var(--bg);
+	color: var(--text);
+	font-family: "IBM Plex Sans", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.page {
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 2rem 1.25rem 3rem;
+}
+
+.hero {
+	text-align: center;
+	margin-bottom: 1.75rem;
+}
+
+.banner {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0 auto 1.25rem;
+	border-radius: 2px;
+}
+
+.hero h1 {
+	font-family: Syne, sans-serif;
+	font-weight: 800;
+	font-size: clamp(1.75rem, 5vw, 2.4rem);
+	letter-spacing: -0.02em;
+	margin: 0 0 0.6rem;
+	color: var(--accent);
+}
+
+.lede {
+	margin: 0 auto;
+	max-width: 38rem;
+	color: var(--muted);
+	font-size: 1.02rem;
+}
+
+.lede strong { color: var(--text); }
+
+.panel {
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	padding: 1.25rem 1.25rem 1.5rem;
+}
+
+.steps {
+	margin: 0 0 1rem;
+	padding-left: 1.25rem;
+	color: var(--text);
+}
+
+.steps li { margin-bottom: 0.35rem; }
+
+.note {
+	margin: 0 0 1.25rem;
+	padding: 0.75rem 0.9rem;
+	border-left: 3px solid var(--accent);
+	background: #121812;
+	color: var(--muted);
+	font-size: 0.92rem;
+}
+
+code {
+	font-family: ui-monospace, "IBM Plex Mono", monospace;
+	font-size: 0.9em;
+	color: #d7c28a;
+}
+
+#rom-patcher-container {
+	margin-top: 0.5rem;
+}
+
+#rom-patcher-button-apply {
+	font-family: Syne, sans-serif;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
+.footer {
+	margin-top: 1.75rem;
+	text-align: center;
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
+.footer a {
+	color: var(--accent);
+	text-decoration: none;
+}
+
+.footer a:hover { text-decoration: underline; }
+
+#rom-patcher-powered {
+	margin-top: 1rem;
+}
+
+#rom-patcher-powered img {
+	vertical-align: middle;
+	margin-right: 0.35rem;
+	height: 1.1em;
+}
