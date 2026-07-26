@@ -1,10 +1,10 @@
-# Final Fantasy 7 CSR+ Change Log
+# Final Fantasy VII CSR+ Change Log
 
 v(release).(feature).(bugfix)
 
 ## v0.1.0
 
-- Created FF7 CSR+ based on FF7 CSR v0.14.0
+- Created Final Fantasy VII CSR+ based on Final Fantasy VII CSR v0.14.0
 
 Disc 1
 - Aerith's house cutscene removed

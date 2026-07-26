@@ -1,7 +1,7 @@
 ![](images/banner.png)
 *Artist: @Cronosart99*
 
-## Final Fantasy 7 PSX & PC CutScenes Removed (CSR)
+## Final Fantasy VII PSX & PC CutScenes Removed (CSR)
 
 Category | CSR | CSR+ | CSR++
 -------- | ------ | ------ | ------
@@ -67,7 +67,7 @@ Use the GitHub Pages patcher on this repo — pick your `.bin`, choose CSR / CSR
 
 ### Manual (Romhacking.net / RomPatcher.js)
 
-Apply the patches to your FF7 NTSC/US PS1 `.bin` files.
+Apply the patches to your Final Fantasy VII NTSC/US PS1 `.bin` files.
 
 1. Go to https://www.romhacking.net/patch/ (or https://www.marcrobledo.com/RomPatcher.js/)
 2. Select your original `.bin` file; ignore “file too big” if the file still loads
@@ -106,7 +106,7 @@ Feature Requests and Bug Fixes https://forms.gle/dW9rMCD9kQ3eBPSM8
 
 Make sure to choose the correct patch .ppf file for the correct disc you are trying to patch.
 
-Also check your FF7 .bin and .cue files for all discs are in the same directory, and the .bin and .cue for each disc are named exactly the same. e.g. 
+Also check your Final Fantasy VII `.bin` and `.cue` files for all discs are in the same directory, and the `.bin` and `.cue` for each disc are named exactly the same. e.g. 
 
 ```text
 - Final Fantasy VII (Disc 1) CSR (patched).bin  

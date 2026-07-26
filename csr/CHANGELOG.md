@@ -1,5 +1,5 @@
 
-# FF7 CSR Change log
+# Final Fantasy VII CSR Change log
 
 v(release).(feature).(bugfix)
 
