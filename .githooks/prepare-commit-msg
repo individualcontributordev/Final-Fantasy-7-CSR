@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Strip Cursor attribution lines from commit messages before finalize.
+# Installed via: git config core.hooksPath .githooks
+
+set -euo pipefail
+
+msg_file="${1:?}"
+
+[[ -f "$msg_file" ]] || exit 0
+
+tmp="$(mktemp)"
+grep -v -E \
+  '(^Made-with: Cursor|^Made with Cursor|^Co-authored-by: Cursor|cursoragent@cursor\.com)' \
+  "$msg_file" >"$tmp" || true
+
+mv "$tmp" "$msg_file"
