@@ -54,14 +54,27 @@ Same as CSR+ with alot of "filler" removed like mashing through a dialogue only 
 
 ## Getting Started
 
-Apply the patches to your FF7 NTSC/US PS1 .bin files.
+### Easiest: browser patcher (recommended)
 
-1. Go to https://www.romhacking.net/patch/
-2. Select your original .bin file, ignore the "file too big" warning
-3. Select the patch .ppf file
-4. Click the "Apply patch" button
+Use the GitHub Pages patcher on this repo — pick your `.bin`, choose CSR / CSR+ / CSR++ for the matching disc, apply. Files stay in your browser.
 
-Your browser should download a new patched version of the disc
+**Patcher:** https://individualcontributordev.github.io/Final-Fantasy-7-CSR/
+
+1. Select a clean **NTSC-U** Disc 1 / 2 / 3 `.bin`
+2. Choose the matching patch from the dropdown
+3. Click **Apply patch** and save the downloaded `.bin`
+4. Point your `.cue` at the new filename (see [Troubleshooting](#troubleshooting))
+
+### Manual (Romhacking.net / RomPatcher.js)
+
+Apply the patches to your FF7 NTSC/US PS1 `.bin` files.
+
+1. Go to https://www.romhacking.net/patch/ (or https://www.marcrobledo.com/RomPatcher.js/)
+2. Select your original `.bin` file; ignore “file too big” if the file still loads
+3. Select the patch `.ppf` from `csr/`, `csr+/`, or `csr++/`
+4. Click **Apply patch**
+
+Your browser should download a new patched version of the disc.
 
 ## Play on Emulator
 
