@@ -196,6 +196,40 @@ a:hover { color: var(--ff7-text); }
 
 .footer p { margin: 0 0 12px; }
 
+.section-title {
+	font-family: "DogicaPixelBold", Arial, sans-serif;
+	font-size: 1.1rem;
+	letter-spacing: 1.5px;
+	color: var(--ff7-text);
+	margin: 0 0 12px;
+}
+
+.tool-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.tool-list li {
+	margin: 0 0 12px;
+}
+
+.tool-list li:last-child {
+	margin-bottom: 0;
+}
+
+.tool-list a {
+	font-family: "DogicaPixelBold", Arial, sans-serif;
+	letter-spacing: 1.2px;
+}
+
+.tool-blurb {
+	display: block;
+	margin-top: 4px;
+	font-size: 0.85rem;
+	color: #c8d0e0;
+}
+
 #rom-patcher-powered img {
 	vertical-align: middle;
 	margin-right: 0.35rem;
