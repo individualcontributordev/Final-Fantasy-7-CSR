@@ -15,16 +15,16 @@ cd C:\path\to\Final-Fantasy-7-CSR
 git pull
 ```
 
-Python 3 on PATH. Keep images **outside** git (e.g. `D:\ff7\`).
+Python 3 on PATH. Put images under `workspace\` (gitignored — see repo `.gitignore`).
 
 You need, for each disc you ship:
 
 | Role | Example path |
 |------|----------------|
-| Pristine Disc N | `D:\ff7\pristine\disc1.bin` |
-| CSR Disc N | `D:\ff7\csr\disc1.bin` |
-| CSR+ Disc N | `D:\ff7\csr+\disc1.bin` |
-| CSR++ Disc N | `D:\ff7\csr++\disc1.bin` |
+| Pristine Disc N | `workspace\pristine\disc1.bin` |
+| CSR Disc N | `workspace\csr\disc1.bin` |
+| CSR+ Disc N | `workspace\csr-plus\disc1.bin` |
+| CSR++ Disc N | `workspace\csr-plusplus\disc1.bin` |
 
 Use the same region (NTSC-U) everywhere.
 
@@ -36,8 +36,8 @@ Use the same region (NTSC-U) everywhere.
 cd C:\path\to\Final-Fantasy-7-CSR
 
 python scripts\bin_diff_to_layer.py ^
-  D:\ff7\pristine\disc1.bin ^
-  D:\ff7\csr\disc1.bin ^
+  workspace\pristine\disc1.bin ^
+  workspace\csr\disc1.bin ^
   -o builder\csr-v0.14.0\layers\disc1.layer.json ^
   --id csr-disc1-v0.14.0 ^
   --description "CSR v0.14.0 — NTSC-U Disc 1"
@@ -49,9 +49,9 @@ Adjust version folder / id to match the CSR version you are shipping.
 
 ```bat
 python scripts\apply_layer.py ^
-  D:\ff7\pristine\disc1.bin ^
+  workspace\pristine\disc1.bin ^
   builder\csr-v0.14.0\layers\disc1.layer.json ^
-  --expect D:\ff7\csr\disc1.bin
+  --expect workspace\csr\disc1.bin
 ```
 
 Must print `OK — layer apply matches --expect`.

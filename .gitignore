@@ -1,0 +1,63 @@
+# Local disc images — never commit game data or large binaries
+
+# workspace: ignore everything except folder READMEs
+workspace/*
+!workspace/**/
+!workspace/**/README.md
+
+# Disc / dump files anywhere under workspace
+workspace/**/*.bin
+workspace/**/*.BIN
+workspace/**/*.cue
+workspace/**/*.CUE
+workspace/**/*.img
+workspace/**/*.iso
+workspace/**/*.ISO
+workspace/**/*.ccd
+workspace/**/*.sub
+workspace/**/*.toc
+workspace/**/*.mds
+workspace/**/*.mdf
+workspace/**/*.nrg
+workspace/**/*.chd
+workspace/**/*.ecm
+workspace/**/*.dec
+workspace/**/*.dec.*
+workspace/**/*.new
+workspace/**/*.pristine
+workspace/**/*.gz
+workspace/**/*.gzip
+
+# Extracted FIELD.BIN and intermediates
+workspace/**/FIELD.BIN
+workspace/**/FIELD.BIN.*
+
+# Emulator / save junk if dropped in the repo
+workspace/**/*.mcd
+workspace/**/*.sav
+workspace/**/*.srm
+workspace/**/*.state
+workspace/**/*.dst
+**/duckstation*/
+**/*.duckstation*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+*.lnk
+*.swp
+*~
+.idea/
+.vscode/
+*.code-workspace
