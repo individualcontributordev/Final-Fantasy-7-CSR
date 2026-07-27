@@ -43,5 +43,6 @@ Fresh builder zip (post-EDC repair) burned and tested on **PS2 Slim 77003 + Mech
 
 - Disc loads
 - Fields load
+- **Later same day:** latest CSR+ burn successful — plays on console
 
 Treat builder EDC repair + 4x DAO burn as the working ship path for CSR+ Disc 1.
