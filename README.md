@@ -28,7 +28,7 @@ Same as CSR but removes cutscenes more aggressively, including ones that affect 
 
 ### CSR++
 
-CSR+ plus filler trimmed (e.g. mash-only dialogue, Aerith intro after Reactor 1, Jessie’s leg stuck).
+Very aggressively trimmed CSR+: some game story mechanics, option choices, and complete dialogue removal.
 
 ## Changelogs
 

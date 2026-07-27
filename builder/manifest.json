@@ -35,7 +35,7 @@
       "name": "CSR++ v0.1.1",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "CSR+ plus filler dialogue trimmed.",
+      "blurb": "Very aggressively trimmed CSR+ \u2014 story mechanics, choices, and dialogue removed.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./csr-plusplus-v0.1.1/layers/disc1.layer.json",
