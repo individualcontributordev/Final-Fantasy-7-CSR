@@ -54,27 +54,25 @@ Same as CSR+ with alot of "filler" removed like mashing through a dialogue only 
 
 ## Getting Started
 
-### Easiest: browser patcher (recommended)
+### Easiest: disc builder (recommended)
 
-Use the GitHub Pages patcher on this repo — pick your `.bin`, choose CSR / CSR+ / CSR++ for the matching disc, apply. Files stay in your browser.
+Stack CSR / CSR+ / CSR++ with optional Encounter packs in one browser zip:
 
-**Patcher:** https://individualcontributordev.github.io/Final-Fantasy-7-CSR/
+**https://individualcontributor.dev/builder/**
 
-1. Select a clean **NTSC-U** Disc 1 / 2 / 3 `.bin`
-2. Choose the matching patch from the dropdown
-3. Click **Apply patch** and save the downloaded `.bin`
-4. Point your `.cue` at the new filename (see [Troubleshooting](#troubleshooting))
+1. Select a clean **NTSC-U** `.bin` (disc is detected automatically)
+2. Choose base + optional Encounter density
+3. **Build zip** — `.bin` + `.cue` + `APPLIED.txt`
 
-### Manual (Romhacking.net / RomPatcher.js)
+### CSR-only: legacy browser patcher
 
-Apply the patches to your Final Fantasy VII NTSC/US PS1 `.bin` files.
+CSR / CSR+ / CSR++ alone (no Encounter stacking):
 
-1. Go to https://www.romhacking.net/patch/ (or https://www.marcrobledo.com/RomPatcher.js/)
-2. Select your original `.bin` file; ignore “file too big” if the file still loads
-3. Select the patch `.ppf` from `csr/`, `csr+/`, or `csr++/`
-4. Click **Apply patch**
+**https://individualcontributor.dev/Final-Fantasy-7-CSR/**
 
-Your browser should download a new patched version of the disc.
+### Manual PPF
+
+Short-name patches live under `patcher/` (e.g. `csr-disc1-v0.14.1.ppf`). Apply with [RomPatcher.js](https://www.marcrobledo.com/RomPatcher.js/) or https://www.romhacking.net/patch/ against a clean NTSC-U `.bin`.
 
 ## Play on Emulator
 

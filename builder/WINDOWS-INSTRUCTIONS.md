@@ -8,6 +8,8 @@
 | CSR+ | `0.1.1` | `csr-plus-v0.1.1` | `patcher/csrplus-discN-v0.1.1.ppf` |
 | CSR++ | `0.1.1` | `csr-plusplus-v0.1.1` | `patcher/csrplusplus-discN-v0.1.1.ppf` |
 
+Players should use https://individualcontributor.dev/builder/ (layers). Short PPFs remain for the legacy CSR-only patcher.
+
 ## Rebuild layers from your patched images
 
 ```bash
@@ -32,15 +34,13 @@ New builds **do not** auto-disable older base versions. Set `"enabled": false` i
 
 ## PPFs + site
 
-Long names under `csr/`, `csr+/`, `csr++/` and short names under `patcher/` must match the versions above. `index.html` `PATCHES` entries must point at the short names.
-
-If you regenerate PPFs from pristine→patched, overwrite those files; then:
+If you regenerate PPFs, write short names under `patcher/` and update `index.html` `PATCHES`. Then:
 
 ```bash
-git add builder/ csr/ csr+/ csr++/ patcher/ index.html
+git add builder/ patcher/ index.html
 git status
 git commit -m "Release CSR v0.14.1, CSR+ v0.1.1, CSR++ v0.1.1."
 git push
 ```
 
-Wait for Pages, then build Encounter in **Final-Fantasy-7-Modding** (`builder/WINDOWS-INSTRUCTIONS.md`).
+Wait for Pages, then rebuild Encounter in **Final-Fantasy-7-Modding** against the new base ids if needed.
