@@ -41,6 +41,9 @@ workspace/**/*.dst
 **/duckstation*/
 **/*.duckstation*
 
+# Pages staging (CI only)
+_site/
+
 # Python
 __pycache__/
 *.py[cod]

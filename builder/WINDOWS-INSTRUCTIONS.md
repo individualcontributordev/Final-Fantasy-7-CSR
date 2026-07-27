@@ -2,13 +2,13 @@
 
 ## This release
 
-| Base | Version | Builder id | PPF short name |
-|------|---------|------------|----------------|
-| CSR | `0.14.1` | `csr-v0.14.1` | `patcher/csr-discN-v0.14.1.ppf` |
-| CSR+ | `0.1.1` | `csr-plus-v0.1.1` | `patcher/csrplus-discN-v0.1.1.ppf` |
-| CSR++ | `0.1.1` | `csr-plusplus-v0.1.1` | `patcher/csrplusplus-discN-v0.1.1.ppf` |
+| Base | Version | Builder id |
+|------|---------|------------|
+| CSR | `0.14.1` | `csr-v0.14.1` |
+| CSR+ | `0.1.1` | `csr-plus-v0.1.1` |
+| CSR++ | `0.1.1` | `csr-plusplus-v0.1.1` |
 
-Players should use https://individualcontributor.dev/builder/ (layers). Short PPFs remain for the legacy CSR-only patcher.
+Players use https://individualcontributor.dev/builder/ (stackable layers).
 
 ## Rebuild layers from your patched images
 
@@ -32,12 +32,10 @@ Needs:
 
 New builds **do not** auto-disable older base versions. Set `"enabled": false` in `builder/manifest.json` yourself when you want to hide one.
 
-## PPFs + site
-
-If you regenerate PPFs, write short names under `patcher/` and update `index.html` `PATCHES`. Then:
+## Commit + push
 
 ```bash
-git add builder/ patcher/ index.html
+git add builder/
 git status
 git commit -m "Release CSR v0.14.1, CSR+ v0.1.1, CSR++ v0.1.1."
 git push

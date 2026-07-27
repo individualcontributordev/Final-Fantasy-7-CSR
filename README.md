@@ -54,8 +54,6 @@ Same as CSR+ with alot of "filler" removed like mashing through a dialogue only 
 
 ## Getting Started
 
-### Easiest: disc builder (recommended)
-
 Stack CSR / CSR+ / CSR++ with optional Encounter packs in one browser zip:
 
 **https://individualcontributor.dev/builder/**
@@ -64,21 +62,24 @@ Stack CSR / CSR+ / CSR++ with optional Encounter packs in one browser zip:
 2. Choose base + optional Encounter density
 3. **Build zip** — `.bin` + `.cue` + `APPLIED.txt`
 
-### CSR-only: legacy browser patcher
+Project: https://individualcontributor.dev/builder/
 
-CSR / CSR+ / CSR++ alone (no Encounter stacking):
+Repo: https://github.com/individualcontributordev/Final-Fantasy-7-CSR
 
-**https://individualcontributor.dev/Final-Fantasy-7-CSR/**
+## Release (maintainers)
 
-### Manual PPF
+See [builder/WINDOWS-INSTRUCTIONS.md](builder/WINDOWS-INSTRUCTIONS.md). Short version:
 
-Short-name patches live under `patcher/` (e.g. `csr-disc1-v0.14.1.ppf`). Apply with [RomPatcher.js](https://www.marcrobledo.com/RomPatcher.js/) or https://www.romhacking.net/patch/ against a clean NTSC-U `.bin`.
+1. Put pristine + CSR / CSR+ / CSR++ `.bin`s under `workspace/`
+2. `python scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z` (and plus / plusplus)
+3. Commit `builder/` JSON only, push, wait for Pages
+4. Rebuild Encounter packs in **Final-Fantasy-7-Modding** if base ids changed
 
 ## Play on Emulator
 
 Just load up the .cue/.bin file using the latest [Duckstation](https://github.com/stenzek/duckstation/releases) or [RetroArch + SwanStation Core](https://www.retroarch.com/?page=platforms) release.
 
-See [Troubleshoting](#troubleshooting) to make sure your patch files correctly named.
+See [Troubleshooting](#troubleshooting) for `.cue` / `.bin` naming.
 
 ## Play on PSX
 
@@ -102,9 +103,7 @@ Feature Requests and Bug Fixes https://forms.gle/dW9rMCD9kQ3eBPSM8
 
 ## Troubleshooting
 
-Make sure to choose the correct patch .ppf file for the correct disc you are trying to patch.
-
-Also check your Final Fantasy VII `.bin` and `.cue` files for all discs are in the same directory, and the `.bin` and `.cue` for each disc are named exactly the same. e.g. 
+Check your Final Fantasy VII `.bin` and `.cue` files for all discs are in the same directory, and the `.bin` and `.cue` for each disc are named exactly the same. e.g. 
 
 ```text
 - Final Fantasy VII (Disc 1) CSR (patched).bin  
