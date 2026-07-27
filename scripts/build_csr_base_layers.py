@@ -9,7 +9,7 @@ Git Bash examples:
 
 Looks for:
   workspace/pristine/FINALFANTASY7_DN.bin
-  <base-dir>/FINALFANTASY7_DN (patched).bin
+  <base-dir>/FINALFANTASY7_DN.bin
 
 Writes builder/<slug>-v<version>/layers/discN.layer.json, updates pack.json + manifest.json,
 and verifies each layer against the patched image.
@@ -72,7 +72,10 @@ def resolve_base(dir_or_slug: str) -> tuple[str, dict, Path]:
 
 def disc_paths(base_dir: Path, disc: int) -> tuple[Path, Path]:
     pristine = PRISTINE_DIR / f"FINALFANTASY7_D{disc}.bin"
-    patched = base_dir / f"FINALFANTASY7_D{disc} (patched).bin"
+    # Prefer plain name in the flavor folder; keep legacy "(patched)" as fallback.
+    plain = base_dir / f"FINALFANTASY7_D{disc}.bin"
+    legacy = base_dir / f"FINALFANTASY7_D{disc} (patched).bin"
+    patched = plain if plain.is_file() else legacy
     return pristine, patched
 
 
@@ -101,7 +104,7 @@ def parse_discs(spec: str | None, base_dir: Path) -> list[int]:
     if not found:
         raise SystemExit(
             f"No disc pairs found under {base_dir} and {PRISTINE_DIR}.\n"
-            f"Expected FINALFANTASY7_DN.bin + FINALFANTASY7_DN (patched).bin"
+            f"Expected FINALFANTASY7_DN.bin in pristine/ and in the flavor folder."
         )
     return found
 
@@ -140,16 +143,13 @@ def update_manifest(info: dict, version: str, discs: list[int]) -> None:
     }
 
     bases = data.setdefault("bases", [])
-    version_prefix = f"{info['slug']}-v"
     replaced = False
     for i, existing in enumerate(bases):
         ex_id = str(existing.get("id", ""))
         if ex_id == pack_id:
             bases[i] = entry
             replaced = True
-        elif ex_id.startswith(version_prefix):
-            existing["enabled"] = False
-            existing["note"] = f"Superseded by {pack_id}."
+            break
     if not replaced:
         bases.append(entry)
 

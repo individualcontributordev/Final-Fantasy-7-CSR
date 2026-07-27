@@ -24,9 +24,11 @@ Needs:
 | Role | Path |
 |------|------|
 | Pristine Disc N | `workspace/pristine/FINALFANTASY7_DN.bin` |
-| CSR | `workspace/csr/FINALFANTASY7_DN (patched).bin` |
-| CSR+ | `workspace/csr-plus/… (patched).bin` |
-| CSR++ | `workspace/csr-plusplus/… (patched).bin` |
+| CSR | `workspace/csr/FINALFANTASY7_DN.bin` |
+| CSR+ | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
+| CSR++ | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
+
+New builds **do not** auto-disable older base versions. Set `"enabled": false` in `builder/manifest.json` yourself when you want to hide one.
 
 ## PPFs + site
 
