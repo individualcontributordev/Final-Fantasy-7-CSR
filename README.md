@@ -61,6 +61,23 @@ Local images (gitignored) under `workspace/`:
 | CSR+ | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
 | CSR++ | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
 
+### Clean EDC before layer rebuild (important)
+
+Makou/CDmage injects often **zero Mode2 Form1 footers**. Diffing that bakes EDC zeros into `builder/` layers (ImgBurn verify noise; builder now repairs on apply as a safety net).
+
+Before `build_csr_base_layers.py`, repair each patched disc against pristine:
+
+```bash
+# names must be FINALFANTASY7_D1.bin … (rename Redump titles if needed)
+python scripts/repair_mode2_edc.py \
+  --pristine workspace/pristine/FINALFANTASY7_D1.bin \
+  --input workspace/csr-plus/FINALFANTASY7_D1.bin \
+  --in-place
+# repeat for D2/D3 and for csr / csr-plusplus
+```
+
+Then rebuild layers as usual. Expect far fewer records (no thousands of footer-only zeros).
+
 ```bash
 cd /c/path/to/Final-Fantasy-7-CSR   # Git Bash on Windows
 git pull
