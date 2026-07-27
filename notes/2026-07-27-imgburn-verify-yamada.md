@@ -35,4 +35,13 @@ Likely the burner/drive wrote usable sectors (or regenerated checksums on write)
 
 ## Builder fix (2026-07-27)
 
-Homepage builder now regenerates Mode2 Form1 EDC/ECC for every sector changed by layers (`builder/edc.js`). Re-download from https://individualcontributor.dev/builder/ for a verify-clean burn.
+Homepage builder regenerates Mode2 Form1 EDC/ECC for every sector changed by layers (`builder/edc.js`). Re-download from https://individualcontributor.dev/builder/ for a verify-clean burn.
+
+## Hardware confirm (2026-07-27)
+
+Fresh builder zip (post-EDC repair) burned and tested on **PS2 Slim 77003 + MechaPwn**:
+
+- Disc loads
+- Fields load
+
+Treat builder EDC repair + 4x DAO burn as the working ship path for CSR+ Disc 1.
