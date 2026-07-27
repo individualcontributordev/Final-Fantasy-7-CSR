@@ -59,10 +59,10 @@ def generate_mode2_form1_edc_ecc(sector: bytearray) -> None:
 
 	saved = bytes(sector[12:16])
 	sector[12:16] = b"\x00\x00\x00\x00"
-	src = sector[ECC_DATA_OFFSET:]
 
-	def ecc_block(major_count, minor_count, major_mult, minor_inc, dest_off):
+	def ecc_block(src: bytes, major_count, minor_count, major_mult, minor_inc) -> bytes:
 		size = major_count * minor_count
+		dest = bytearray(major_count * 2)
 		for major in range(major_count):
 			index = (major >> 1) * major_mult + (major & 1)
 			a = b = 0
@@ -75,11 +75,19 @@ def generate_mode2_form1_edc_ecc(sector: bytearray) -> None:
 				b ^= t
 				a = _ecc_f[a]
 			a = _ecc_b[_ecc_f[a] ^ b]
-			sector[dest_off + major] = a
-			sector[dest_off + major + major_count] = a ^ b
+			dest[major] = a
+			dest[major + major_count] = a ^ b
+		return bytes(dest)
 
-	ecc_block(ECC_P_MAJOR, ECC_P_MINOR, ECC_P_MULT, ECC_P_INC, OFFSET_ECC_P)
-	ecc_block(ECC_Q_MAJOR, ECC_Q_MINOR, ECC_Q_MULT, ECC_Q_INC, OFFSET_ECC_Q)
+	# Freeze src windows so writing P does not disturb Q's input mid-pass.
+	src_p = bytes(sector[12 : 12 + ECC_P_MAJOR * ECC_P_MINOR])
+	sector[OFFSET_ECC_P : OFFSET_ECC_P + ECC_P_MAJOR * 2] = ecc_block(
+		src_p, ECC_P_MAJOR, ECC_P_MINOR, ECC_P_MULT, ECC_P_INC
+	)
+	src_q = bytes(sector[12 : 12 + ECC_Q_MAJOR * ECC_Q_MINOR])
+	sector[OFFSET_ECC_Q : OFFSET_ECC_Q + ECC_Q_MAJOR * 2] = ecc_block(
+		src_q, ECC_Q_MAJOR, ECC_Q_MINOR, ECC_Q_MULT, ECC_Q_INC
+	)
 	sector[12:16] = saved
 
 
