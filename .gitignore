@@ -1,9 +1,9 @@
 # Local disc images — never commit game data or large binaries
 
-# workspace: ignore everything except folder READMEs
+# workspace: ignore everything except .gitkeep placeholders
 workspace/*
 !workspace/**/
-!workspace/**/README.md
+!workspace/**/.gitkeep
 
 # Disc / dump files anywhere under workspace
 workspace/**/*.bin

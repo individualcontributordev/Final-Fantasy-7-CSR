@@ -14,3 +14,6 @@ Disc 2
 
 Disc 3
 - no changes
+## v0.1.1
+
+- Layer publish for disc builder.

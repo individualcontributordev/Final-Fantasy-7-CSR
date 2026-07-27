@@ -779,3 +779,8 @@ fr_e 347 > 0 dir > S0 Main
 canon_2 741 > 13 hojyo > S1 - Talk
 
 - reduced dialogues and disc 3 after hojo fight
+
+## v0.14.1
+
+Disc 1–3
+- Layer publish for disc builder (same content as v0.14.0 packaging).

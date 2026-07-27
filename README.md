@@ -14,120 +14,92 @@ any% All Bosses | 🔄 WIP | 🔄 WIP | 🔄 WIP
 
 *Est. Completion Time: 1 bazillion years*
 
-These patches can be applied to the following platforms
-
-- Playstation 1 and 2 (PSX Disc)
-- Emulator (Digital)
-- PC using TMD's [Windows installer](https://drive.google.com/file/d/1VXQtJZD6TrG3RXO6kPYduW5EGEBmQsAP/view?usp=drive_link)
+Platforms: PS1 / PS2 disc, emulator, or PC via TMD's [Windows installer](https://drive.google.com/file/d/1VXQtJZD6TrG3RXO6kPYduW5EGEBmQsAP/view?usp=drive_link).
 
 ## Definitions
 
 ### CSR
 
-All "skill checks" remain in this CSR (if not let me know and I'll fix it). A skill check is any action a player must perform in game, e.g. choosing an option in dialogues, movement in cutscenes, skips, manipulating RNG, etc. Most FMVs are removed, some cutscenes are shorter, and long mashing sequences have been reduced. This CSR is exactly like a non-CSR run, just shorter.
+Skill checks stay (dialogue choices, movement in cutscenes, skips, RNG manip, etc.). Most FMVs removed, some cutscenes shortened, long mash sequences reduced. Plays like a normal run, shorter.
 
 ### CSR+
 
-Same as CSR but removes all cutscenes regardless of impact on existing strats and skips.
+Same as CSR but removes cutscenes more aggressively, including ones that affect familiar strats.
 
 ### CSR++
 
-Same as CSR+ with alot of "filler" removed like mashing through a dialogue only to select the first option, meeting Aerith for the first time after blowing up Reactor 1, Jessie getting her leg stuck and having to help her to progress through Reactor 1, etc. 
+CSR+ plus filler trimmed (e.g. mash-only dialogue, Aerith intro after Reactor 1, Jessie’s leg stuck).
+
+## Changelogs
+
+| Base | Changelog | Current builder id |
+|------|-----------|--------------------|
+| CSR | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr-v0.14.1` |
+| CSR+ | [bases/csr-plus/CHANGELOG.md](bases/csr-plus/CHANGELOG.md) | `csr-plus-v0.1.1` |
+| CSR++ | [bases/csr-plusplus/CHANGELOG.md](bases/csr-plusplus/CHANGELOG.md) | `csr-plusplus-v0.1.1` |
+
+## Play
+
+https://individualcontributor.dev/builder/
+
+1. Clean **NTSC-U** `.bin` (disc auto-detected)
+2. Pick CSR / CSR+ / CSR++ (optional Field encounter density)
+3. Build zip → `.bin` + `.cue` + `APPLIED.txt`
+
+Emulator: [DuckStation](https://github.com/stenzek/duckstation/releases) or RetroArch + SwanStation — open the `.cue`.
+
+PSX: soft-mod (e.g. [MechaPwn](https://github.com/MechaResearch/MechaPwn)), burn from the `.cue`.
+
+## Release a base (maintainers)
+
+Local images (gitignored) under `workspace/`:
+
+| Role | Path |
+|------|------|
+| Pristine | `workspace/pristine/FINALFANTASY7_DN.bin` |
+| CSR | `workspace/csr/FINALFANTASY7_DN.bin` |
+| CSR+ | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
+| CSR++ | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
+
+```bash
+cd /c/path/to/Final-Fantasy-7-CSR   # Git Bash on Windows
+git pull
+
+# one base at a time — bump version, update bases/<base>/CHANGELOG.md
+python scripts/build_csr_base_layers.py workspace/csr --version 0.14.2
+# python scripts/build_csr_base_layers.py workspace/csr-plus --version 0.1.2
+# python scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.2
+
+git add builder/ bases/
+git commit -m "Release CSR v0.14.2."
+git push
+```
+
+Pages serves `builder/` JSON for the disc builder. Older packs stay enabled until you set `"enabled": false` in `builder/manifest.json`.
+
+If the published base **id** changed (e.g. `csr-v0.14.2`), rebuild Field encounter packs in **Final-Fantasy-7-Modding** against the new ids.
+
+## Layout
+
+```
+bases/           CHANGELOG.md per base (csr, csr-plus, csr-plusplus)
+builder/         published layers + manifest.json (Pages CDN)
+scripts/         build_csr_base_layers.py + layer helpers
+workspace/       local pristine / patched .bins (not committed)
+images/          README assets
+```
 
 ## Contributors
 
-- IndividualContributor
-- Okamikaze
-- AwesomeWaves
-- Teeejj
-- Shoutblaster
-- HopeDRG
-- Doumeis
-- Cornfed69
-- Phek1200
-- MuscleBelt
-- Rendall
-- Expans3
-- Katombaz
-- Jayrod
-- TMD
+IndividualContributor, Okamikaze, AwesomeWaves, Teeejj, Shoutblaster, HopeDRG, Doumeis, Cornfed69, Phek1200, MuscleBelt, Rendall, Expans3, Katombaz, Jayrod, TMD
 
-## Getting Started
+## Leaderboard / feedback
 
-Stack CSR / CSR+ / CSR++ with optional Encounter packs in one browser zip:
-
-**https://individualcontributor.dev/builder/**
-
-1. Select a clean **NTSC-U** `.bin` (disc is detected automatically)
-2. Choose base + optional Encounter density
-3. **Build zip** — `.bin` + `.cue` + `APPLIED.txt`
-
-Project: https://individualcontributor.dev/builder/
-
-Repo: https://github.com/individualcontributordev/Final-Fantasy-7-CSR
-
-## Release (maintainers)
-
-See [builder/WINDOWS-INSTRUCTIONS.md](builder/WINDOWS-INSTRUCTIONS.md). Short version:
-
-1. Put pristine + CSR / CSR+ / CSR++ `.bin`s under `workspace/`
-2. `python scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z` (and plus / plusplus)
-3. Commit `builder/` JSON only, push, wait for Pages
-4. Rebuild Encounter packs in **Final-Fantasy-7-Modding** if base ids changed
-
-## Play on Emulator
-
-Just load up the .cue/.bin file using the latest [Duckstation](https://github.com/stenzek/duckstation/releases) or [RetroArch + SwanStation Core](https://www.retroarch.com/?page=platforms) release.
-
-See [Troubleshooting](#troubleshooting) for `.cue` / `.bin` naming.
-
-## Play on PSX
-
-You'll need to first use something like [MechaPwn](https://github.com/MechaResearch/MechaPwn) to soft-mod your PS2 Slim in order to play your backup discs.
-
-Then, you can burn the patched .bin file to disc, make sure to select the associated .cue file in your CD burning software. I use ImgBurn with write speed 16x on Verbatim CD-R 700MB discs.
-
-# Unofficial Leaderboard
+- [Submit time](https://forms.gle/byFWCT85gFWS2Vtp6) · [Leaderboard](https://docs.google.com/spreadsheets/d/19y6yHtODjS5R-VyvtHUKjAo3FL9Fif56p1REQsUzGWg)
+- [Feature requests / bugs](https://forms.gle/dW9rMCD9kQ3eBPSM8)
 
 ![](images/leaderboard.PNG)
 
-[Submit your speedrun time here](https://forms.gle/byFWCT85gFWS2Vtp6)
-
-[Current Leaderboard](https://docs.google.com/spreadsheets/d/19y6yHtODjS5R-VyvtHUKjAo3FL9Fif56p1REQsUzGWg)
-
-
-# Feature Requests and Bug Fixes
-
-Feature Requests and Bug Fixes https://forms.gle/dW9rMCD9kQ3eBPSM8
-
-
 ## Troubleshooting
 
-Check your Final Fantasy VII `.bin` and `.cue` files for all discs are in the same directory, and the `.bin` and `.cue` for each disc are named exactly the same. e.g. 
-
-```text
-- Final Fantasy VII (Disc 1) CSR (patched).bin  
-- Final Fantasy VII (Disc 1) CSR (patched).cue  
-- Final Fantasy VII (Disc 2) CSR (patched).bin  
-- Final Fantasy VII (Disc 2) CSR (patched).cue  
-- Final Fantasy VII (Disc 3).bin  
-- Final Fantasy VII (Disc 3).cue
-```
-
-You should also verify that .cue file references the correct filename of the .bin file, edit the .cue file if you change the name of the files. e.g.
-
-**Final Fantasy VII (Disc 1) CSR (patched).cue**
-```text
-FILE "Final Fantasy VII (Disc 1) CSR (patched).bin" BINARY
-  TRACK 01 MODE2/2352
-    INDEX 01 00:00:00
-```
-
-And if you use a .m3u file like I do make sure to update this file to point to the correct patched version of the discs. e.g.
-
-```text
-C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 1) CSR (patched).cue
-C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 2) CSR (patched).cue
-C:\Users\Deez\Nutz\FF7\Final Fantasy VII (Disc 3).cue
-```
-
+Keep each disc’s `.bin` and `.cue` in the same folder with the same stem. The `.cue` `FILE` line must match the `.bin` name. Update any `.m3u` to the patched cues.
