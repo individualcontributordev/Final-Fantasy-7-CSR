@@ -32,3 +32,7 @@ Likely the burner/drive wrote usable sectors (or regenerated checksums on write)
 1. ImgBurn verify fail at offset **2072** with image `0x00` vs device `0xCC` → try the disc on PS2 before reburning.
 2. Still prefer fixing layers long-term (`repair_mode2_edc.py` / rebuild layers with valid EDC) so verifies pass and picky drives/media are safer.
 3. `repair_mode2_edc.py` remains useful when a burn *doesn't* boot or when you want clean verifies.
+
+## Builder fix (2026-07-27)
+
+Homepage builder now regenerates Mode2 Form1 EDC/ECC for every sector changed by layers (`builder/edc.js`). Re-download from https://individualcontributor.dev/builder/ for a verify-clean burn.
