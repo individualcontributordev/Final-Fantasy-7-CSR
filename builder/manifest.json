@@ -52,5 +52,19 @@
       },
       "enabled": true
     }
+  ],
+  "presets": [
+    {
+      "id": "csr-plus",
+      "name": "CSR+ (all scenes)",
+      "blurb": "Every individual CSR+ scene trim, applied automatically to whichever disc you're building.",
+      "compatibleBases": [
+        "csr-v0.14.1"
+      ],
+      "addons": [
+        "csr-plus-scene-aerith-house-v0.1.0",
+        "csr-plus-scene-hojo-fd-manip-v0.1.0"
+      ]
+    }
   ]
 }
