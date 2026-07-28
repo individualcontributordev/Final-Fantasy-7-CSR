@@ -68,6 +68,7 @@ def write_pack(
 	option_label: str,
 	exclusive_group: str,
 	compatible_bases: list[str],
+	disc: int,
 	layer: dict,
 	files: list[str],
 	update_manifest: bool,
@@ -75,7 +76,8 @@ def write_pack(
 	pack_dir = _ROOT / "builder" / pack_id
 	layer_dir = pack_dir / "layers"
 	layer_dir.mkdir(parents=True, exist_ok=True)
-	layer_path = layer_dir / "disc1.layer.json"
+	layer_name = f"disc{disc}.layer.json"
+	layer_path = layer_dir / layer_name
 	layer_path.write_text(json.dumps(layer, indent=2) + "\n", encoding="utf-8")
 
 	pack = {
@@ -90,7 +92,7 @@ def write_pack(
 		"optionLabel": option_label,
 		"compatibleBases": compatible_bases,
 		"files": files,
-		"discs": {"1": "./layers/disc1.layer.json"},
+		"discs": {str(disc): f"./layers/{layer_name}"},
 	}
 	(pack_dir / "pack.json").write_text(json.dumps(pack, indent=2) + "\n", encoding="utf-8")
 
@@ -106,7 +108,7 @@ def write_pack(
 			"groupLabel": group_label,
 			"optionLabel": option_label,
 			"compatibleBases": compatible_bases,
-			"discs": {"1": f"./{pack_id}/layers/disc1.layer.json"},
+			"discs": {str(disc): f"./{pack_id}/layers/{layer_name}"},
 			"enabled": True,
 		}
 		addons = data.setdefault("addons", [])
@@ -136,6 +138,7 @@ def main() -> int:
 	ap.add_argument("--flavor-image", type=Path, required=True)
 	ap.add_argument("--files", nargs="+", required=True, help="ISO paths e.g. FIELD/SHIP_1.DAT")
 	ap.add_argument("--pack-id", required=True)
+	ap.add_argument("--disc", type=int, default=1, help="Disc number (1/2/3). Default: 1")
 	ap.add_argument("--version", default="0.1.0")
 	ap.add_argument("--name", required=True)
 	ap.add_argument("--blurb", required=True)
@@ -186,7 +189,7 @@ def main() -> int:
 		layer = build_layer(
 			pr_bin,
 			pt_bin,
-			layer_id=f"{args.pack_id}-disc1",
+			layer_id=f"{args.pack_id}-disc{args.disc}",
 			description=args.blurb,
 		)
 
@@ -204,6 +207,7 @@ def main() -> int:
 		option_label=args.option_label,
 		exclusive_group=exclusive,
 		compatible_bases=args.compatible_bases,
+		disc=args.disc,
 		layer=layer,
 		files=files,
 		update_manifest=not args.no_manifest,
@@ -211,7 +215,7 @@ def main() -> int:
 	print(f"Wrote {pack_dir.relative_to(_ROOT)}")
 
 	if args.assert_no_overlap_with:
-		assert_no_overlap(pack_dir / "layers" / "disc1.layer.json", args.assert_no_overlap_with)
+		assert_no_overlap(pack_dir / "layers" / f"disc{args.disc}.layer.json", args.assert_no_overlap_with)
 
 	return 0
 

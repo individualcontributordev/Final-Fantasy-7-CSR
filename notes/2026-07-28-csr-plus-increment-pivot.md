@@ -73,13 +73,39 @@ it's removed from `builder/manifest.json` but its files stay in the repo.
   pristine-vs-base packs) — pass `--compatible-bases csr-v0.14.1` for
   CSR-vs-CSR+ increment packs.
 
+## Disc 2 + Disc 3 (2026-07-28, later same day)
+
+Turns out no Windows hand-off was needed: the builder's own published
+`csr-v0.14.1`/`csr-plus-v0.1.1` layers already encode the full pristine diff for
+every disc, so applying them to `workspace/pristine/*.bin` via `apply_layer.py`
+reconstructs the patched Disc 2/3 images locally — same trick used to verify
+Disc 1 packs end-to-end above. No new disc dumps required.
+
+- **Disc 2**: `list_changed_field_maps.py` (csr → csr-plus) found 3 changed
+  maps — `BLIN66_6` (+1B), `CANON_2` (+18B), `FSHIP_24` (+27B) — all growth,
+  same slot-fit fix as Aerith. `field_jump_graph.py` confirms they're **one
+  connected component** (matches the single "Hojo FD manip cutscene removed"
+  changelog line), so shipped as **one** pack:
+  `csr-plus-scene-hojo-fd-manip-v0.1.0`, `compatibleBases: ["csr-v0.14.1"]`,
+  `discs: {"2": ...}`. Verified end-to-end via `apply_layer.py` — all three
+  files match the real csr-plus content exactly, 51453 bytes changed total,
+  nothing else touched.
+- **Disc 3**: reconstructed csr/csr-plus Disc 3 the same way and diffed —
+  **0 changed FIELD maps**, confirming the changelog's "no changes" line.
+  Nothing to ship.
+
+`build_field_map_pack.py` gained a `--disc N` flag (was hardcoded to disc1
+everywhere: layer filename, `pack.json`/manifest `discs` key, layer id).
+
+**The full CSR-vs-CSR+ increment is now shipped**: Aerith's house (Disc 1) +
+Hojo FD manip (Disc 2). A CSR-base player can add either or both independently.
+
 ## Next steps
 
-- **Disc 2 Hojo scene**: need `workspace/csr/FINALFANTASY7_D2.bin` and
-  `workspace/csr-plus/FINALFANTASY7_D2.bin` (Windows human to supply / EDC-repair
-  per README) to catalog and ship as a second `csr-plus-scene-*` add-on.
 - **CSR++ / Makou Reactor**: out of scope here going forward — do not resume
   building it into this builder stack without an explicit decision to revive it.
+- A DuckStation playtest of both `csr-plus-scene-*` packs on top of the CSR
+  base is still outstanding (tooling-verified only, not human-played).
 
 ## Modding repo follow-on cleanup (same session)
 
