@@ -20,11 +20,35 @@ This repo is one part of the stack:
 
 ## Base definitions (keep copy consistent)
 
-- **CSR** — skill checks kept; FMVs/long sequences cut or shortened.
-- **CSR+** — more aggressive cutscene removal (can affect familiar strats).
-- **CSR++** — very aggressively trimmed CSR+: some story mechanics, option choices, and complete dialogue removal.
+Builder bases (published in `builder/manifest.json`): **Unmodified** (built into the site) and **CSR** — skill checks kept; FMVs/long sequences cut or shortened.
 
-Changelogs: `bases/csr|csr-plus|csr-plusplus/CHANGELOG.md` — update when shipping that base.
+**CSR+** is no longer a monolithic base. Its extra trims are decomposed into individual `csr-plus-scene-*` add-ons (`compatibleBases: ["csr-v0.14.1"]`) so a CSR-base player can pick only the scenes they want beyond CSR. First one shipped: `csr-plus-scene-aerith-house`.
+
+**CSR++** — very aggressively trimmed CSR+: some story mechanics, option choices, and complete dialogue removal. Retired from the builder (removed from `manifest.json`) — different enough to be its own project, now continued in Makou Reactor. Files (`bases/csr-plusplus/`, `builder/csr-plusplus-v0.1.1/`) stay in the repo, just unpublished.
+
+Changelogs: `bases/csr|csr-plus|csr-plusplus/CHANGELOG.md` — update when shipping that base or a new CSR+ scene add-on.
+
+## Building a CSR+ scene add-on
+
+Diff `workspace/csr` vs `workspace/csr-plus` (not pristine) to find what CSR+ still changes beyond CSR, then build one addon per component with `compatibleBases: ["csr-v0.14.1"]`:
+
+```bash
+python scripts/list_changed_field_maps.py \
+  --pristine workspace/csr/FINALFANTASY7_DN.bin \
+  --patched workspace/csr-plus/FINALFANTASY7_DN.bin \
+  --flavor csr-plus-increment -o workspace/csr-plus-increment-field-diff.json
+
+python scripts/build_field_map_pack.py \
+  --pristine workspace/csr/FINALFANTASY7_D1.bin \
+  --flavor-image workspace/csr-plus/FINALFANTASY7_D1.bin \
+  --files FIELD/<MAP>.DAT \
+  --pack-id csr-plus-scene-<name>-v0.1.0 \
+  --name "CSR+ scene — <Name>" --group-label "CSR+ scene — <Name>" \
+  --blurb "..." --exclusive-group csr-plus-scene-<name> \
+  --compatible-bases csr-v0.14.1
+```
+
+`build_field_map_pack.py` allows a patched map file to grow past the pristine byte count as long as it still fits the already-allocated ISO sector span — it patches the ISO9660 directory record's size field via `psx_mode2_iso.replace_file`. Growth needing more sectors still raises (real ISO rebuild required).
 
 ## Day-to-day
 

@@ -31,7 +31,7 @@ from psx_mode2_iso import (  # noqa: E402
 	byte_ranges_overlap,
 	extract_file,
 	find_file,
-	replace_file_padded,
+	replace_file,
 )
 
 MANIFEST_PATH = _ROOT / "builder" / "manifest.json"
@@ -49,12 +49,12 @@ def build_patched_image(
 			path = f"FIELD/{path}"
 		new_data = extract_file(flavor_image, path)
 		meta = find_file(pristine, path)
-		if len(new_data) > meta.size:
-			raise SystemExit(
-				f"{path}: flavor file {len(new_data)} bytes > ISO slot {meta.size}"
-			)
-		replace_file_padded(img, path, new_data)
-		print(f"  inject {path} ({len(new_data)} → slot {meta.size})")
+		try:
+			replace_file(img, path, new_data)
+		except ValueError as exc:
+			raise SystemExit(str(exc)) from exc
+		grew = f" (record patched {meta.size} → {len(new_data)})" if len(new_data) != meta.size else ""
+		print(f"  inject {path} ({len(new_data)} → slot {meta.size}){grew}")
 	return bytes(img)
 
 
@@ -67,6 +67,7 @@ def write_pack(
 	group_label: str,
 	option_label: str,
 	exclusive_group: str,
+	compatible_bases: list[str],
 	layer: dict,
 	files: list[str],
 	update_manifest: bool,
@@ -87,7 +88,7 @@ def write_pack(
 		"exclusiveGroup": exclusive_group,
 		"groupLabel": group_label,
 		"optionLabel": option_label,
-		"compatibleBases": ["clean"],
+		"compatibleBases": compatible_bases,
 		"files": files,
 		"discs": {"1": "./layers/disc1.layer.json"},
 	}
@@ -104,7 +105,7 @@ def write_pack(
 			"exclusiveGroup": exclusive_group,
 			"groupLabel": group_label,
 			"optionLabel": option_label,
-			"compatibleBases": ["clean"],
+			"compatibleBases": compatible_bases,
 			"discs": {"1": f"./{pack_id}/layers/disc1.layer.json"},
 			"enabled": True,
 		}
@@ -144,6 +145,12 @@ def main() -> int:
 		"--exclusive-group",
 		default=None,
 		help="Default: csr-scene-<pack-id without version>",
+	)
+	ap.add_argument(
+		"--compatible-bases",
+		nargs="+",
+		default=["clean"],
+		help="Base ids this addon may be applied on top of. Default: clean",
 	)
 	ap.add_argument("--no-manifest", action="store_true")
 	ap.add_argument(
@@ -196,6 +203,7 @@ def main() -> int:
 		group_label=args.group_label,
 		option_label=args.option_label,
 		exclusive_group=exclusive,
+		compatible_bases=args.compatible_bases,
 		layer=layer,
 		files=files,
 		update_manifest=not args.no_manifest,

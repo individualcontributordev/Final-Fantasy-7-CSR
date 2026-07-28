@@ -15,136 +15,23 @@
         "3": "./csr-v0.14.1/layers/disc3.layer.json"
       },
       "enabled": true
-    },
-    {
-      "id": "csr-plus-v0.1.1",
-      "name": "CSR+ v0.1.1",
-      "kind": "base",
-      "exclusiveGroup": "cutscenes",
-      "blurb": "More aggressive cutscene removal.",
-      "format": "ic-layer-v1",
-      "discs": {
-        "1": "./csr-plus-v0.1.1/layers/disc1.layer.json",
-        "2": "./csr-plus-v0.1.1/layers/disc2.layer.json",
-        "3": "./csr-plus-v0.1.1/layers/disc3.layer.json"
-      },
-      "enabled": true
-    },
-    {
-      "id": "csr-plusplus-v0.1.1",
-      "name": "CSR++ v0.1.1",
-      "kind": "base",
-      "exclusiveGroup": "cutscenes",
-      "blurb": "Very aggressively trimmed CSR+ \u2014 story mechanics, choices, and dialogue removed.",
-      "format": "ic-layer-v1",
-      "discs": {
-        "1": "./csr-plusplus-v0.1.1/layers/disc1.layer.json",
-        "2": "./csr-plusplus-v0.1.1/layers/disc2.layer.json",
-        "3": "./csr-plusplus-v0.1.1/layers/disc3.layer.json"
-      },
-      "enabled": true
     }
   ],
   "addons": [
     {
-      "id": "csr-scene-boat-v0.1.0",
-      "name": "CSR scene \u2014 Boat to Costa",
+      "id": "csr-plus-scene-aerith-house-v0.1.0",
+      "name": "CSR+ scene \u2014 Aerith's house",
       "kind": "addon",
-      "blurb": "Prototype: removes the Junon boat trip cutscene (SHIP_1 / SHIP_2).",
+      "blurb": "Adds the CSR+ trim of the Aerith's house cutscene on top of the CSR base.",
       "format": "ic-layer-v1",
-      "exclusiveGroup": "csr-scene-boat",
-      "groupLabel": "CSR scene \u2014 Boat to Costa",
+      "exclusiveGroup": "csr-plus-scene-aerith-house",
+      "groupLabel": "CSR+ scene \u2014 Aerith's house",
       "optionLabel": "On",
       "compatibleBases": [
-        "clean"
+        "csr-v0.14.1"
       ],
       "discs": {
-        "1": "./csr-scene-boat-v0.1.0/layers/disc1.layer.json"
-      },
-      "enabled": true
-    },
-    {
-      "id": "csr-scene-midgar-start-v0.1.0",
-      "name": "CSR scene \u2014 Midgar start",
-      "kind": "addon",
-      "blurb": "Prototype: CSR edits to MD1STIN / MD1_1 (opening Midgar). EALS_1 (Aerith house) blocked \u2014 grows past ISO slot.",
-      "format": "ic-layer-v1",
-      "exclusiveGroup": "csr-scene-midgar-start",
-      "groupLabel": "CSR scene \u2014 Midgar start",
-      "optionLabel": "On",
-      "compatibleBases": [
-        "clean"
-      ],
-      "discs": {
-        "1": "./csr-scene-midgar-start-v0.1.0/layers/disc1.layer.json"
-      },
-      "enabled": true
-    },
-    {
-      "id": "csr-scene-del1-shpin3-v0.1.0",
-      "name": "CSR scene \u2014 DEL1/SHPIN_3 cluster",
-      "kind": "addon",
-      "blurb": "Prototype: CSR edits to DEL1/SHPIN_3 (location unconfirmed).",
-      "format": "ic-layer-v1",
-      "exclusiveGroup": "csr-scene-del1-shpin3",
-      "groupLabel": "CSR scene \u2014 DEL1/SHPIN_3 cluster",
-      "optionLabel": "On",
-      "compatibleBases": [
-        "clean"
-      ],
-      "discs": {
-        "1": "./csr-scene-del1-shpin3-v0.1.0/layers/disc1.layer.json"
-      },
-      "enabled": true
-    },
-    {
-      "id": "csr-scene-mds7st1-v0.1.0",
-      "name": "CSR scene \u2014 Midgar Sector 7 (MDS7ST1)",
-      "kind": "addon",
-      "blurb": "Prototype: CSR edits to MDS7ST1 (Midgar Sector 7 area).",
-      "format": "ic-layer-v1",
-      "exclusiveGroup": "csr-scene-mds7st1",
-      "groupLabel": "CSR scene \u2014 Midgar Sector 7 (MDS7ST1)",
-      "optionLabel": "On",
-      "compatibleBases": [
-        "clean"
-      ],
-      "discs": {
-        "1": "./csr-scene-mds7st1-v0.1.0/layers/disc1.layer.json"
-      },
-      "enabled": true
-    },
-    {
-      "id": "csr-scene-nivl3-v0.1.0",
-      "name": "CSR scene \u2014 Nibelheim (NIVL_3)",
-      "kind": "addon",
-      "blurb": "Prototype: CSR edits to NIVL_3 (Nibelheim).",
-      "format": "ic-layer-v1",
-      "exclusiveGroup": "csr-scene-nivl3",
-      "groupLabel": "CSR scene \u2014 Nibelheim (NIVL_3)",
-      "optionLabel": "On",
-      "compatibleBases": [
-        "clean"
-      ],
-      "discs": {
-        "1": "./csr-scene-nivl3-v0.1.0/layers/disc1.layer.json"
-      },
-      "enabled": true
-    },
-    {
-      "id": "csr-scene-rcktin7-v0.1.0",
-      "name": "CSR scene \u2014 Rocket Town Inn (RCKTIN7)",
-      "kind": "addon",
-      "blurb": "Prototype: CSR edits to RCKTIN7 (Rocket Town).",
-      "format": "ic-layer-v1",
-      "exclusiveGroup": "csr-scene-rcktin7",
-      "groupLabel": "CSR scene \u2014 Rocket Town Inn (RCKTIN7)",
-      "optionLabel": "On",
-      "compatibleBases": [
-        "clean"
-      ],
-      "discs": {
-        "1": "./csr-scene-rcktin7-v0.1.0/layers/disc1.layer.json"
+        "1": "./csr-plus-scene-aerith-house-v0.1.0/layers/disc1.layer.json"
       },
       "enabled": true
     }

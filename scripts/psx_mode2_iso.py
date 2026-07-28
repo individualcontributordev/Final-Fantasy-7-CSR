@@ -18,6 +18,8 @@ class IsoFile:
     path: str
     lba: int
     size: int
+    dir_lba: int = -1
+    rec_offset: int = -1
 
 
 def _user(img: memoryview | bytes | bytearray, lba: int) -> bytes:
@@ -46,9 +48,13 @@ def _iso_name(raw: bytes) -> str:
     return name.upper()
 
 
-def _parse_dir_records(blob: bytes) -> list[tuple[str, int, int, bool]]:
-    """Return (name, lba, size, is_dir) for records in a directory extent."""
-    out: list[tuple[str, int, int, bool]] = []
+def _parse_dir_records(blob: bytes) -> list[tuple[str, int, int, bool, int]]:
+    """Return (name, lba, size, is_dir, rec_offset) for records in a directory extent.
+
+    rec_offset is the byte offset of the record within this extent blob, needed
+    to patch the record's size field in place later (see patch_dir_record_size).
+    """
+    out: list[tuple[str, int, int, bool, int]] = []
     i = 0
     while i < len(blob):
         length = blob[i]
@@ -71,7 +77,7 @@ def _parse_dir_records(blob: bytes) -> list[tuple[str, int, int, bool]]:
         lba = _u32_le(rec, 2)
         size = _u32_le(rec, 10)
         is_dir = bool(flags & 0x02)
-        out.append((name, lba, size, is_dir))
+        out.append((name, lba, size, is_dir, i))
         i += length
     return out
 
@@ -91,6 +97,23 @@ def _read_extent(img: memoryview | bytes | bytearray, lba: int, size: int) -> by
 
 def _list_dir(img: memoryview | bytes | bytearray, lba: int, size: int):
     return _parse_dir_records(_read_extent(img, lba, size))
+
+
+def patch_dir_record_size(img: bytearray, meta: IsoFile, new_size: int) -> None:
+    """Patch a file's directory-record byte-size field (both LE and BE copies) in place.
+
+    ISO9660 directory records never span a sector boundary (encoders pad to the
+    next sector rather than split one), so the record lives entirely within one
+    2048-byte user-data sector — safe to patch with a single sector read/write.
+    """
+    if meta.dir_lba < 0 or meta.rec_offset < 0:
+        raise ValueError(f"{meta.path}: no directory-record location (use find_file, not list_dir)")
+    sector = meta.dir_lba + (meta.rec_offset // USER)
+    off = meta.rec_offset % USER
+    user = bytearray(_user(img, sector))
+    user[off + 10 : off + 14] = new_size.to_bytes(4, "little")
+    user[off + 14 : off + 18] = new_size.to_bytes(4, "big")
+    _write_user(img, sector, bytes(user))
 
 
 def find_file(img: bytes | bytearray, path: str) -> IsoFile:
@@ -119,12 +142,18 @@ def find_file(img: bytes | bytearray, path: str) -> IsoFile:
                 f"missing {part!r} under {'/'.join(parts[:idx]) or '[root]'} "
                 f"(saw: {names}{'…' if len(entries) > 20 else ''})"
             )
-        name, lba, size, is_dir = match
+        name, lba, size, is_dir, rec_offset = match
         is_last = idx == len(parts) - 1
         if is_last:
             if is_dir:
                 raise IsADirectoryError(path)
-            return IsoFile(path="/".join(parts), lba=lba, size=size)
+            return IsoFile(
+                path="/".join(parts),
+                lba=lba,
+                size=size,
+                dir_lba=dir_lba,
+                rec_offset=rec_offset,
+            )
         if not is_dir:
             raise NotADirectoryError("/".join(parts[: idx + 1]))
         dir_lba, dir_size = lba, size
@@ -137,36 +166,35 @@ def extract_file(img: bytes | bytearray, path: str) -> bytes:
     return _read_extent(img, meta.lba, meta.size)
 
 
-def replace_file_padded(img: bytearray, path: str, new_data: bytes) -> IsoFile:
-	"""Replace file contents in-place. Shorter files are zero-padded to the ISO size.
+def replace_file(img: bytearray, path: str, new_data: bytes) -> IsoFile:
+	"""Replace file contents in-place, zero-padded to a whole number of sectors.
 
-	Refuses to write a longer file (would need a full ISO rebuild).
+	The file keeps its original LBA and allocated sector span. Growth is allowed
+	as long as it still fits that span (ceil(new_size / 2048) <= sectors already
+	allocated); the directory record's size field (LE + BE) is patched to match
+	the new exact byte length whenever it differs from the pristine size. Growth
+	past the allocated span is refused — that needs a full ISO rebuild.
 	"""
 	meta = find_file(img, path)
-	if len(new_data) > meta.size:
+	old_slots = -(-meta.size // USER)
+	new_slots = -(-len(new_data) // USER)
+	if new_slots > old_slots:
 		raise ValueError(
-			f"{path}: new file is {len(new_data)} bytes but ISO slot is {meta.size} "
-			"(longer inject not supported — pad/rebuild required)"
+			f"{path}: new file is {len(new_data)} bytes, needs {new_slots} sectors "
+			f"but only {old_slots} are allocated at LBA {meta.lba} "
+			"(longer inject not supported — full ISO rebuild required)"
 		)
-	payload = new_data + (b"\x00" * (meta.size - len(new_data)))
+	payload = new_data + (b"\x00" * (new_slots * USER - len(new_data)))
 
-	remaining = meta.size
 	sector = meta.lba
-	offset = 0
-	while remaining > 0:
-		take = min(USER, remaining)
-		chunk = payload[offset : offset + take]
-		if take < USER:
-			# last partial sector: preserve tail of existing user data after file end
-			user = bytearray(_user(img, sector))
-			user[:take] = chunk
-			_write_user(img, sector, bytes(user))
-		else:
-			_write_user(img, sector, chunk)
-		offset += take
-		remaining -= take
+	for offset in range(0, len(payload), USER):
+		_write_user(img, sector, payload[offset : offset + USER])
 		sector += 1
-	return meta
+
+	if len(new_data) != meta.size:
+		patch_dir_record_size(img, meta, len(new_data))
+
+	return IsoFile(path=meta.path, lba=meta.lba, size=len(new_data), dir_lba=meta.dir_lba, rec_offset=meta.rec_offset)
 
 
 def list_dir(img: bytes | bytearray, path: str = "") -> list[IsoFile]:
@@ -189,18 +217,18 @@ def list_dir(img: bytes | bytearray, path: str = "") -> list[IsoFile]:
 		match = next((e for e in entries if e[0] == part), None)
 		if match is None:
 			raise FileNotFoundError(f"missing directory {part!r} in {path or '[root]'}")
-		name, lba, size, is_dir = match
+		name, lba, size, is_dir, _rec_offset = match
 		if not is_dir:
 			raise NotADirectoryError("/".join(parts[: idx + 1]))
 		dir_lba, dir_size = lba, size
 
 	prefix = "/".join(parts)
 	out: list[IsoFile] = []
-	for name, lba, size, is_dir in _list_dir(img, dir_lba, dir_size):
+	for name, lba, size, is_dir, rec_offset in _list_dir(img, dir_lba, dir_size):
 		if is_dir:
 			continue
 		rel = f"{prefix}/{name}" if prefix else name
-		out.append(IsoFile(path=rel, lba=lba, size=size))
+		out.append(IsoFile(path=rel, lba=lba, size=size, dir_lba=dir_lba, rec_offset=rec_offset))
 	return out
 
 
