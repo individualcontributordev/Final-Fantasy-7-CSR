@@ -43,6 +43,7 @@ python scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
 | Patched images | `workspace/csr/`, `workspace/csr-plus/`, `workspace/csr-plusplus/` |
 | Published layers | `builder/<slug>-v<ver>/` + `builder/manifest.json` |
 | Build script | `scripts/build_csr_base_layers.py` |
+| Scene-pack prototype | `scripts/list_changed_field_maps.py`, `field_jump_graph.py`, `build_field_map_pack.py` |
 | Empty workspace dirs | `.gitkeep` (not README.md) |
 
 ## After a CSR base id changes

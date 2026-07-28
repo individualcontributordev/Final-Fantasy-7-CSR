@@ -45,5 +45,40 @@
       "enabled": true
     }
   ],
-  "addons": []
+  "addons": [
+    {
+      "id": "csr-scene-boat-v0.1.0",
+      "name": "CSR scene \u2014 Boat to Costa",
+      "kind": "addon",
+      "blurb": "Prototype: removes the Junon boat trip cutscene (SHIP_1 / SHIP_2).",
+      "format": "ic-layer-v1",
+      "exclusiveGroup": "csr-scene-boat",
+      "groupLabel": "CSR scene \u2014 Boat to Costa",
+      "optionLabel": "On",
+      "compatibleBases": [
+        "clean"
+      ],
+      "discs": {
+        "1": "./csr-scene-boat-v0.1.0/layers/disc1.layer.json"
+      },
+      "enabled": true
+    },
+    {
+      "id": "csr-scene-midgar-start-v0.1.0",
+      "name": "CSR scene \u2014 Midgar start",
+      "kind": "addon",
+      "blurb": "Prototype: CSR edits to MD1STIN / MD1_1 (opening Midgar). EALS_1 (Aerith house) blocked \u2014 grows past ISO slot.",
+      "format": "ic-layer-v1",
+      "exclusiveGroup": "csr-scene-midgar-start",
+      "groupLabel": "CSR scene \u2014 Midgar start",
+      "optionLabel": "On",
+      "compatibleBases": [
+        "clean"
+      ],
+      "discs": {
+        "1": "./csr-scene-midgar-start-v0.1.0/layers/disc1.layer.json"
+      },
+      "enabled": true
+    }
+  ]
 }
