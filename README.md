@@ -28,7 +28,7 @@ Individual, mixable trims that go further than CSR for a specific scene — pick
 
 ### Highwind (base)
 
-A full playthrough compressed to roughly 2-3 hours — its own separate mod, not a bigger CSR+. Story mechanics, option choices, and complete dialogue are cut. Selectable in the builder as a base alongside Unmodified and CSR, but **doesn't stack with CSR+ scene add-ons** — those are different, incompatible edits to the same scenes.
+An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+. Story mechanics, option choices, and complete dialogue are cut. Selectable in the builder as a base alongside Unmodified and CSR, but **doesn't stack with CSR+ scene add-ons** — those are different, incompatible edits to the same scenes.
 
 ## Changelogs
 

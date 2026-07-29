@@ -48,7 +48,7 @@ python scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
 
 ## Copy
 
-Keep builder blurbs short. Highwind = a full playthrough compressed to ~2-3 hours, its own separate mod (story mechanics, option choices, complete dialogue removal).
+Keep builder blurbs short. Highwind = an aggressively trimmed playthrough, its own separate mod (story mechanics, option choices, complete dialogue removal).
 
 ## Do not
 

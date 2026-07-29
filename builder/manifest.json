@@ -21,7 +21,7 @@
       "name": "Highwind v0.1.1",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "A full playthrough compressed to roughly 2-3 hours \u2014 its own separate mod, not a bigger CSR. Story mechanics, choices, and complete dialogue are cut. Doesn't stack with CSR+ scene add-ons (different, incompatible edits to the same scenes).",
+      "blurb": "An aggressively trimmed playthrough \u2014 its own separate mod, not a bigger CSR. Story mechanics, choices, and complete dialogue are cut. Doesn't stack with CSR+ scene add-ons (different, incompatible edits to the same scenes).",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./csr-plusplus-v0.1.1/layers/disc1.layer.json",

@@ -4,7 +4,7 @@
   "kind": "base",
   "exclusiveGroup": "cutscenes",
   "version": "0.1.1",
-  "blurb": "A full playthrough compressed to roughly 2-3 hours — its own separate mod, not a bigger CSR+.",
+  "blurb": "An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json",
