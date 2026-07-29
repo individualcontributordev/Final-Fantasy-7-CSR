@@ -1,10 +1,10 @@
-# Final Fantasy VII CSR++ Change Log
+# Final Fantasy VII Highwind Change Log
 
 v(release).(feature).(bugfix)
 
 ## v0.1.0
 
-- Created Final Fantasy VII CSR++ based on Final Fantasy VII CSR v0.14.0
+- Created Final Fantasy VII Highwind based on Final Fantasy VII CSR v0.14.0
 
 Disc 1
 - no changes

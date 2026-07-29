@@ -24,7 +24,7 @@ Builder bases (published in `builder/manifest.json`): **Unmodified** (built into
 
 **CSR+** is no longer a monolithic base. Its extra trims are decomposed into individual `csr-plus-scene-*` add-ons (`compatibleBases: ["csr-v0.14.1"]`) so a CSR-base player can pick only the scenes they want beyond CSR. First one shipped: `csr-plus-scene-aerith-house`.
 
-**Highwind** (`csr-plusplus-v0.1.1` — formerly called "CSR++") — a full playthrough compressed to ~2-3 hours. Its own separate mod, not a bigger CSR+: some story mechanics, option choices, and complete dialogue removal. Live as a selectable base again (`bases/csr-plusplus/`, `builder/csr-plusplus-v0.1.1/`). Renamed off "CSR++" specifically so it doesn't read as "more CSR" — it doesn't stack with CSR+ scene add-ons (different, incompatible edits). Keep new copy calling it **Highwind**, not CSR++.
+**Highwind** (`csr-plusplus-v0.1.1`) — a full playthrough compressed to ~2-3 hours. Its own separate mod, not a bigger CSR+: some story mechanics, option choices, and complete dialogue removal. Selectable in the builder (`bases/csr-plusplus/`, `builder/csr-plusplus-v0.1.1/`) alongside Unmodified and CSR. Doesn't stack with CSR+ scene add-ons (different, incompatible edits to the same scenes).
 
 Changelogs: `bases/csr|csr-plus|csr-plusplus/CHANGELOG.md` — update when shipping that base or a new CSR+ scene add-on. (The `csr-plusplus` directory name stays as-is; only the display name changed.)
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build ic-layer-v1 packs for one CSR base (csr / csr-plus / csr-plusplus).
+"""Build ic-layer-v1 packs for one CSR base (csr / csr-plus / csr-plusplus="Highwind").
 
 Git Bash examples:
 
@@ -46,8 +46,8 @@ BASES = {
     },
     "csr-plusplus": {
         "slug": "csr-plusplus",
-        "name": "CSR++",
-        "blurb": "CSR+ plus filler dialogue trimmed.",
+        "name": "Highwind",
+        "blurb": "A full playthrough compressed to roughly 2-3 hours — its own separate mod, not a bigger CSR+.",
         "dir": "workspace/csr-plusplus",
     },
 }
@@ -218,7 +218,7 @@ def build_one_disc(
 
 def main() -> int:
     ap = argparse.ArgumentParser(
-        description="Build CSR/CSR+/CSR++ disc layers for the browser builder."
+        description="Build CSR/CSR+/Highwind disc layers for the browser builder."
     )
     ap.add_argument(
         "base",

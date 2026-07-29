@@ -28,7 +28,7 @@ Individual, mixable trims that go further than CSR for a specific scene — pick
 
 ### Highwind (base)
 
-A full playthrough compressed to roughly 2-3 hours — its own separate mod, not a bigger CSR+. Story mechanics, option choices, and complete dialogue are cut. Selectable in the builder as a base alongside Unmodified and CSR, but **doesn't stack with CSR+ scene add-ons** — those are different, incompatible edits to the same scenes. Previously published as "CSR++"; renamed so it doesn't read as "more CSR" when picking a base.
+A full playthrough compressed to roughly 2-3 hours — its own separate mod, not a bigger CSR+. Story mechanics, option choices, and complete dialogue are cut. Selectable in the builder as a base alongside Unmodified and CSR, but **doesn't stack with CSR+ scene add-ons** — those are different, incompatible edits to the same scenes.
 
 ## Changelogs
 
@@ -60,7 +60,7 @@ Local images (gitignored) under `workspace/`:
 | Pristine | `workspace/pristine/FINALFANTASY7_DN.bin` |
 | CSR | `workspace/csr/FINALFANTASY7_DN.bin` |
 | CSR+ | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
-| Highwind (was CSR++) | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
+| Highwind | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
 
 ### Clean EDC before layer rebuild (important)
 

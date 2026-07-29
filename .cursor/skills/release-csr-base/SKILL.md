@@ -1,7 +1,7 @@
 ---
 name: release-csr-base
 description: >-
-  Builds and publishes CSR / CSR+ / CSR++ ic-layer base packs for the disc
+  Builds and publishes CSR / CSR+ / Highwind ic-layer base packs for the disc
   builder. Use when releasing a CSR base, bumping csr-v / csr-plus / csr-plusplus
   versions, running build_csr_base_layers.py, or updating builder/manifest.json
   in Final-Fantasy-7-CSR.
@@ -48,7 +48,7 @@ python scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
 
 ## Copy
 
-Keep builder blurbs short. CSR++ = very aggressively trimmed CSR+ (story mechanics, option choices, complete dialogue removal).
+Keep builder blurbs short. Highwind = a full playthrough compressed to ~2-3 hours, its own separate mod (story mechanics, option choices, complete dialogue removal).
 
 ## Do not
 
