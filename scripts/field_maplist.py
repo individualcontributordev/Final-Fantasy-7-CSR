@@ -1,5 +1,7 @@
 """PSX field ID → map stem (from Makou Data::_mapList)."""
 
+from __future__ import annotations
+
 MAPLIST = [
     'dummy',
     'wm0',
