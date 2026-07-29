@@ -9,6 +9,8 @@ description: >-
 
 # Ship a CSR+ scene add-on
 
+**Runner:** Windows (Git Bash + local `workspace/csr` + `workspace/csr-plus` bins). Mac agent instructs only; optional post-publish verify of `builder/` JSON.
+
 ## When
 
 New or updated CSR+ field-map trim as a **checkbox** add-on on **CSR only**. Not Highwind. Not a new base.

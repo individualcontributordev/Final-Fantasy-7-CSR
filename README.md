@@ -53,6 +53,8 @@ PSX: soft-mod (e.g. [MechaPwn](https://github.com/MechaResearch/MechaPwn)), burn
 
 ## Release a base (maintainers)
 
+Run these steps on the **Windows** machine that has the disc images (Git Bash). Agent chat on Mac only supplies the checklist; it does not own the publish run.
+
 Publishable bases: **CSR** and **Highwind** only. CSR+ scene trims are add-ons (see `docs/ADDON_QUICK_REFERENCE.md` / skill `ship-csr-plus-scene`), not a third base.
 
 Local images (gitignored) under `workspace/`:

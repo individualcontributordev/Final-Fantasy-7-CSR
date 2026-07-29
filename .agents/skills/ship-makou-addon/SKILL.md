@@ -9,6 +9,8 @@ description: >-
 
 # Ship a Makou FIELD add-on
 
+**Runner:** Windows (Git Bash + local bins). Mac agent instructs only; optional post-publish verify of `builder/` JSON.
+
 ## 1. Scope check
 
 | Edit type | Where |

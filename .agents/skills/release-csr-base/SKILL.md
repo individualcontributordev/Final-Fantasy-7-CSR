@@ -10,6 +10,8 @@ description: >-
 
 # Release CSR or Highwind base
 
+**Runner:** Windows (Git Bash + local `workspace/` bins). Mac agent turns this checklist into one atomic chat task; does not run the build as the publish path.
+
 ## 1. Choose target
 
 | Target | Workspace images | Changelog | Builder slug |

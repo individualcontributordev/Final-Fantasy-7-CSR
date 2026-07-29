@@ -1,14 +1,28 @@
 ---
-description: Mac agent instructs in chat; Windows human runs tools; check results loop
+description: Mac agent instructs via chat/repo only; Windows runs all scripts and publishes
 alwaysApply: true
 ---
 
 # Mac agent / human Windows workflow
 
-## Roles
+## Roles (strict)
 
-- **Mac (this chat):** only agent. Full Windows steps in chat.
-- **Windows:** human only. Makou, DuckStation, disc images, Git Bash. No Windows Cursor agent.
+| Machine | Who | Does |
+|---------|-----|------|
+| **Mac (this chat)** | agent | Plans, writes skills/docs, full Windows steps in **chat** (and repo files when needed). Optionally **verifies after publish** (builder/manifest, pack JSON, Pages). |
+| **Windows** | human | **Everything operational:** Makou edits, disc images, DuckStation, Git Bash, **all** `python scripts/…`, layer builds, commits, pushes, builder publish. |
+
+No Windows Cursor agent.
+
+## Mac must not
+
+- Run CSR build/diff/publish scripts against local bins as the real release path
+- Expect workspace `.bin` dumps on the Mac
+- Ask the human to paste large tool output into chat
+- Say “see the handoff” / send them hunting notes for the real CLI
+- Commit `.bin` / `.cue` / ISO
+
+Mac **may** edit tracked docs/skills/rules here and push those so Windows can `git pull` instructions. Operational proof of a release is Windows-run + push of `builder/` (etc.).
 
 ## One atomic task per reply
 
@@ -16,15 +30,13 @@ Each Mac reply that needs Windows work is **exactly one task**.
 
 ## Instruct in chat
 
-Chat must include: **Goal**, numbered steps, what success looks like, commit/pull commands when needed, and ask them to say **check results**.
+Chat must include: **Goal**, numbered steps (copy-paste Git Bash), what success looks like, commit/push when needed, and ask them to say **check results**.
 
-**Do not** say “see the handoff” or send them hunting through notes for the real CLI.
+Skills under `.agents/skills/` are the checklist source of truth — agent turns skill steps into one Windows task, not a Mac run.
 
-Day-to-day base release proof can be light (script OK lines). Long RE/Ghidra-style dumps: optional evidence file below.
+Day-to-day release proof can be light (script OK lines in evidence file). Prefer `docs/windows-last-output.txt` for long output.
 
-## Evidence file (when outputs are large)
-
-Prefer one file — do not sprawl. Use `docs/windows-last-output.txt` when copy-paste values or long tool output must be preserved:
+## Evidence file layout
 
 ```
 # Task: short name
@@ -35,32 +47,25 @@ command_or_path: ...
 # EVIDENCE (paste below, then save)
 ```
 
-- Never ask to paste large tool output into **chat**.
-- Never put the *only* copy of a path/flag the user must type solely in chat when it is fiddly — repeat in the file.
-
-Simple Makou “open this bin, save here” tasks may be chat-only.
+Simple Makou “open this bin, save here” may be chat-only.
 
 ## Commit pattern (Windows) when using the evidence file
 
-1. Agent writes `docs/windows-last-output.txt`, commits, pushes
+1. Agent may prefill `docs/windows-last-output.txt` on Mac and push — **or** Windows creates it while running
 2. Chat gives full steps + block:
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 git pull --ff-only
 # do the task; paste evidence under EVIDENCE if used
-git add docs/windows-last-output.txt
-git commit -m "Windows output: <task>"
+git add docs/windows-last-output.txt builder/ bases/   # as applicable
+git commit -m "Windows: <task>"
 git push
 ```
 
 3. They say **check results**
 
-## Never commit
-
-`.bin`, `.cue`, ISO, Ghidra DBs, or other disc dumps.
-
-## Before reading or acting
+## Before Mac reads or edits repo docs
 
 ```bash
 git pull --ff-only
@@ -70,4 +75,4 @@ Stop if pull fails.
 
 ## On “check results”
 
-Pull → read evidence/repo state → next **single** task.
+Pull → read evidence + published `builder/` / manifest → confirm success or next **single** Windows task. Optional: sanity-check pack JSON / remote manifest after Pages publish — still not a substitute for Windows having run the build.
