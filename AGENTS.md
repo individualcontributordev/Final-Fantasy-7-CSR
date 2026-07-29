@@ -72,7 +72,8 @@ python3 scripts/apply_layer.py \
 | Patched images | `workspace/csr/`, `workspace/csr-plus/` (increment source), `workspace/highwind/` |
 | Published layers | `builder/<slug>-v<ver>/` + `builder/manifest.json` |
 | Skills | `.agents/skills/*` |
-| Evidence (optional) | `docs/windows-last-task.md` |
+| Windows task handoff | `docs/windows-last-task.md` |
+| Builder config verify | `scripts/verify_builder_config.py` (required in ship skills before publish) |
 
 ## After a CSR / Highwind base id changes
 

@@ -100,7 +100,21 @@ Mutually exclusive variants: replace `--no-exclusive-group` with `--exclusive-gr
 
 Map growth within the same ISO sector span is allowed (`replace_file` patches the directory size). Growth needing more sectors still errors.
 
-### 5. Verify
+### 5. Verify (required)
+
+**Builder config** (same stack as the site — always run before publish):
+
+```bash
+python3 scripts/verify_builder_config.py \
+  --pristine workspace/pristine/FINALFANTASY7_D1.bin \
+  --disc 1 \
+  --base csr-v0.14.1 \
+  --addon my-addon-scene-v0.1.0
+```
+
+Expect: `PASS — builder config applies cleanly`.
+
+Optional Makou byte expect:
 
 ```bash
 mkdir -p temp
@@ -114,8 +128,6 @@ python3 scripts/apply_layer.py \
   builder/my-addon-scene-v0.1.0/layers/disc1.layer.json \
   --expect workspace/my-addon-name/FINALFANTASY7_D1.bin
 ```
-
-Expect: `Output matches expected image exactly.`
 
 ### 6. Commit and publish
 

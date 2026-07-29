@@ -75,9 +75,20 @@ Flags detail: `docs/ADDON_QUICK_REFERENCE.md`. Order of ops owned by this skill.
 
 Same `--pack-id`, re-run with `--disc 2` or `--disc 3`.
 
-## 7. Verify
+## 7. Verify (required before publish)
 
-Stack base layer (if not already the workspace baseline) then addon with `--expect` against Makou image. See `docs/CREATE_ADDON_FROM_MAKOU.md` §5.
+**Builder config stack** (site-equivalent; always run):
+
+```bash
+python3 scripts/verify_builder_config.py \
+  --pristine workspace/pristine/FINALFANTASY7_DN.bin \
+  --disc N \
+  --base <compatibleBase-id> \
+  --addon <pack-id>
+# PASS required. Fails if disc missing, wrong compatibleBases, or bad layer.
+```
+
+Optional: `apply_layer … --expect` against the Makou image when you need byte-identical maps (see `docs/CREATE_ADDON_FROM_MAKOU.md`).
 
 ## 8. Ship
 

@@ -66,7 +66,20 @@ python3 scripts/build_field_map_pack.py \
 
 Confirm `pack.json` / manifest **omit** `exclusiveGroup`. Never set Highwind in `compatibleBases`.
 
-## 4. Verify
+## 4. Verify (required before publish)
+
+**Builder config stack** (what the site will do — do this first):
+
+```bash
+python3 scripts/verify_builder_config.py \
+  --pristine workspace/pristine/FINALFANTASY7_DN.bin \
+  --disc N \
+  --base csr-v0.14.1 \
+  --addon csr-plus-scene-<name>-v0.1.0
+# must PASS; must fail if you try --base highwind-v… (incompatible)
+```
+
+**Optional map expect** when you still have workspace csr-plus bytes:
 
 ```bash
 mkdir -p temp

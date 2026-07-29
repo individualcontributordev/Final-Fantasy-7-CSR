@@ -57,22 +57,19 @@ python3 scripts/build_field_map_pack.py \
   --compatible-bases csr-v0.14.1
 ```
 
-## Verify
+## Verify (builder config — required)
 
 ```bash
-mkdir -p temp
-python3 scripts/apply_layer.py \
-  workspace/pristine/FINALFANTASY7_D1.bin \
-  builder/csr-v0.14.1/layers/disc1.layer.json \
-  -o temp/csr-base.bin
-
-python3 scripts/apply_layer.py \
-  temp/csr-base.bin \
-  builder/my-addon-v0.1.0/layers/disc1.layer.json \
-  --expect workspace/my-addon/FINALFANTASY7_D1.bin
+python3 scripts/verify_builder_config.py \
+  --pristine workspace/pristine/FINALFANTASY7_D1.bin \
+  --disc 1 \
+  --base csr-v0.14.1 \
+  --addon my-addon-v0.1.0
 ```
 
-Expect: `Output matches expected image exactly.`
+Expect: `PASS — builder config applies cleanly`.
+
+Optional map byte expect vs Makou image: `apply_layer.py` chain with `--expect` (see full guide).
 
 ## Publish
 

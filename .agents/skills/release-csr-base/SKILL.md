@@ -64,10 +64,20 @@ python3 scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
 # python3 scripts/build_csr_base_layers.py workspace/highwind --version X.Y.Z
 ```
 
-## 7. Verify
+## 7. Verify (required before publish)
 
-- Script self-check / apply against patched image
-- Sanity: record counts not thousands of zero-footer junk
+`build_csr_base_layers.py` already self-checks layers. **Also** prove the builder can stack the new base id on pristine (same path the site uses):
+
+```bash
+# after build; use the new id you just wrote (example highwind-v0.1.2)
+python3 scripts/verify_builder_config.py \
+  --pristine workspace/pristine/FINALFANTASY7_D1.bin \
+  --disc 1 \
+  --base highwind-vX.Y.Z
+# repeat --disc 2 and 3 when those discs shipped
+```
+
+Must print `PASS`. Sanity: record counts not thousands of zero-footer junk.
 
 ## 8. Changelog + commit/push
 
