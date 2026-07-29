@@ -53,6 +53,8 @@ Then say **check**. Never commit `.bin` / `.cue` / ISO.
 Pull → review committed evidence/diff → next single task in-repo.
 Not live builder/CDN unless explicitly requested.
 
+Confirmed RE/playtest conclusions that belong in **Final-Fantasy-7-Modding** (addresses, watches, stub behavior) must be journaled there under `docs/findings/` the same turn — do not leave them only in chat (Modding rule `capture-research-findings`).
+
 ## Before Mac acts
 
 ```bash
