@@ -81,8 +81,12 @@ Rebuild Field/World encounter packs in **Final-Fantasy-7-Modding** (`ship-field-
 
 ## Auggie layout
 
-Canonical agent files: **`.agents/rules/`**, **`.agents/skills/`** (edit here only).
-**`.augment/rules`** and **`.augment/skills`** are symlinks to those dirs so Auggie loads them. Do not duplicate trees under `.augment/`.
+| Path | Role |
+|------|------|
+| **`.agents/rules/`**, **`.agents/skills/`** | **Canonical copies** in this repo — edit only here |
+| **`.augment/rules`**, **`.augment/skills`** | Relative symlinks → `../.agents/rules` / `../.agents/skills` (Auggie load path) |
+
+No machine-absolute paths. Windows: `git config --global core.symlinks true`, then `git checkout -- .augment` (or `mklink /D` from `.augment` to `..\.agents\…` if needed). Do not duplicate content under `.augment/`.
 
 ## Repo hygiene
 
