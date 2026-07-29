@@ -1,57 +1,88 @@
 ---
 name: release-csr-base
 description: >-
-  Builds and publishes CSR / CSR+ / Highwind ic-layer base packs for the disc
-  builder. Use when releasing a CSR base, bumping csr-v / csr-plus / csr-plusplus
-  versions, running build_csr_base_layers.py, or updating builder/manifest.json
-  in Final-Fantasy-7-CSR.
+  Builds and publishes CSR or Highwind ic-layer base packs for the disc builder.
+  Use when releasing a CSR base, Highwind (csr-plusplus), bumping csr-v /
+  csr-plusplus versions, running build_csr_base_layers.py, or updating
+  builder/manifest.json in Final-Fantasy-7-CSR. Not for CSR+ scene add-ons
+  (use ship-csr-plus-scene) and not for publishing a monolithic CSR+ base.
 ---
 
-# Release a CSR base
+# Release CSR or Highwind base
 
-## Preconditions
+## 1. Choose target
 
-- Patched disc images at `workspace/csr/` / `workspace/csr-plus/` / `workspace/csr-plusplus/`
-  (`FINALFANTASY7_DN.bin` per disc naming used by the script)
-- Pristine reference under `workspace/pristine/` as required by the build script
-- Changelog entry ready for `bases/<base>/CHANGELOG.md`
+| Target | Workspace images | Changelog | Builder slug |
+|--------|------------------|-----------|--------------|
+| **CSR** | `workspace/csr/` | `bases/csr/CHANGELOG.md` | `csr-vX.Y.Z` |
+| **Highwind** | `workspace/csr-plusplus/` | `bases/csr-plusplus/CHANGELOG.md` | `csr-plusplus-vX.Y.Z` |
 
-## Steps
+Do **not** publish a new monolithic CSR+ base (`workspace/csr-plus` + `build_csr_base_layers.py`). CSR+ trims → skill `ship-csr-plus-scene`.
 
-1. Ensure pristine + patched bins use names `FINALFANTASY7_DN.bin`
-2. **Repair EDC/ECC on patched images** (avoids zero-footer junk in layers):
+## 2. Preconditions
+
+- `workspace/pristine/FINALFANTASY7_DN.bin` for needed discs
+- Patched images named `FINALFANTASY7_DN.bin` under the flavor dir
+- Changelog draft for the new version
+
+## 3. If patched bin missing — reconstruct last published
 
 ```bash
-python scripts/repair_mode2_edc.py \
+mkdir -p workspace/csr workspace/csr-plusplus
+python3 scripts/apply_layer.py \
+  workspace/pristine/FINALFANTASY7_D1.bin \
+  builder/csr-v0.14.1/layers/disc1.layer.json \
+  -o workspace/csr/FINALFANTASY7_D1.bin
+# Highwind: builder/csr-plusplus-v0.1.1/layers/discN.layer.json → workspace/csr-plusplus/
+# Repeat for disc 2/3 as needed
+```
+
+Then human edits **that** image in Makou (saves stay under `workspace/<flavor>/`).
+
+## 4. Human (Makou) — one atomic chat task
+
+Open flavor image → edit → save into `workspace/csr/` or `workspace/csr-plusplus/`. Full steps in chat per `mac-human-workflow`. Never commit bins.
+
+## 5. EDC repair each disc
+
+```bash
+python3 scripts/repair_mode2_edc.py \
   --pristine workspace/pristine/FINALFANTASY7_D1.bin \
-  --input workspace/csr-plus/FINALFANTASY7_D1.bin \
+  --input workspace/csr/FINALFANTASY7_D1.bin \
   --in-place
-# D2/D3 likewise
+# D2/D3; use workspace/csr-plusplus for Highwind
 ```
 
-3. Build layers:
+## 6. Build layers (one base at a time)
 
 ```bash
-cd /path/to/Final-Fantasy-7-CSR
 git pull --ff-only
-
-# one base at a time
-python scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
-# python scripts/build_csr_base_layers.py workspace/csr-plus --version X.Y.Z
-# python scripts/build_csr_base_layers.py workspace/csr-plusplus --version X.Y.Z
+python3 scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
+# Highwind:
+# python3 scripts/build_csr_base_layers.py workspace/csr-plusplus --version X.Y.Z
 ```
 
-4. Update the matching `bases/<base>/CHANGELOG.md`
-5. Confirm `builder/<slug>-vX.Y.Z/` + `builder/manifest.json` (record count should drop vs old zero-footer layers)
-6. Commit `builder/` + `bases/` and push (Pages CDN)
-7. If the published **id** changed, rebuild Field encounter packs in **Final-Fantasy-7-Modding**
+## 7. Verify
 
-## Copy
+- Script self-check / apply against patched image
+- Sanity: record counts not thousands of zero-footer junk
 
-Keep builder blurbs short. Highwind = an aggressively trimmed playthrough, its own separate mod (story mechanics, option choices, complete dialogue removal).
+## 8. Changelog + commit/push
+
+Update `bases/csr/CHANGELOG.md` or `bases/csr-plusplus/CHANGELOG.md`. Commit `builder/` + `bases/`; push Pages CDN.
+
+## 9. If published **id** changed
+
+Rebuild Modding Field/World packs: `ship-field-encounters` / `ship-world-encounters` with new `compatibleBases`.
+
+## Copy rules
+
+- Highwind blurb = aggressively trimmed playthrough; **separate mod**, not a bigger CSR+.
+- Do not imply Highwind stacks with CSR+ scene add-ons.
 
 ## Do not
 
-- Ship PPF or revive RomPatcher
 - Commit `.bin` / `.cue`
-- Scatter release instructions into new markdown files — root README owns the human steps
+- Ship PPF / RomPatcher
+- Publish `csr-plus` as a base
+- Use this skill for FIELD scene add-ons (use `ship-csr-plus-scene` or `ship-makou-addon`)

@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Build ic-layer-v1 packs for one CSR base (csr / csr-plus / csr-plusplus="Highwind").
+"""Build ic-layer-v1 packs for one publishable base (csr or csr-plusplus="Highwind").
 
-Git Bash examples:
+Normal publish targets:
 
-  python scripts/build_csr_base_layers.py workspace/csr --version 0.14.0
-  python scripts/build_csr_base_layers.py workspace/csr-plus --version 0.1.0
-  python scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.0 --discs 1,2,3
+  python3 scripts/build_csr_base_layers.py workspace/csr --version 0.14.0
+  python3 scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.0 --discs 1,2,3
+
+workspace/csr-plus is legacy / CSR+ scene increment *source* only — do not use this
+script to publish a monolithic CSR+ base. Ship scenes via build_field_map_pack.py
+and skill ship-csr-plus-scene.
 
 Looks for:
   workspace/pristine/FINALFANTASY7_DN.bin

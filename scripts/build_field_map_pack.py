@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 """Build an ic-layer addon pack from selected FIELD map files on a flavor image.
 
-  python scripts/build_field_map_pack.py \\
-    --pristine workspace/pristine/FINALFANTASY7_D1.bin \\
-    --flavor-image workspace/csr/FINALFANTASY7_D1.bin \\
-    --files FIELD/SHIP_1.DAT FIELD/SHIP_2.DAT \\
-    --pack-id csr-scene-boat-v0.1.0 \\
-    --name "CSR scene — Boat to Costa" \\
-    --group-label "CSR scene — Boat to Costa" \\
-    --option-label "On" \\
-    --blurb "Removes the boat trip to Costa del Sol (prototype map pack)."
+Free checkbox (omit exclusiveGroup — preferred for independent CSR+ scenes):
+
+  python3 scripts/build_field_map_pack.py \\
+    --pristine workspace/csr/FINALFANTASY7_D1.bin \\
+    --flavor-image workspace/csr-plus/FINALFANTASY7_D1.bin \\
+    --files FIELD/EALS_1.DAT \\
+    --pack-id csr-plus-scene-aerith-house-v0.1.0 \\
+    --name "CSR+ scene — Aerith's house" \\
+    --group-label "CSR+ scene — Aerith's house" \\
+    --blurb "CSR+ trim of Aerith's house on CSR." \\
+    --no-exclusive-group \\
+    --compatible-bases csr-v0.14.1
+
+Mutually exclusive variants: pass --exclusive-group <id> (dropdown in builder).
+Without either flag, defaults to csr-scene-<pack-id-without-version> for back-compat.
 """
 
 from __future__ import annotations
@@ -66,7 +72,7 @@ def write_pack(
 	blurb: str,
 	group_label: str,
 	option_label: str,
-	exclusive_group: str,
+	exclusive_group: str | None,
 	compatible_bases: list[str],
 	disc: int,
 	layer: dict,
@@ -80,6 +86,20 @@ def write_pack(
 	layer_path = layer_dir / layer_name
 	layer_path.write_text(json.dumps(layer, indent=2) + "\n", encoding="utf-8")
 
+	pack_path = pack_dir / "pack.json"
+	prev_discs: dict = {}
+	prev_files: list[str] = []
+	if pack_path.exists():
+		prev = json.loads(pack_path.read_text(encoding="utf-8"))
+		if isinstance(prev.get("discs"), dict):
+			prev_discs = dict(prev["discs"])
+		if isinstance(prev.get("files"), list):
+			prev_files = list(prev["files"])
+
+	discs = prev_discs
+	discs[str(disc)] = f"./layers/{layer_name}"
+	merged_files = list(dict.fromkeys([*prev_files, *files]))
+
 	pack = {
 		"id": pack_id,
 		"name": name,
@@ -87,14 +107,16 @@ def write_pack(
 		"version": version,
 		"blurb": blurb,
 		"format": "ic-layer-v1",
-		"exclusiveGroup": exclusive_group,
 		"groupLabel": group_label,
 		"optionLabel": option_label,
 		"compatibleBases": compatible_bases,
-		"files": files,
-		"discs": {str(disc): f"./layers/{layer_name}"},
+		"files": merged_files,
+		"discs": discs,
 	}
-	(pack_dir / "pack.json").write_text(json.dumps(pack, indent=2) + "\n", encoding="utf-8")
+	# Missing exclusiveGroup → builder free checkbox; set only for mutex variants.
+	if exclusive_group is not None:
+		pack["exclusiveGroup"] = exclusive_group
+	pack_path.write_text(json.dumps(pack, indent=2) + "\n", encoding="utf-8")
 
 	if update_manifest:
 		data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
@@ -104,14 +126,20 @@ def write_pack(
 			"kind": "addon",
 			"blurb": blurb,
 			"format": "ic-layer-v1",
-			"exclusiveGroup": exclusive_group,
 			"groupLabel": group_label,
 			"optionLabel": option_label,
 			"compatibleBases": compatible_bases,
 			"discs": {str(disc): f"./{pack_id}/layers/{layer_name}"},
 			"enabled": True,
 		}
+		if exclusive_group is not None:
+			entry["exclusiveGroup"] = exclusive_group
 		addons = data.setdefault("addons", [])
+		existing = next((a for a in addons if a.get("id") == pack_id), None)
+		if existing and isinstance(existing.get("discs"), dict):
+			merged = dict(existing["discs"])
+			merged.update(entry["discs"])
+			entry["discs"] = merged
 		addons[:] = [a for a in addons if a.get("id") != pack_id]
 		addons.append(entry)
 		MANIFEST_PATH.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
@@ -147,7 +175,13 @@ def main() -> int:
 	ap.add_argument(
 		"--exclusive-group",
 		default=None,
-		help="Default: csr-scene-<pack-id without version>",
+		help="Mutex group id (builder dropdown). Default if neither flag: "
+		"csr-scene-<pack-id without version>",
+	)
+	ap.add_argument(
+		"--no-exclusive-group",
+		action="store_true",
+		help="Omit exclusiveGroup (builder free checkbox). Preferred for independent scenes.",
 	)
 	ap.add_argument(
 		"--compatible-bases",
@@ -164,12 +198,21 @@ def main() -> int:
 	)
 	args = ap.parse_args()
 
+	if args.no_exclusive_group and args.exclusive_group:
+		raise SystemExit("Pass only one of --no-exclusive-group or --exclusive-group")
+
 	files = [f.replace("\\", "/").upper() for f in args.files]
 	for i, f in enumerate(files):
 		if not f.startswith("FIELD/"):
 			files[i] = f"FIELD/{f}"
 
-	exclusive = args.exclusive_group or f"csr-scene-{args.pack_id.rsplit('-v', 1)[0]}"
+	if args.no_exclusive_group:
+		exclusive = None
+	elif args.exclusive_group:
+		exclusive = args.exclusive_group
+	else:
+		# Back-compat default (dropdown). New free scenes should pass --no-exclusive-group.
+		exclusive = f"csr-scene-{args.pack_id.rsplit('-v', 1)[0]}"
 
 	print("=== inject maps onto pristine ===")
 	pristine = args.pristine.read_bytes()

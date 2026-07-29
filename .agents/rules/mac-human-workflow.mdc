@@ -1,0 +1,73 @@
+---
+description: Mac agent instructs in chat; Windows human runs tools; check results loop
+alwaysApply: true
+---
+
+# Mac agent / human Windows workflow
+
+## Roles
+
+- **Mac (this chat):** only agent. Full Windows steps in chat.
+- **Windows:** human only. Makou, DuckStation, disc images, Git Bash. No Windows Cursor agent.
+
+## One atomic task per reply
+
+Each Mac reply that needs Windows work is **exactly one task**.
+
+## Instruct in chat
+
+Chat must include: **Goal**, numbered steps, what success looks like, commit/pull commands when needed, and ask them to say **check results**.
+
+**Do not** say “see the handoff” or send them hunting through notes for the real CLI.
+
+Day-to-day base release proof can be light (script OK lines). Long RE/Ghidra-style dumps: optional evidence file below.
+
+## Evidence file (when outputs are large)
+
+Prefer one file — do not sprawl. Use `docs/windows-last-output.txt` when copy-paste values or long tool output must be preserved:
+
+```
+# Task: short name
+
+# COPY-PASTE (do not edit these lines)
+command_or_path: ...
+
+# EVIDENCE (paste below, then save)
+```
+
+- Never ask to paste large tool output into **chat**.
+- Never put the *only* copy of a path/flag the user must type solely in chat when it is fiddly — repeat in the file.
+
+Simple Makou “open this bin, save here” tasks may be chat-only.
+
+## Commit pattern (Windows) when using the evidence file
+
+1. Agent writes `docs/windows-last-output.txt`, commits, pushes
+2. Chat gives full steps + block:
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git pull --ff-only
+# do the task; paste evidence under EVIDENCE if used
+git add docs/windows-last-output.txt
+git commit -m "Windows output: <task>"
+git push
+```
+
+3. They say **check results**
+
+## Never commit
+
+`.bin`, `.cue`, ISO, Ghidra DBs, or other disc dumps.
+
+## Before reading or acting
+
+```bash
+git pull --ff-only
+```
+
+Stop if pull fails.
+
+## On “check results”
+
+Pull → read evidence/repo state → next **single** task.

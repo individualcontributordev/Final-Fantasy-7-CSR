@@ -1,81 +1,84 @@
 # CSR — Agent guide
 
-Cutscene-removed **bases** for the disc builder. Players use https://individualcontributor.dev/builder/.
-
-This repo is one part of the stack:
+Cutscene-removed **bases** + CSR+ **scene add-ons** for the disc builder. Players: https://individualcontributor.dev/builder/.
 
 | Repo | Role |
 |------|------|
 | `individualcontributordev.github.io` | Player site + builder UI |
 | **This repo** | CSR base + Highwind base + CSR+ scene add-ons (Pages CDN) |
-| `Final-Fantasy-7-Modding` | Add-ons (e.g. Field encounter density) + RE notes |
+| `Final-Fantasy-7-Modding` | Engine/RE + encounter density packs |
 
 ## How we work
 
-- **Mac (this chat):** agent — full Windows steps in chat; do not send the user hunting through docs.
+- **Mac (this chat):** agent — full Windows steps in chat; see `.agents/rules/mac-human-workflow.mdc`.
 - **Windows:** human — Makou / disc images / DuckStation / Git Bash.
+- One atomic Windows task per reply; user says **check results**.
 - Never commit `.bin` / `.cue`. Never ask to paste large outputs into chat.
 - `git pull --ff-only` before acting.
 - Commits: author `individualcontributordev <contributorindividual@gmail.com>`; no Cursor trailers; auto commit/push when work lands.
 
-## Base definitions (keep copy consistent)
+## Workflows (pick a skill)
 
-Builder bases (published in `builder/manifest.json`): **Unmodified** (built into the site) and **CSR** — skill checks kept; FMVs/long sequences cut or shortened.
+| ID | Workflow | Skill |
+|----|----------|--------|
+| A | CSR base update → build → release | `.agents/skills/release-csr-base` (target **CSR**) |
+| B | CSR+ scene add-on → build → release | `.agents/skills/ship-csr-plus-scene` |
+| C | Highwind base update → build → release | `.agents/skills/release-csr-base` (target **Highwind**) |
+| D | General Makou FIELD add-on | `.agents/skills/ship-makou-addon` |
+| D′ | Engine binary (Ghidra) | **Modding** `research-new-mod` |
 
-**CSR+** is no longer a monolithic base. Its extra trims are decomposed into individual `csr-plus-scene-*` add-ons (`compatibleBases: ["csr-v0.14.1"]`) so a CSR-base player can pick only the scenes they want beyond CSR. First one shipped: `csr-plus-scene-aerith-house`.
+Short flags: `docs/ADDON_QUICK_REFERENCE.md`. Full Makou guide: `docs/CREATE_ADDON_FROM_MAKOU.md`. Player + thin maintainer: root `README.md`.
 
-**Highwind** (`csr-plusplus-v0.1.1`) — an aggressively trimmed playthrough. Its own separate mod, not a bigger CSR+: some story mechanics, option choices, and complete dialogue removal. Selectable in the builder (`bases/csr-plusplus/`, `builder/csr-plusplus-v0.1.1/`) alongside Unmodified and CSR. Doesn't stack with CSR+ scene add-ons (different, incompatible edits to the same scenes).
+## Product rules
 
-Changelogs: `bases/csr|csr-plus|csr-plusplus/CHANGELOG.md` — update when shipping that base or a new CSR+ scene add-on. (The `csr-plusplus` directory name stays as-is; only the display name changed.)
+- **Bases in builder:** Unmodified (`clean`), **CSR** (`csr-v0.14.1`), **Highwind** (`csr-plusplus-v0.1.1`).
+- **CSR+** is **not** a base. Extra trims ship as `csr-plus-scene-*` add-ons on `csr-v0.14.1` only.
+- **Highwind** = separate aggressive mod, not a bigger CSR+. Does **not** stack with CSR+ scene add-ons.
+- Free independent scenes: **omit** `exclusiveGroup` (builder → checkbox). Set `exclusiveGroup` only for mutually exclusive variants.
+- Diff **bases** against `workspace/pristine`. Diff **CSR+ scenes** against `workspace/csr` (not pristine).
+- Multi-base general add-ons: multiple `compatibleBases` only if bytes are identical on each base; else **per-base packs**.
 
-## Building a CSR+ scene add-on
+| Goal | Diff baseline | compatibleBases |
+|------|---------------|-----------------|
+| CSR / Highwind **base** release | `workspace/pristine` | n/a (`kind=base`) |
+| CSR+ **scene** add-on | `workspace/csr` | `csr-v0.14.1` |
+| Add-on on Unmodified | `workspace/pristine` | `clean` |
+| Add-on on Highwind only | `workspace/csr-plusplus` | `csr-plusplus-v0.1.1` |
 
-Diff `workspace/csr` vs `workspace/csr-plus` (not pristine) to find what CSR+ still changes beyond CSR, then build one addon per component with `compatibleBases: ["csr-v0.14.1"]`:
+Changelogs: `bases/csr|csr-plus|csr-plusplus/CHANGELOG.md`.
 
-```bash
-python scripts/list_changed_field_maps.py \
-  --pristine workspace/csr/FINALFANTASY7_DN.bin \
-  --patched workspace/csr-plus/FINALFANTASY7_DN.bin \
-  --flavor csr-plus-increment -o workspace/csr-plus-increment-field-diff.json
+## Workspace images missing?
 
-python scripts/build_field_map_pack.py \
-  --pristine workspace/csr/FINALFANTASY7_D1.bin \
-  --flavor-image workspace/csr-plus/FINALFANTASY7_D1.bin \
-  --files FIELD/<MAP>.DAT \
-  --pack-id csr-plus-scene-<name>-v0.1.0 \
-  --name "CSR+ scene — <Name>" --group-label "CSR+ scene — <Name>" \
-  --blurb "..." --exclusive-group csr-plus-scene-<name> \
-  --compatible-bases csr-v0.14.1
-```
-
-`build_field_map_pack.py` allows a patched map file to grow past the pristine byte count as long as it still fits the already-allocated ISO sector span — it patches the ISO9660 directory record's size field via `psx_mode2_iso.replace_file`. Growth needing more sectors still raises (real ISO rebuild required).
-
-## Day-to-day
-
-Release steps: **root README** (“Release a base”). Skill: `.agents/skills/release-csr-base`.
+Reconstruct published base images (no new dump):
 
 ```bash
-python scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
-# then builder/ + bases/<base>/CHANGELOG.md → commit → push
+mkdir -p workspace/csr workspace/csr-plusplus
+python3 scripts/apply_layer.py \
+  workspace/pristine/FINALFANTASY7_D1.bin \
+  builder/csr-v0.14.1/layers/disc1.layer.json \
+  -o workspace/csr/FINALFANTASY7_D1.bin
+# Disc 2/3 and Highwind: same pattern with discN + csr-plusplus-v0.1.1
 ```
+
+`workspace/csr-plus/` = Makou source for scene **increments** only. Do **not** run `build_csr_base_layers.py` on it for a normal publish.
 
 ## Paths
 
 | What | Where |
 |------|--------|
 | Pristine discs | `workspace/pristine/FINALFANTASY7_DN.bin` |
-| Patched images | `workspace/csr/`, `workspace/csr-plus/`, `workspace/csr-plusplus/` |
+| Patched images | `workspace/csr/`, `workspace/csr-plus/` (increment source), `workspace/csr-plusplus/` |
 | Published layers | `builder/<slug>-v<ver>/` + `builder/manifest.json` |
-| Build script | `scripts/build_csr_base_layers.py` |
-| Scene-pack prototype | `scripts/list_changed_field_maps.py`, `field_jump_graph.py`, `build_field_map_pack.py` |
-| Empty workspace dirs | `.gitkeep` (not README.md) |
+| Skills | `.agents/skills/*` |
+| Evidence (optional) | `docs/windows-last-output.txt` |
 
-## After a CSR base id changes
+## After a CSR / Highwind base id changes
 
-Tell the user to rebuild Field encounters in **Final-Fantasy-7-Modding** so add-ons stay compatible with the new `csr-*-vX.Y.Z` ids.
+Rebuild Field/World encounter packs in **Final-Fantasy-7-Modding** (`ship-field-encounters` / `ship-world-encounters`) so `compatibleBases` match the new ids.
 
 ## Repo hygiene
 
 - Pages publishes only redirect `index.html` + `builder/`.
 - No PPF / RomPatcher / WINDOWS-INSTRUCTIONS sprawl.
-- Builder blurbs stay short; match homepage Highwind wording when editing copy.
+- Builder blurbs stay short; Highwind wording = separate mod, not CSR+.
+- Skills own checklists; keep this file as an index.

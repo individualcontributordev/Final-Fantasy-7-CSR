@@ -53,39 +53,49 @@ PSX: soft-mod (e.g. [MechaPwn](https://github.com/MechaResearch/MechaPwn)), burn
 
 ## Release a base (maintainers)
 
+Publishable bases: **CSR** and **Highwind** only. CSR+ scene trims are add-ons (see `docs/ADDON_QUICK_REFERENCE.md` / skill `ship-csr-plus-scene`), not a third base.
+
 Local images (gitignored) under `workspace/`:
 
 | Role | Path |
 |------|------|
 | Pristine | `workspace/pristine/FINALFANTASY7_DN.bin` |
 | CSR | `workspace/csr/FINALFANTASY7_DN.bin` |
-| CSR+ | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
 | Highwind | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
+| CSR+ increment source (not a publish base) | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
+
+Missing CSR/Highwind images? Reconstruct from pristine + published layer:
+
+```bash
+python scripts/apply_layer.py \
+  workspace/pristine/FINALFANTASY7_D1.bin \
+  builder/csr-v0.14.1/layers/disc1.layer.json \
+  -o workspace/csr/FINALFANTASY7_D1.bin
+```
 
 ### Clean EDC before layer rebuild (important)
 
-Makou/CDmage injects often **zero Mode2 Form1 footers**. Diffing that bakes EDC zeros into `builder/` layers (ImgBurn verify noise; builder now repairs on apply as a safety net).
+Makou/CDmage injects often **zero Mode2 Form1 footers**. Diffing that bakes EDC zeros into `builder/` layers.
 
-Before `build_csr_base_layers.py`, repair each patched disc against pristine:
+Before `build_csr_base_layers.py`, repair each **base** disc against pristine:
 
 ```bash
 # names must be FINALFANTASY7_D1.bin … (rename Redump titles if needed)
 python scripts/repair_mode2_edc.py \
   --pristine workspace/pristine/FINALFANTASY7_D1.bin \
-  --input workspace/csr-plus/FINALFANTASY7_D1.bin \
+  --input workspace/csr/FINALFANTASY7_D1.bin \
   --in-place
-# repeat for D2/D3 and for csr / csr-plusplus
+# repeat for D2/D3 and for workspace/csr-plusplus
 ```
 
-Then rebuild layers as usual. Expect far fewer records (no thousands of footer-only zeros).
+Then rebuild **one** base at a time. Expect far fewer records (no thousands of footer-only zeros).
 
 ```bash
 cd /c/path/to/Final-Fantasy-7-CSR   # Git Bash on Windows
 git pull
 
-# one base at a time — bump version, update bases/<base>/CHANGELOG.md
+# CSR or Highwind only — bump version, update bases/<base>/CHANGELOG.md
 python scripts/build_csr_base_layers.py workspace/csr --version 0.14.2
-# python scripts/build_csr_base_layers.py workspace/csr-plus --version 0.1.2
 # python scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.2
 
 git add builder/ bases/
@@ -93,9 +103,13 @@ git commit -m "Release CSR v0.14.2."
 git push
 ```
 
+Do **not** run `build_csr_base_layers.py workspace/csr-plus` for a normal publish — that folder is Makou source for CSR+ scene increments.
+
 Pages serves `builder/` JSON for the disc builder. Older packs stay enabled until you set `"enabled": false` in `builder/manifest.json`.
 
-If the published base **id** changed (e.g. `csr-v0.14.2`), rebuild Field encounter packs in **Final-Fantasy-7-Modding** against the new ids.
+If the published base **id** changed (e.g. `csr-v0.14.2`), rebuild Field/World encounter packs in **Final-Fantasy-7-Modding** against the new ids.
+
+Agent checklists: `.agents/skills/release-csr-base`, `ship-csr-plus-scene`, `ship-makou-addon`.
 
 ## Layout
 

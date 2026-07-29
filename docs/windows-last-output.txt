@@ -1,0 +1,5 @@
+# Task: (idle — agent fills COPY-PASTE when a Windows evidence task is active)
+
+# COPY-PASTE (do not edit these lines)
+
+# EVIDENCE (paste below, then save)
