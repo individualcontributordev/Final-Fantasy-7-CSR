@@ -4,8 +4,6 @@ Fast commands for creating builder add-ons from **Makou Reactor edits** (field m
 
 **Scope:** This covers `.DAT` field map edits. For **engine binary patches** (Ghidra MIPS assembly), see `Final-Fantasy-7-Modding/docs/06-new-mod-research.md`.
 
-**Note:** These commands work in Git Bash (Windows) and Zsh/Bash (Mac/Linux). On Windows Git Bash, use `python` instead of `python3`.
-
 ## Setup
 
 ```bash

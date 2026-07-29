@@ -9,9 +9,6 @@ Complete workflow for turning **Makou Reactor field map edits** into builder add
 - Makou Reactor for editing field maps
 - This repo cloned locally
 - Python 3 with required packages
-- Git Bash (Windows) or Zsh/Bash (Mac/Linux)
-
-**Note:** On Windows Git Bash, use `python` instead of `python3` in all commands.
 
 ## Workflow
 
