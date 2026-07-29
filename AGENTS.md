@@ -52,7 +52,7 @@ python scripts/build_field_map_pack.py \
 
 ## Day-to-day
 
-Release steps: **root README** (“Release a base”). Skill: `.cursor/skills/release-csr-base`.
+Release steps: **root README** (“Release a base”). Skill: `.agents/skills/release-csr-base`.
 
 ```bash
 python scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
