@@ -7,7 +7,7 @@ This repo is one part of the stack:
 | Repo | Role |
 |------|------|
 | `individualcontributordev.github.io` | Player site + builder UI |
-| **This repo** | CSR / CSR+ / CSR++ base layers (Pages CDN) |
+| **This repo** | CSR base + Highwind base + CSR+ scene add-ons (Pages CDN) |
 | `Final-Fantasy-7-Modding` | Add-ons (e.g. Field encounter density) + RE notes |
 
 ## How we work
@@ -24,9 +24,9 @@ Builder bases (published in `builder/manifest.json`): **Unmodified** (built into
 
 **CSR+** is no longer a monolithic base. Its extra trims are decomposed into individual `csr-plus-scene-*` add-ons (`compatibleBases: ["csr-v0.14.1"]`) so a CSR-base player can pick only the scenes they want beyond CSR. First one shipped: `csr-plus-scene-aerith-house`.
 
-**CSR++** — very aggressively trimmed CSR+: some story mechanics, option choices, and complete dialogue removal. Retired from the builder (removed from `manifest.json`) — different enough to be its own project, now continued in Makou Reactor. Files (`bases/csr-plusplus/`, `builder/csr-plusplus-v0.1.1/`) stay in the repo, just unpublished.
+**Highwind** (`csr-plusplus-v0.1.1` — formerly called "CSR++") — a full playthrough compressed to ~2-3 hours. Its own separate mod, not a bigger CSR+: some story mechanics, option choices, and complete dialogue removal. Live as a selectable base again (`bases/csr-plusplus/`, `builder/csr-plusplus-v0.1.1/`). Renamed off "CSR++" specifically so it doesn't read as "more CSR" — it doesn't stack with CSR+ scene add-ons (different, incompatible edits). Keep new copy calling it **Highwind**, not CSR++.
 
-Changelogs: `bases/csr|csr-plus|csr-plusplus/CHANGELOG.md` — update when shipping that base or a new CSR+ scene add-on.
+Changelogs: `bases/csr|csr-plus|csr-plusplus/CHANGELOG.md` — update when shipping that base or a new CSR+ scene add-on. (The `csr-plusplus` directory name stays as-is; only the display name changed.)
 
 ## Building a CSR+ scene add-on
 
@@ -78,4 +78,4 @@ Tell the user to rebuild Field encounters in **Final-Fantasy-7-Modding** so add-
 
 - Pages publishes only redirect `index.html` + `builder/`.
 - No PPF / RomPatcher / WINDOWS-INSTRUCTIONS sprawl.
-- Builder blurbs stay short; match homepage CSR++ wording when editing copy.
+- Builder blurbs stay short; match homepage Highwind wording when editing copy.

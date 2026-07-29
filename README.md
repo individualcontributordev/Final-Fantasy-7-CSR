@@ -26,9 +26,9 @@ Skill checks stay (dialogue choices, movement in cutscenes, skips, RNG manip, et
 
 Individual, mixable trims that go further than CSR for a specific scene — pick and choose only the ones you want on top of the CSR base, instead of committing to a whole extra tier. Currently ships one: `csr-plus-scene-aerith-house` (Aerith's house cutscene). More will be added as they're decomposed from the old monolithic CSR+ pack.
 
-### CSR++ (retired from the builder)
+### Highwind (base)
 
-Very aggressively trimmed CSR+: some game story mechanics, option choices, and complete dialogue removal. No longer published to the builder — it's different enough to be its own project, and is being continued separately in Makou Reactor. Files stay in this repo (`bases/csr-plusplus/`, `builder/csr-plusplus-v0.1.1/`) but are unpublished (removed from `builder/manifest.json`).
+A full playthrough compressed to roughly 2-3 hours — its own separate mod, not a bigger CSR+. Story mechanics, option choices, and complete dialogue are cut. Selectable in the builder as a base alongside Unmodified and CSR, but **doesn't stack with CSR+ scene add-ons** — those are different, incompatible edits to the same scenes. Previously published as "CSR++"; renamed so it doesn't read as "more CSR" when picking a base.
 
 ## Changelogs
 
@@ -36,15 +36,15 @@ Very aggressively trimmed CSR+: some game story mechanics, option choices, and c
 |------|-----------|--------------------|
 | CSR (base) | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr-v0.14.1` |
 | CSR+ scene add-ons | [bases/csr-plus/CHANGELOG.md](bases/csr-plus/CHANGELOG.md) | `csr-plus-scene-aerith-house-v0.1.0`, more to come |
-| CSR++ (unpublished) | [bases/csr-plusplus/CHANGELOG.md](bases/csr-plusplus/CHANGELOG.md) | `csr-plusplus-v0.1.1` (files kept, not in manifest) |
+| Highwind (base) | [bases/csr-plusplus/CHANGELOG.md](bases/csr-plusplus/CHANGELOG.md) | `csr-plusplus-v0.1.1` |
 
 ## Play
 
 https://individualcontributor.dev/builder/
 
 1. Clean **NTSC-U** `.bin` (disc auto-detected)
-2. Pick a base: Unmodified or CSR
-3. Add any CSR+ scene add-ons and/or Field/World encounter density
+2. Pick a base: Unmodified, CSR, or Highwind
+3. On CSR: add any CSR+ scene add-ons and/or Field/World encounter density
 4. Build zip → `.bin` + `.cue` + `APPLIED.txt`
 
 Emulator: [DuckStation](https://github.com/stenzek/duckstation/releases) or RetroArch + SwanStation — open the `.cue`.
@@ -60,7 +60,7 @@ Local images (gitignored) under `workspace/`:
 | Pristine | `workspace/pristine/FINALFANTASY7_DN.bin` |
 | CSR | `workspace/csr/FINALFANTASY7_DN.bin` |
 | CSR+ | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
-| CSR++ | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
+| Highwind (was CSR++) | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
 
 ### Clean EDC before layer rebuild (important)
 
