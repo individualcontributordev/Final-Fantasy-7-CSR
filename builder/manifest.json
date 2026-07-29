@@ -17,16 +17,16 @@
       "enabled": true
     },
     {
-      "id": "csr-plusplus-v0.1.1",
+      "id": "highwind-v0.1.1",
       "name": "Highwind v0.1.1",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
       "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut. Separate mod, not CSR+.",
       "format": "ic-layer-v1",
       "discs": {
-        "1": "./csr-plusplus-v0.1.1/layers/disc1.layer.json",
-        "2": "./csr-plusplus-v0.1.1/layers/disc2.layer.json",
-        "3": "./csr-plusplus-v0.1.1/layers/disc3.layer.json"
+        "1": "./highwind-v0.1.1/layers/disc1.layer.json",
+        "2": "./highwind-v0.1.1/layers/disc2.layer.json",
+        "3": "./highwind-v0.1.1/layers/disc3.layer.json"
       },
       "enabled": true
     }
@@ -38,7 +38,6 @@
       "kind": "addon",
       "blurb": "CSR+ trim of Aerith's house cutscene.",
       "format": "ic-layer-v1",
-
       "compatibleBases": [
         "csr-v0.14.1"
       ],
@@ -53,7 +52,6 @@
       "kind": "addon",
       "blurb": "CSR+ trim of Hojo FD manip cutscene.",
       "format": "ic-layer-v1",
-
       "compatibleBases": [
         "csr-v0.14.1"
       ],

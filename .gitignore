@@ -64,3 +64,4 @@ $RECYCLE.BIN/
 .idea/
 .vscode/
 *.code-workspace
+temp/

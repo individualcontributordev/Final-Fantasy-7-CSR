@@ -18,7 +18,7 @@ Agent checklists: `ship-makou-addon` (general), `ship-csr-plus-scene` (CSR+ incr
 | CSR+ **scene** add-on | `workspace/csr` | `csr-v0.14.1` |
 | Add-on on CSR | `workspace/csr` | `csr-v0.14.1` |
 | Add-on on Unmodified | `workspace/pristine` | `clean` |
-| Add-on on Highwind only | `workspace/csr-plusplus` | `csr-plusplus-v0.1.1` |
+| Add-on on Highwind only | `workspace/highwind` | `highwind-v0.1.1` |
 
 Multi-base: one pack with several `compatibleBases` **only if** map bytes are identical on each base; otherwise **per-base packs**.
 

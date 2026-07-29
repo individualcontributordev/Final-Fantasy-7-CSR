@@ -73,6 +73,13 @@ git pull --ff-only
 
 Stop if pull fails.
 
-## On “check results”
+## On “check” / “check results”
 
-Pull → read evidence + published `builder/` / manifest → confirm success or next **single** Windows task. Optional: sanity-check pack JSON / remote manifest after Pages publish — still not a substitute for Windows having run the build.
+Means: **pull the repo(s) and review what Windows committed** (diff, new files, evidence, script output in-repo). Then instruct the **next** single Windows step if the flow continues.
+
+Does **not** mean “verify the live builder/CDN” unless the human explicitly asks for end-of-flow builder/pack verification.
+
+```bash
+git pull --ff-only
+# inspect new commits / docs/windows-last-output.txt / builder changes as applicable
+```

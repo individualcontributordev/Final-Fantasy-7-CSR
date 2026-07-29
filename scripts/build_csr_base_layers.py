@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build ic-layer-v1 packs for one publishable base (csr or csr-plusplus="Highwind").
+"""Build ic-layer-v1 packs for one publishable base (csr or highwind).
 
 Normal publish targets:
 
   python3 scripts/build_csr_base_layers.py workspace/csr --version 0.14.0
-  python3 scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.0 --discs 1,2,3
+  python3 scripts/build_csr_base_layers.py workspace/highwind --version 0.1.0 --discs 1,2,3
 
 workspace/csr-plus is legacy / CSR+ scene increment *source* only — do not use this
 script to publish a monolithic CSR+ base. Ship scenes via build_field_map_pack.py
@@ -47,11 +47,11 @@ BASES = {
         "blurb": "More aggressive cutscene removal.",
         "dir": "workspace/csr-plus",
     },
-    "csr-plusplus": {
-        "slug": "csr-plusplus",
+    "highwind": {
+        "slug": "highwind",
         "name": "Highwind",
-        "blurb": "A full playthrough compressed to roughly 2-3 hours — its own separate mod, not a bigger CSR+.",
-        "dir": "workspace/csr-plusplus",
+        "blurb": "An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+.",
+        "dir": "workspace/highwind",
     },
 }
 
@@ -221,11 +221,12 @@ def build_one_disc(
 
 def main() -> int:
     ap = argparse.ArgumentParser(
-        description="Build CSR/CSR+/Highwind disc layers for the browser builder."
+        description="Build CSR or Highwind disc layers for the browser builder."
     )
     ap.add_argument(
         "base",
-        help="Base directory or slug: workspace/csr | csr | csr-plus | csr-plusplus",
+        help="Base directory or slug: workspace/csr | csr | workspace/highwind | highwind "
+        "(csr-plus is increment source only, not a normal publish base)",
     )
     ap.add_argument(
         "--version",

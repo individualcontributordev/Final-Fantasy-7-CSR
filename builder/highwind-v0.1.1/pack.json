@@ -1,10 +1,10 @@
 {
-  "id": "csr-plusplus-v0.1.1",
+  "id": "highwind-v0.1.1",
   "name": "Highwind",
   "kind": "base",
   "exclusiveGroup": "cutscenes",
   "version": "0.1.1",
-  "blurb": "An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+.",
+  "blurb": "An aggressively trimmed playthrough \u2014 its own separate mod, not a bigger CSR+.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json",

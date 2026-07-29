@@ -2,8 +2,8 @@
 name: release-csr-base
 description: >-
   Builds and publishes CSR or Highwind ic-layer base packs for the disc builder.
-  Use when releasing a CSR base, Highwind (csr-plusplus), bumping csr-v /
-  csr-plusplus versions, running build_csr_base_layers.py, or updating
+  Use when releasing a CSR base, Highwind (highwind), bumping csr-v /
+  highwind versions, running build_csr_base_layers.py, or updating
   builder/manifest.json in Final-Fantasy-7-CSR. Not for CSR+ scene add-ons
   (use ship-csr-plus-scene) and not for publishing a monolithic CSR+ base.
 ---
@@ -17,7 +17,7 @@ description: >-
 | Target | Workspace images | Changelog | Builder slug |
 |--------|------------------|-----------|--------------|
 | **CSR** | `workspace/csr/` | `bases/csr/CHANGELOG.md` | `csr-vX.Y.Z` |
-| **Highwind** | `workspace/csr-plusplus/` | `bases/csr-plusplus/CHANGELOG.md` | `csr-plusplus-vX.Y.Z` |
+| **Highwind** | `workspace/highwind/` | `bases/highwind/CHANGELOG.md` | `highwind-vX.Y.Z` |
 
 Do **not** publish a new monolithic CSR+ base (`workspace/csr-plus` + `build_csr_base_layers.py`). CSR+ trims → skill `ship-csr-plus-scene`.
 
@@ -30,12 +30,12 @@ Do **not** publish a new monolithic CSR+ base (`workspace/csr-plus` + `build_csr
 ## 3. If patched bin missing — reconstruct last published
 
 ```bash
-mkdir -p workspace/csr workspace/csr-plusplus
+mkdir -p workspace/csr workspace/highwind
 python3 scripts/apply_layer.py \
   workspace/pristine/FINALFANTASY7_D1.bin \
   builder/csr-v0.14.1/layers/disc1.layer.json \
   -o workspace/csr/FINALFANTASY7_D1.bin
-# Highwind: builder/csr-plusplus-v0.1.1/layers/discN.layer.json → workspace/csr-plusplus/
+# Highwind: builder/highwind-v0.1.1/layers/discN.layer.json → workspace/highwind/
 # Repeat for disc 2/3 as needed
 ```
 
@@ -43,7 +43,7 @@ Then human edits **that** image in Makou (saves stay under `workspace/<flavor>/`
 
 ## 4. Human (Makou) — one atomic chat task
 
-Open flavor image → edit → save into `workspace/csr/` or `workspace/csr-plusplus/`. Full steps in chat per `mac-human-workflow`. Never commit bins.
+Open flavor image → edit → save into `workspace/csr/` or `workspace/highwind/`. Full steps in chat per `mac-human-workflow`. Never commit bins.
 
 ## 5. EDC repair each disc
 
@@ -52,7 +52,7 @@ python3 scripts/repair_mode2_edc.py \
   --pristine workspace/pristine/FINALFANTASY7_D1.bin \
   --input workspace/csr/FINALFANTASY7_D1.bin \
   --in-place
-# D2/D3; use workspace/csr-plusplus for Highwind
+# D2/D3; use workspace/highwind for Highwind
 ```
 
 ## 6. Build layers (one base at a time)
@@ -61,7 +61,7 @@ python3 scripts/repair_mode2_edc.py \
 git pull --ff-only
 python3 scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
 # Highwind:
-# python3 scripts/build_csr_base_layers.py workspace/csr-plusplus --version X.Y.Z
+# python3 scripts/build_csr_base_layers.py workspace/highwind --version X.Y.Z
 ```
 
 ## 7. Verify
@@ -71,7 +71,7 @@ python3 scripts/build_csr_base_layers.py workspace/csr --version X.Y.Z
 
 ## 8. Changelog + commit/push
 
-Update `bases/csr/CHANGELOG.md` or `bases/csr-plusplus/CHANGELOG.md`. Commit `builder/` + `bases/`; push Pages CDN.
+Update `bases/csr/CHANGELOG.md` or `bases/highwind/CHANGELOG.md`. Commit `builder/` + `bases/`; push Pages CDN.
 
 ## 9. If published **id** changed
 

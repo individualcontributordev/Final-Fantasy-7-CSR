@@ -25,7 +25,7 @@ description: >-
 |------|---------------|-------------------|
 | On Unmodified | `workspace/pristine` | `clean` |
 | On CSR | `workspace/csr` | `csr-v0.14.1` (check manifest) |
-| On Highwind | `workspace/csr-plusplus` | `csr-plusplus-v0.1.1` |
+| On Highwind | `workspace/highwind` | `highwind-v0.1.1` |
 | CSR+ scene | stop → `ship-csr-plus-scene` | `csr-v0.14.1` only |
 
 Missing baseline bins → `apply_layer.py` pristine + published base layer (see `AGENTS.md`).

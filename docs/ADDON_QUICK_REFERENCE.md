@@ -11,7 +11,7 @@ Skills: `ship-makou-addon`, `ship-csr-plus-scene`. Full guide: `docs/CREATE_ADDO
 | CSR+ scene | `workspace/csr/...` | `csr-v0.14.1` |
 | On CSR | `workspace/csr/...` | `csr-v0.14.1` |
 | On Unmodified | `workspace/pristine/...` | `clean` |
-| On Highwind | `workspace/csr-plusplus/...` | `csr-plusplus-v0.1.1` |
+| On Highwind | `workspace/highwind/...` | `highwind-v0.1.1` |
 
 Missing bins: `apply_layer.py` pristine + `builder/<base-id>/layers/discN.layer.json` → `workspace/<flavor>/`.
 
@@ -93,7 +93,7 @@ git push origin main
 |------|-----|
 | Unmodified | `clean` |
 | CSR | `csr-v0.14.1` |
-| Highwind | `csr-plusplus-v0.1.1` |
+| Highwind | `highwind-v0.1.1` |
 
 Latest: `builder/manifest.json` → `bases[].id`. CSR+ is **not** a base.
 
@@ -104,7 +104,7 @@ Latest: `builder/manifest.json` → `bases[].id`. CSR+ is **not** a base.
 | `workspace/pristine/` | Retail NTSC-U (never edit masters carelessly) |
 | `workspace/csr/` | CSR base images |
 | `workspace/csr-plus/` | CSR+ increment **source** (not a publish base) |
-| `workspace/csr-plusplus/` | Highwind images |
+| `workspace/highwind/` | Highwind images |
 | `builder/<pack-id>/` | Published pack |
 | `builder/manifest.json` | Builder catalog |
 

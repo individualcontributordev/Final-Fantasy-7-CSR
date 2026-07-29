@@ -3,7 +3,7 @@
 
 ## Final Fantasy VII PSX & PC CutScenes Removed (CSR)
 
-Category | CSR | CSR+ | CSR++
+Category | CSR | CSR+ | Highwind
 -------- | ------ | ------ | ------
 any% | 🟢 Done | 🔄 WIP | 🔄 WIP
 any% No Slots | 🟢 Done | 🔄 WIP | 🔄 WIP
@@ -36,7 +36,7 @@ An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+.
 |------|-----------|--------------------|
 | CSR (base) | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr-v0.14.1` |
 | CSR+ scene add-ons | [bases/csr-plus/CHANGELOG.md](bases/csr-plus/CHANGELOG.md) | `csr-plus-scene-aerith-house-v0.1.0`, more to come |
-| Highwind (base) | [bases/csr-plusplus/CHANGELOG.md](bases/csr-plusplus/CHANGELOG.md) | `csr-plusplus-v0.1.1` |
+| Highwind (base) | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind-v0.1.1` |
 
 ## Play
 
@@ -63,7 +63,7 @@ Local images (gitignored) under `workspace/`:
 |------|------|
 | Pristine | `workspace/pristine/FINALFANTASY7_DN.bin` |
 | CSR | `workspace/csr/FINALFANTASY7_DN.bin` |
-| Highwind | `workspace/csr-plusplus/FINALFANTASY7_DN.bin` |
+| Highwind | `workspace/highwind/FINALFANTASY7_DN.bin` |
 | CSR+ increment source (not a publish base) | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
 
 Missing CSR/Highwind images? Reconstruct from pristine + published layer:
@@ -87,7 +87,7 @@ python scripts/repair_mode2_edc.py \
   --pristine workspace/pristine/FINALFANTASY7_D1.bin \
   --input workspace/csr/FINALFANTASY7_D1.bin \
   --in-place
-# repeat for D2/D3 and for workspace/csr-plusplus
+# repeat for D2/D3 and for workspace/highwind
 ```
 
 Then rebuild **one** base at a time. Expect far fewer records (no thousands of footer-only zeros).
@@ -98,7 +98,7 @@ git pull
 
 # CSR or Highwind only — bump version, update bases/<base>/CHANGELOG.md
 python scripts/build_csr_base_layers.py workspace/csr --version 0.14.2
-# python scripts/build_csr_base_layers.py workspace/csr-plusplus --version 0.1.2
+# python scripts/build_csr_base_layers.py workspace/highwind --version 0.1.2
 
 git add builder/ bases/
 git commit -m "Release CSR v0.14.2."
@@ -116,7 +116,7 @@ Agent checklists: `.agents/skills/release-csr-base`, `ship-csr-plus-scene`, `shi
 ## Layout
 
 ```
-bases/           CHANGELOG.md per base (csr, csr-plus, csr-plusplus)
+bases/           CHANGELOG.md per base (csr, csr-plus, highwind)
 builder/         published layers + manifest.json (Pages CDN)
 scripts/         build_csr_base_layers.py + layer helpers
 workspace/       local pristine / patched .bins (not committed)
