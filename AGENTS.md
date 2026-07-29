@@ -11,9 +11,10 @@ Cutscene-removed **bases** + CSR+ **scene add-ons** for the disc builder. Player
 ## How we work
 
 - **Windows (human):** runs **all** ops — Makou, disc images, DuckStation, Git Bash, every `python scripts/…`, builds, commits, pushes, publish.
-- **Mac (this chat):** agent only — full steps in chat + skills/docs in repo; optionally verify after Pages publish. Does **not** run the release scripts as the real path (bins live on Windows).
+- **Mac (this chat):** agent only — **commits Windows tasks into the repo first** (`docs/windows-last-output.txt` + scripts), short chat pointer. Does **not** run release scripts as the real path (bins live on Windows).
 - One atomic Windows task per reply; user says **check** / **check results**.
 - On **check**: Mac `git pull`s and reviews **what was committed in the repo**, then next steps. Live builder/CDN verify only when explicitly requested at end of flow.
+- Never give a Windows runbook that exists only in chat (see `.agents/rules/mac-human-workflow.mdc`).
 - Never commit `.bin` / `.cue`. Never ask to paste large outputs into chat.
 - `git pull --ff-only` before acting (both sides).
 - Commits: author `individualcontributordev <contributorindividual@gmail.com>`; no Cursor trailers. Agent may auto commit/push **doc/skill** edits from Mac; **builder/base releases** are committed from Windows after scripts succeed. See `.agents/rules/mac-human-workflow.mdc`.

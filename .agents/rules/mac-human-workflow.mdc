@@ -1,5 +1,5 @@
 ---
-description: Mac agent instructs via chat/repo only; Windows runs all scripts and publishes
+description: Mac commits Windows task to repo first; human pulls and runs; check = pull evidence
 alwaysApply: true
 ---
 
@@ -9,77 +9,67 @@ alwaysApply: true
 
 | Machine | Who | Does |
 |---------|-----|------|
-| **Mac (this chat)** | agent | Plans, writes skills/docs, full Windows steps in **chat** (and repo files when needed). Optionally **verifies after publish** (builder/manifest, pack JSON, Pages). |
-| **Windows** | human | **Everything operational:** Makou edits, disc images, DuckStation, Git Bash, **all** `python scripts/…`, layer builds, commits, pushes, builder publish. |
+| **Mac (this chat)** | agent | Plans; **writes Windows tasks into the repo and pushes** before the human runs them; short chat pointer only. On **check**: pull and review committed work. Builder/CDN verify only if explicitly requested at end of flow. |
+| **Windows** | human | **Everything operational:** Makou, discs, DuckStation, Git Bash, **all** scripts, builds, commits, pushes, publish. |
 
 No Windows Cursor agent.
 
-## Mac must not
+## Hard rule: instructions live in the repo
 
-- Run CSR build/diff/publish scripts against local bins as the real release path
-- Expect workspace `.bin` dumps on the Mac
-- Ask the human to paste large tool output into chat
-- Say “see the handoff” / send them hunting notes for the real CLI
-- Commit `.bin` / `.cue` / ISO
+**Never** give a Windows task that only exists in chat.
 
-Mac **may** edit tracked docs/skills/rules here and push those so Windows can `git pull` instructions. Operational proof of a release is Windows-run + push of `builder/` (etc.).
+Before asking the human to execute:
+
+1. Write **`docs/windows-last-output.txt`** (Goal, steps, COPY-PASTE, empty EVIDENCE) — or the matching skill’s committed checklist if that is the runbook.
+2. Prefer small **scripts** (`scripts/…`, SRP). Put the exact invoke line in COPY-PASTE.
+3. **Commit + push** from Mac.
+4. Chat: one-line goal + “pull and open `docs/windows-last-output.txt`” + **check**.
+
+Mac must not: run CSR release scripts as the real publish path; expect local bins; paste-large-output-into-chat requests; “see the handoff”.
 
 ## One atomic task per reply
 
-Each Mac reply that needs Windows work is **exactly one task**.
+Exactly one Windows task per agent turn.
 
-## Instruct in chat
-
-Chat must include: **Goal**, numbered steps (copy-paste Git Bash), what success looks like, commit/push when needed, and ask them to say **check results**.
-
-Skills under `.agents/skills/` are the checklist source of truth — agent turns skill steps into one Windows task, not a Mac run.
-
-Day-to-day release proof can be light (script OK lines in evidence file). Prefer `docs/windows-last-output.txt` for long output.
-
-## Evidence file layout
+## `docs/windows-last-output.txt` layout
 
 ```
 # Task: short name
 
+# GOAL
+...
+
+# STEPS
+1. ...
+
 # COPY-PASTE (do not edit these lines)
-command_or_path: ...
+command: ...
 
 # EVIDENCE (paste below, then save)
 ```
 
-Simple Makou “open this bin, save here” may be chat-only.
-
-## Commit pattern (Windows) when using the evidence file
-
-1. Agent may prefill `docs/windows-last-output.txt` on Mac and push — **or** Windows creates it while running
-2. Chat gives full steps + block:
+## Windows loop
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 git pull --ff-only
-# do the task; paste evidence under EVIDENCE if used
+# STEPS / COPY-PASTE from docs/windows-last-output.txt
 git add docs/windows-last-output.txt builder/ bases/   # as applicable
 git commit -m "Windows: <task>"
 git push
 ```
 
-3. They say **check results**
+Then say **check**. Never commit `.bin` / `.cue` / ISO.
 
-## Before Mac reads or edits repo docs
+## On “check”
+
+Pull → review committed evidence/diff → next single task in-repo.
+Not live builder/CDN unless explicitly requested.
+
+## Before Mac acts
 
 ```bash
 git pull --ff-only
 ```
 
 Stop if pull fails.
-
-## On “check” / “check results”
-
-Means: **pull the repo(s) and review what Windows committed** (diff, new files, evidence, script output in-repo). Then instruct the **next** single Windows step if the flow continues.
-
-Does **not** mean “verify the live builder/CDN” unless the human explicitly asks for end-of-flow builder/pack verification.
-
-```bash
-git pull --ff-only
-# inspect new commits / docs/windows-last-output.txt / builder changes as applicable
-```
