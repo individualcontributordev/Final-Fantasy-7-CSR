@@ -5,16 +5,16 @@ Fast commands for creating builder add-ons from Makou Reactor edits.
 ## Setup
 
 ```bash
-cd ~/Final-Fantasy-7-CSR/workspace
+cd /path/to/Final-Fantasy-7-CSR/workspace
 mkdir my-addon
 cp /path/to/edited/FINALFANTASY7_D1.bin my-addon/
-cd ~/Final-Fantasy-7-CSR
+cd /path/to/Final-Fantasy-7-CSR
 ```
 
 ## Find changed maps
 
 ```bash
-python3 scripts/list_changed_field_maps.py \
+python scripts/list_changed_field_maps.py \
   --pristine workspace/csr/FINALFANTASY7_D1.bin \
   --patched workspace/my-addon/FINALFANTASY7_D1.bin \
   --flavor my-addon \
@@ -26,7 +26,7 @@ Output shows which FIELD/*.DAT files changed.
 ## Build add-on
 
 ```bash
-python3 scripts/build_field_map_pack.py \
+python scripts/build_field_map_pack.py \
   --pristine workspace/csr/FINALFANTASY7_D1.bin \
   --flavor-image workspace/my-addon/FINALFANTASY7_D1.bin \
   --files FIELD/MAP1.DAT FIELD/MAP2.DAT \
@@ -45,14 +45,14 @@ python3 scripts/build_field_map_pack.py \
 
 ```bash
 # Reconstruct CSR base
-python3 scripts/apply_layer.py \
+python scripts/apply_layer.py \
   workspace/pristine/FINALFANTASY7_D1.bin \
   builder/csr-v0.14.1/layers/disc1.layer.json \
-  -o /tmp/csr-base.bin
+  -o temp/csr-base.bin
 
 # Apply addon and verify
-python3 scripts/apply_layer.py \
-  /tmp/csr-base.bin \
+python scripts/apply_layer.py \
+  temp/csr-base.bin \
   builder/my-addon-v0.1.0/layers/disc1.layer.json \
   --expect workspace/my-addon/FINALFANTASY7_D1.bin
 ```
@@ -118,7 +118,7 @@ Check latest in `builder/manifest.json` → `bases[].id`
 - Check you listed all changed maps in `--files`.
 
 **"Module not found"**
-- Run from repo root: `cd ~/Final-Fantasy-7-CSR`
+- Run from repo root: `cd /path/to/Final-Fantasy-7-CSR`
 - Scripts use relative imports.
 
 ---
@@ -131,7 +131,7 @@ Check latest in `builder/manifest.json` → `bases[].id`
 | `workspace/csr/` | CSR base discs (built from pristine + CSR layers) |
 | `workspace/csr-plus/` | CSR+ discs (built from pristine + CSR + CSR+ layers) |
 | `workspace/csr-plusplus/` | Highwind discs |
-| `workspace/my-addon/` | Your Makou-edited discs |
+| `workspace/my-addon/` | Your edited discs from Makou Reactor |
 | `builder/csr-v0.14.1/` | Published CSR base layers |
 | `builder/my-addon-v0.1.0/` | Your new addon (created by script) |
 | `builder/manifest.json` | Builder catalog (auto-updated by script) |

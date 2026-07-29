@@ -4,28 +4,27 @@ Complete workflow for turning Makou Reactor field map edits into builder add-on 
 
 ## Prerequisites
 
-- Makou Reactor on Windows for editing
-- Mac with this repo cloned
+- Makou Reactor for editing field maps
+- This repo cloned locally
 - Python 3 with required packages
 
 ## Workflow
 
-### 1. Edit in Makou Reactor (Windows)
+### 1. Edit in Makou Reactor
 
 1. Open your disc image in Makou Reactor
 2. Navigate to the field maps you want to edit
 3. Make your changes (scripts, walkmesh, encounters, models, etc.)
 4. **File → Save** (or Ctrl+S) to write changes to the disc image
-5. Copy the modified `.bin` file to your Mac
 
 **Tip:** Keep notes of which maps you edited for the next step.
 
 ---
 
-### 2. Transfer to Mac workspace
+### 2. Set up workspace
 
 ```bash
-cd ~/Final-Fantasy-7-CSR/workspace
+cd /path/to/Final-Fantasy-7-CSR/workspace
 mkdir my-addon-name  # descriptive name for your changes
 cp /path/to/modified/FINALFANTASY7_D1.bin my-addon-name/
 ```
@@ -37,9 +36,9 @@ cp /path/to/modified/FINALFANTASY7_D1.bin my-addon-name/
 Compare your edited disc against the CSR base to find which FIELD maps changed:
 
 ```bash
-cd ~/Final-Fantasy-7-CSR
+cd /path/to/Final-Fantasy-7-CSR
 
-python3 scripts/list_changed_field_maps.py \
+python scripts/list_changed_field_maps.py \
   --pristine workspace/csr/FINALFANTASY7_D1.bin \
   --patched workspace/my-addon-name/FINALFANTASY7_D1.bin \
   --flavor my-addon \
@@ -65,7 +64,7 @@ If you edited against pristine/Unmodified instead, change `--pristine` to `works
 If your changes span multiple maps, verify they're a connected scene:
 
 ```bash
-python3 scripts/field_jump_graph.py \
+python scripts/field_jump_graph.py \
   workspace/my-addon-field-diff.json \
   -o workspace/my-addon-graph.json
 ```
@@ -79,7 +78,7 @@ This shows which maps gateway/MAPJUMP to each other. One connected component = o
 Extract just the changed maps as an `ic-layer-v1` pack:
 
 ```bash
-python3 scripts/build_field_map_pack.py \
+python scripts/build_field_map_pack.py \
   --pristine workspace/csr/FINALFANTASY7_D1.bin \
   --flavor-image workspace/my-addon-name/FINALFANTASY7_D1.bin \
   --files FIELD/MIDEEL_1.DAT FIELD/MIDEEL_2.DAT FIELD/JUMIN.DAT \
@@ -117,14 +116,14 @@ Apply your addon on top of CSR base and verify it matches your Makou disc:
 
 ```bash
 # Reconstruct CSR base from pristine + CSR layer
-python3 scripts/apply_layer.py \
+python scripts/apply_layer.py \
   workspace/pristine/FINALFANTASY7_D1.bin \
   builder/csr-v0.14.1/layers/disc1.layer.json \
-  -o /tmp/csr-base.bin
+  -o temp/csr-base.bin
 
 # Apply your addon
-python3 scripts/apply_layer.py \
-  /tmp/csr-base.bin \
+python scripts/apply_layer.py \
+  temp/csr-base.bin \
   builder/my-addon-scene-v0.1.0/layers/disc1.layer.json \
   --expect workspace/my-addon-name/FINALFANTASY7_D1.bin
 ```
