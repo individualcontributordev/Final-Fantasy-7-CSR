@@ -7,7 +7,7 @@
       "name": "CSR v0.14.1",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "CutScenes Removed \u2014 skill checks kept.",
+      "blurb": "Cutscenes removed, skill checks kept.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./csr-v0.14.1/layers/disc1.layer.json",
@@ -21,7 +21,7 @@
       "name": "Highwind v0.1.1",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "An aggressively trimmed playthrough \u2014 its own separate mod, not a bigger CSR. Story mechanics, choices, and complete dialogue are cut. Doesn't stack with CSR+ scene add-ons (different, incompatible edits to the same scenes).",
+      "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut. Separate mod, not CSR+.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./csr-plusplus-v0.1.1/layers/disc1.layer.json",
@@ -34,9 +34,9 @@
   "addons": [
     {
       "id": "csr-plus-scene-aerith-house-v0.1.0",
-      "name": "CSR+ scene \u2014 Aerith's house",
+      "name": "CSR+ Aerith's house",
       "kind": "addon",
-      "blurb": "Adds the CSR+ trim of the Aerith's house cutscene on top of the CSR base.",
+      "blurb": "CSR+ trim of Aerith's house cutscene.",
       "format": "ic-layer-v1",
 
       "compatibleBases": [
@@ -49,9 +49,9 @@
     },
     {
       "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
-      "name": "CSR+ scene \u2014 Hojo FD manip",
+      "name": "CSR+ Hojo FD manip",
       "kind": "addon",
-      "blurb": "Adds the CSR+ trim of the Hojo FD manip cutscene on top of the CSR base.",
+      "blurb": "CSR+ trim of Hojo FD manip cutscene.",
       "format": "ic-layer-v1",
 
       "compatibleBases": [
@@ -67,7 +67,7 @@
     {
       "id": "csr-plus",
       "name": "CSR+ (all scenes)",
-      "blurb": "Every individual CSR+ scene trim, applied automatically to whichever disc you're building.",
+      "blurb": "All CSR+ scene trims, auto-applied per disc.",
       "compatibleBases": [
         "csr-v0.14.1"
       ],

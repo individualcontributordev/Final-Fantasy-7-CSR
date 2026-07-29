@@ -1,9 +1,9 @@
 {
   "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
-  "name": "CSR+ scene \u2014 Hojo FD manip",
+  "name": "CSR+ Hojo FD manip",
   "kind": "addon",
   "version": "0.1.0",
-  "blurb": "Adds the CSR+ trim of the Hojo FD manip cutscene on top of the CSR base.",
+  "blurb": "CSR+ trim of Hojo FD manip cutscene.",
   "format": "ic-layer-v1",
 
   "compatibleBases": [

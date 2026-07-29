@@ -1,9 +1,9 @@
 {
   "id": "csr-plus-scene-aerith-house-v0.1.0",
-  "name": "CSR+ scene \u2014 Aerith's house",
+  "name": "CSR+ Aerith's house",
   "kind": "addon",
   "version": "0.1.0",
-  "blurb": "Adds the CSR+ trim of the Aerith's house cutscene on top of the CSR base.",
+  "blurb": "CSR+ trim of Aerith's house cutscene.",
   "format": "ic-layer-v1",
 
   "compatibleBases": [
