@@ -1,0 +1,34 @@
+---
+description: Never add Cursor attribution trailers to git commits or PRs
+alwaysApply: true
+---
+
+# No Cursor commit trailers
+
+Do **not** add Cursor attribution to commits or pull requests.
+
+## Forbidden in commit messages and PR bodies
+
+- `Made-with: Cursor`
+- `Made with Cursor`
+- `Co-authored-by: Cursor <cursoragent@cursor.com>`
+- Any `--trailer` flag for Cursor attribution
+- Any similar Cursor/agent attribution line
+
+## When committing
+
+- Write plain commit messages only — subject and body the user requested, nothing else.
+- Do not pass `--trailer` to `git commit`.
+- Do not append attribution “helpfully” at the end of messages.
+
+## When creating PRs
+
+- Do not add Cursor attribution footers to `gh pr create --body`.
+
+## Enforcement
+
+This repo uses `.githooks/prepare-commit-msg` to strip Cursor trailers if they slip through. After clone:
+
+```bash
+git config core.hooksPath .githooks
+```
