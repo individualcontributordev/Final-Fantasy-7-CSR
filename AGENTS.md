@@ -79,6 +79,11 @@ python3 scripts/apply_layer.py \
 
 Rebuild Field/World encounter packs in **Final-Fantasy-7-Modding** (`ship-field-encounters` / `ship-world-encounters`) so `compatibleBases` match the new ids.
 
+## Auggie layout
+
+Canonical agent files: **`.agents/rules/`**, **`.agents/skills/`** (edit here only).
+**`.augment/rules`** and **`.augment/skills`** are symlinks to those dirs so Auggie loads them. Do not duplicate trees under `.augment/`.
+
 ## Repo hygiene
 
 - Pages publishes only redirect `index.html` + `builder/`.
