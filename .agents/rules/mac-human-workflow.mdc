@@ -20,10 +20,10 @@ No Windows Cursor agent.
 
 Before asking the human to execute:
 
-1. Write **`docs/windows-last-output.txt`** (Goal, steps, COPY-PASTE, empty EVIDENCE) — or the matching skill’s committed checklist if that is the runbook.
+1. Write **`docs/windows-last-task.md`** (Goal, steps, COPY-PASTE, empty EVIDENCE) — or the matching skill’s committed checklist if that is the runbook.
 2. Prefer small **scripts** (`scripts/…`, SRP). Put the exact invoke line in COPY-PASTE.
 3. **Commit + push** from Mac.
-4. Chat: one-line goal + “pull and open `docs/windows-last-output.txt`” + **check**.
+4. Chat: one-line goal + “pull and open `docs/windows-last-task.md`” + **check**.
 
 Mac must not: run CSR release scripts as the real publish path; expect local bins; paste-large-output-into-chat requests; “see the handoff”.
 
@@ -31,30 +31,17 @@ Mac must not: run CSR release scripts as the real publish path; expect local bin
 
 Exactly one Windows task per agent turn.
 
-## `docs/windows-last-output.txt` layout
+## `docs/windows-last-task.md` layout (markdown)
 
-```
-# Task: short name
-
-# GOAL
-...
-
-# STEPS
-1. ...
-
-# COPY-PASTE (do not edit these lines)
-command: ...
-
-# EVIDENCE (paste below, then save)
-```
+Real markdown: `# Task`, `## Goal`, `## Steps`, `## Copy-paste` (bash fence), `## Evidence`.
 
 ## Windows loop
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 git pull --ff-only
-# STEPS / COPY-PASTE from docs/windows-last-output.txt
-git add docs/windows-last-output.txt builder/ bases/   # as applicable
+# STEPS / COPY-PASTE from docs/windows-last-task.md
+git add docs/windows-last-task.md builder/ bases/   # as applicable
 git commit -m "Windows: <task>"
 git push
 ```
