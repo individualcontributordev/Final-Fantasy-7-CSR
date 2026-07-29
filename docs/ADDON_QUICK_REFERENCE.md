@@ -1,6 +1,8 @@
 # Add-on Creation Quick Reference
 
-Fast commands for creating builder add-ons from Makou Reactor edits.
+Fast commands for creating builder add-ons from **Makou Reactor edits** (field map scripts/data).
+
+**Scope:** This covers `.DAT` field map edits. For **engine binary patches** (Ghidra MIPS assembly), see `Final-Fantasy-7-Modding/docs/06-new-mod-research.md`.
 
 **Note:** These commands work in Git Bash (Windows) and Zsh/Bash (Mac/Linux). On Windows Git Bash, use `python` instead of `python3`.
 
@@ -145,3 +147,17 @@ Check latest in `builder/manifest.json` → `bases[].id`
 - Full guide: `docs/CREATE_ADDON_FROM_MAKOU.md`
 - CSR+ scene addon example: `notes/2026-07-28-csr-plus-increment-pivot.md`
 - Field map tools: `scripts/list_changed_field_maps.py`, `field_jump_graph.py`
+
+---
+
+## Two Workflows: Makou vs Ghidra
+
+| Aspect | Makou Reactor (this doc) | Ghidra Binary Patches |
+|--------|--------------------------|------------------------|
+| **What** | Field map scripts, walkmesh, encounters, models | MIPS assembly in game engines |
+| **Files** | `FIELD/*.DAT` (individual maps) | `FIELD.BIN`, `WORLD.BIN` (compressed engines) |
+| **Tool** | Makou Reactor | Ghidra + hex patches |
+| **Output** | Modified disc → extract changed `.DAT` files | `.hex` patch files → apply + rebuild engine |
+| **Example** | CSR+ scene add-ons | Field encounter rates (RCnt2 stub) |
+| **Docs** | This file | `Final-Fantasy-7-Modding/docs/06-new-mod-research.md` |
+

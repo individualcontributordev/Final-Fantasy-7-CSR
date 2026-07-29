@@ -1,6 +1,8 @@
 # Creating Add-ons from Makou Reactor Edits
 
-Complete workflow for turning Makou Reactor field map edits into builder add-on packs.
+Complete workflow for turning **Makou Reactor field map edits** into builder add-on packs.
+
+**Note:** This guide covers **field map script/data edits** (`.DAT` files via Makou Reactor). For **engine binary patches** (MIPS assembly in `FIELD.BIN`/`WORLD.BIN` via Ghidra), see `Final-Fantasy-7-Modding/docs/06-new-mod-research.md` instead.
 
 ## Prerequisites
 
