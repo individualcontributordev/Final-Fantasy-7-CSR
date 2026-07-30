@@ -1,0 +1,64 @@
+---
+description: Mac commits Windows task to repo first; human pulls and runs; check = pull evidence
+alwaysApply: true
+---
+
+# Mac agent / human Windows workflow
+
+## Roles (strict)
+
+| Machine | Who | Does |
+|---------|-----|------|
+| **Mac (this chat)** | agent | Plans; **writes Windows tasks into the repo and pushes** before the human runs them; short chat pointer only. On **check**: pull and review committed work. Builder/CDN verify only if explicitly requested at end of flow. |
+| **Windows** | human | **Everything operational:** Makou, discs, DuckStation, Git Bash, **all** scripts, builds, commits, pushes, publish. |
+
+No Windows Cursor agent.
+
+## Hard rule: instructions live in the repo
+
+**Never** give a Windows task that only exists in chat.
+
+Before asking the human to execute:
+
+1. Write **`docs/windows-last-task.md`** (Goal, steps, COPY-PASTE, empty EVIDENCE) — or the matching skill’s committed checklist if that is the runbook.
+2. Prefer small **scripts** (`scripts/…`, SRP). Put the exact invoke line in COPY-PASTE.
+3. **Commit + push** from Mac.
+4. Chat: one-line goal + “pull and open `docs/windows-last-task.md`” + **check**.
+
+Mac must not: run CSR release scripts as the real publish path; expect local bins; paste-large-output-into-chat requests; “see the handoff”.
+
+## One atomic task per reply
+
+Exactly one Windows task per agent turn.
+
+## `docs/windows-last-task.md` layout (markdown)
+
+Real markdown: `# Task`, `## Goal`, `## Steps`, `## Copy-paste` (bash fence), `## Evidence`.
+
+## Windows loop
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git pull --ff-only
+# STEPS / COPY-PASTE from docs/windows-last-task.md
+git add docs/windows-last-task.md builder/ bases/   # as applicable
+git commit -m "Windows: <task>"
+git push
+```
+
+Then say **check**. Never commit `.bin` / `.cue` / ISO.
+
+## On “check”
+
+Pull → review committed evidence/diff → next single task in-repo.
+Not live builder/CDN unless explicitly requested.
+
+Confirmed RE/playtest conclusions that belong in **Final-Fantasy-7-Modding** (addresses, watches, stub behavior) must be journaled there under `docs/findings/` the same turn — do not leave them only in chat (Modding rule `capture-research-findings`).
+
+## Before Mac acts
+
+```bash
+git pull --ff-only
+```
+
+Stop if pull fails.
