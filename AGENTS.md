@@ -86,7 +86,7 @@ Rebuild Field/World encounter packs in **Final-Fantasy-7-Modding** (`ship-field-
 | **`.agents/rules/`**, **`.agents/skills/`** | **Canonical copies** in this repo — edit only here |
 | **`.augment/rules`**, **`.augment/skills`** | Relative symlinks → `../.agents/rules` / `../.agents/skills` (Auggie load path) |
 
-No machine-absolute paths. Windows: `git config --global core.symlinks true`, then `git checkout -- .augment` (or `mklink /D` from `.augment` to `..\.agents\…` if needed). Do not duplicate content under `.augment/`.
+No machine-absolute paths. Windows **Git Bash**: `git config --global core.symlinks true`, then `git checkout -- .augment`; if still plain text, `cd .augment && rm -rf rules skills && ln -s ../.agents/rules rules && ln -s ../.agents/skills skills`. Do not duplicate content under `.augment/`. Full steps: Modding `docs/windows-last-task.md` when that task is active, or this section.
 
 ## Repo hygiene
 
