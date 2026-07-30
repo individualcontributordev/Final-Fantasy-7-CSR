@@ -81,13 +81,29 @@ git push origin main
 
 ## Update an existing CSR+ scene
 
-Skill detail: `ship-csr-plus-scene` → **Update existing**.
+Skill: `ship-csr-plus-scene` → **Update existing**. Preferred tool:
+`scripts/update_addon_from_builder_zip.py`.
 
-1. Makou-edit maps on CSR / `workspace/csr-plus` (scope = `pack.json` `files`).
-2. Diff baseline remains **CSR** (`workspace/csr`), not pristine.
-3. **Bump pack id** (`…-v0.1.0` → `…-v0.1.1`), rebuild with `build_field_map_pack.py`.
-4. Disable/remove old id in `builder/manifest.json`; swap id in preset `csr-plus`.
-5. `verify_builder_config.py --base csr-v0.14.1 --addon <new-id>` → PASS.
+1. Builder: pristine disc + **CSR** + **only** that scene add-on → zip → unzip.
+2. Makou: open extract `.bin`, edit, save in the same folder (keep `APPLIED.txt`).
+3. Rebuild (APPLIED-only config; default **patch** bump):
+
+```bash
+python3 scripts/update_addon_from_builder_zip.py "/path/to/extract-or.bin"
+# python3 scripts/update_addon_from_builder_zip.py "/path/to/extract" --version 0.2.0
+```
+
+4. `verify_builder_config.py --base csr-v0.14.1 --addon <new-id>` → PASS.
+5. Playtest layer stack (no site rebuild required):
+
+```bash
+mkdir -p temp
+python3 scripts/apply_layer.py workspace/pristine/FINALFANTASY7_D1.bin \
+  builder/csr-v0.14.1/layers/disc1.layer.json -o temp/csr-d1.bin
+python3 scripts/apply_layer.py temp/csr-d1.bin \
+  builder/<new-id>/layers/disc1.layer.json -o temp/play-d1.bin
+```
+
 6. Changelog + commit `builder/` + push.
 
 Do not overwrite a shipped pack id in place for a real release.

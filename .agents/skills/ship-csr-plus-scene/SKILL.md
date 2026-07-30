@@ -23,75 +23,42 @@ New **or updated** CSR+ field-map trim as a **checkbox** add-on on **CSR only**.
 
 ---
 
-## Update existing
+## Update existing (preferred: builder zip)
 
-Use this when the pack already lives under `builder/csr-plus-scene-*-v…/` (example: `csr-plus-scene-aerith-house-v0.1.0` → `FIELD/EALS_1.DAT`).
+Use when the pack already lives under `builder/csr-plus-scene-*-v…/`
+(example: `csr-plus-scene-aerith-house-v0.1.0` → `FIELD/EALS_1.DAT`).
 
-### U0. Baseline images
+### U1. Builder → Makou
 
-- Diff baseline = **CSR**, not pristine: `workspace/csr/FINALFANTASY7_DN.bin`
-- Edited image = your Makou save: usually `workspace/csr-plus/FINALFANTASY7_DN.bin` (or a dedicated workspace copy)
-- Reconstruct CSR if missing:
+1. https://individualcontributor.dev/builder/ — pristine disc N, base **CSR**,
+   enable **only** the scene add-on you are updating (or CSR+ preset if that is the only change you need).
+2. Build → unzip. Keep `.bin` + `APPLIED.txt` in the same folder.
+3. Open the `.bin` in Makou. Edit maps for that scene only. **Save back into the same extract folder.**
 
-```bash
-python3 scripts/apply_layer.py \
-  workspace/pristine/FINALFANTASY7_DN.bin \
-  builder/csr-v0.14.1/layers/discN.layer.json \
-  -o workspace/csr/FINALFANTASY7_DN.bin
-```
+### U2. Rebuild pack from the edited zip
 
-### U1. Edit in Makou
-
-1. Open the **CSR** (or current csr-plus working) disc image in Makou.
-2. Edit only maps that belong to this scene (see `pack.json` → `files`, e.g. `FIELD/EALS_1.DAT`).
-3. Save the image to `workspace/csr-plus/` (or your working path). Do **not** overwrite `workspace/pristine` or publish CSR-plus as a base.
-
-### U2. Confirm which maps changed (optional if scope unchanged)
+Config comes **only** from `APPLIED.txt` (same idea as Modding `verify_built_disc.py`).
+Diff baseline = the **base** named in APPLIED (CSR), not pristine and not “base + other addons”.
+Map list comes from the old pack’s `pack.json` `files`. Version defaults to **patch +1**.
 
 ```bash
-python3 scripts/list_changed_field_maps.py \
-  --pristine workspace/csr/FINALFANTASY7_DN.bin \
-  --patched workspace/csr-plus/FINALFANTASY7_DN.bin \
-  --flavor csr-plus-increment \
-  -o workspace/csr-plus-increment-field-diff-dN.json
+cd "$(git rev-parse --show-toplevel)"
+git pull --ff-only
+
+# path = extract folder or the edited .bin (APPLIED.txt must sit next to the .bin)
+python3 scripts/update_addon_from_builder_zip.py "/path/to/ff7-builder-d1+csr-…+aerith-…/"
+
+# major/minor bump instead of patch:
+# python3 scripts/update_addon_from_builder_zip.py "/path/to/extract" --version 0.2.0
+
+# several add-ons in APPLIED — pick which to bump:
+# python3 scripts/update_addon_from_builder_zip.py "/path/to/extract" --addon csr-plus-scene-aerith-house
 ```
 
-Keep `--files` to this scene’s maps only (do not swallow unrelated csr-plus deltas into one pack).
+Script writes `builder/<stem>-vNEW/`, updates `manifest.json`, sets old pack
+`enabled: false`, swaps id in preset `csr-plus`.
 
-### U3. Version bump + rebuild
-
-**Bump the pack id** (semver in the id). Do not silently overwrite a shipped `…-v0.1.0` id if players may have old zips — new folder, new id.
-
-```bash
-# Example: Aerith house v0.1.0 → v0.1.1
-OLD=csr-plus-scene-aerith-house-v0.1.0
-NEW=csr-plus-scene-aerith-house-v0.1.1
-
-python3 scripts/build_field_map_pack.py \
-  --pristine workspace/csr/FINALFANTASY7_DN.bin \
-  --flavor-image workspace/csr-plus/FINALFANTASY7_DN.bin \
-  --files FIELD/EALS_1.DAT \
-  --pack-id "$NEW" \
-  --version 0.1.1 \
-  --disc 1 \
-  --name "CSR+ Aerith's house" \
-  --group-label "CSR+ Aerith's house" \
-  --blurb "CSR+ trim of Aerith's house cutscene." \
-  --no-exclusive-group \
-  --compatible-bases csr-v0.14.1
-```
-
-Rules unchanged: omit `exclusiveGroup`; `compatibleBases` = `csr-v0.14.1` only.
-
-### U4. Manifest + preset
-
-`build_field_map_pack.py` registers `$NEW` in `builder/manifest.json`. Then:
-
-1. Set old pack `"enabled": false` (or remove) so the builder does not list two Aerith checkboxes.
-2. In preset `csr-plus` → `addons`, replace `$OLD` with `$NEW`.
-3. Leave other scene ids untouched.
-
-### U5. Verify (required)
+### U3. Verify (required)
 
 ```bash
 python3 scripts/verify_builder_config.py \
@@ -99,16 +66,41 @@ python3 scripts/verify_builder_config.py \
   --disc N \
   --base csr-v0.14.1 \
   --addon csr-plus-scene-<name>-vX.Y.Z
-# PASS required. Must fail on --base highwind-v… / clean if someone mistakes baselines.
+# PASS required
 ```
 
-Optional: extract `FIELD/<MAP>.DAT` from csr + new layer and compare to Makou output bytes.
+### U4. Playtest without the site builder (layer stack)
 
-### U6. Changelog + ship
+Same stack the site will apply: pristine → base layer → **new** add-on layer only.
+
+```bash
+mkdir -p temp
+python3 scripts/apply_layer.py \
+  workspace/pristine/FINALFANTASY7_D1.bin \
+  builder/csr-v0.14.1/layers/disc1.layer.json \
+  -o temp/csr-d1.bin
+python3 scripts/apply_layer.py \
+  temp/csr-d1.bin \
+  builder/csr-plus-scene-<name>-vX.Y.Z/layers/disc1.layer.json \
+  -o temp/play-d1.bin
+# open temp/play-d1.bin (make a .cue if needed) in DuckStation
+```
+
+Iterate: fix in Makou on the **builder extract** again → re-run
+`update_addon_from_builder_zip.py` (bump again or pass `--version`) → re-apply layers.
+
+### U5. Changelog + ship
 
 - Note the bump in `bases/csr-plus/CHANGELOG.md`
-- Commit `builder/` (+ changelog). Push. Pages picks up CDN.
-- One atomic DuckStation check on CSR + this checkbox (human **check**).
+- Commit `builder/` (+ changelog). Push. Pages CDN.
+- Optional: one more DuckStation pass from builder zip after Pages updates.
+
+### Manual fallback (no builder zip)
+
+Still valid: Makou on `workspace/csr-plus`, then
+`build_field_map_pack.py` with `--pristine workspace/csr/…`, explicit
+`--files` / `--pack-id` / version, then hand-edit manifest/preset. Prefer
+`update_addon_from_builder_zip.py` for day-to-day updates.
 
 ---
 

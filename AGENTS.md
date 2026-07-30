@@ -24,7 +24,7 @@ Cutscene-removed **bases** + CSR+ **scene add-ons** for the disc builder. Player
 | ID | Workflow | Skill |
 |----|----------|--------|
 | A | CSR base update → build → release | `.agents/skills/release-csr-base` (target **CSR**) |
-| B | CSR+ scene add-on (new **or update**) → build → release | `.agents/skills/ship-csr-plus-scene` |
+| B | CSR+ scene add-on (new **or update**) → build → release | `.agents/skills/ship-csr-plus-scene` (`scripts/update_addon_from_builder_zip.py` for updates from a builder zip) |
 | C | Highwind base update → build → release | `.agents/skills/release-csr-base` (target **Highwind**) |
 | D | General Makou FIELD add-on | `.agents/skills/ship-makou-addon` |
 | D′ | Engine binary (Ghidra) | **Modding** `research-new-mod` |

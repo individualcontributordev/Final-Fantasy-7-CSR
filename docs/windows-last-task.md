@@ -1,74 +1,55 @@
-# Task: CSR+ Aerith house — Elmyra dialogue + game moment on entry
+# Task: CSR+ Aerith house — Elmyra dialogue via builder-zip update flow
 
 ## Goal
 
-Update existing add-on csr-plus-scene-aerith-house-v0.1.0 so that when the player
-**enters Aerith's house**, **Elmyra (mom)** shows dialogue the player must close;
-closing it **advances Game Moment** enough that the player can **leave and continue**
-the story (no softlock / blocked exit).
+When the player enters Aerith's house, Elmyra (mom) shows dialogue the player must
+close; closing it advances Game Moment so they can leave and continue.
 
-Makou field-script change on FIELD/EALS_1.DAT, then pack rebuild to v0.1.1.
-
-Skill: .agents/skills/ship-csr-plus-scene → Update existing.
+Use the **builder zip → Makou → update_addon_from_builder_zip.py** workflow
+(skill ship-csr-plus-scene → Update existing).
 
 ## Success
 
-1. Makou: on enter house, Elmyra window appears; player must dismiss it.
-2. After dismiss, Game Moment set so exit / next progression works (record GM value).
-3. Pack csr-plus-scene-aerith-house-v0.1.1 shipped; old v0.1.0 disabled; preset csr-plus uses new id.
-4. verify_builder_config.py PASS for CSR + new addon.
-5. DuckStation one-liner under Evidence. Commit + push. Say **check**.
+1. Builder zip: CSR + CSR+ Aerith's house only; edited in Makou; APPLIED.txt intact.
+2. update_addon_from_builder_zip.py → new pack (default v0.1.1); old disabled; preset ok.
+3. verify_builder_config.py PASS.
+4. Playtest via apply_layer stack (or DuckStation on play bin): enter house → Elmyra
+   dialogue → close → leave OK. Record Game Moment value.
+5. Changelog + commit builder/ + push. Say **check**.
 
-## Preconditions
+## Steps
+
+### 1. Pull
 
     cd "$(git rev-parse --show-toplevel)"
     git pull --ff-only
 
-    test -f workspace/csr/FINALFANTASY7_D1.bin || python3 scripts/apply_layer.py \
-      workspace/pristine/FINALFANTASY7_D1.bin \
-      builder/csr-v0.14.1/layers/disc1.layer.json \
-      -o workspace/csr/FINALFANTASY7_D1.bin
+### 2. Builder → unzip
 
-    mkdir -p workspace/csr-plus
-    # CSR + current Aerith scene as Makou starting point (if you need a fresh working image):
-    python3 scripts/apply_layer.py \
-      workspace/csr/FINALFANTASY7_D1.bin \
-      builder/csr-plus-scene-aerith-house-v0.1.0/layers/disc1.layer.json \
-      -o workspace/csr-plus/FINALFANTASY7_D1.bin
+1. https://individualcontributor.dev/builder/ — load pristine **Disc 1**.
+2. Base **CSR**. Enable **CSR+ Aerith's house** only (or preset if that is fine).
+3. Build → unzip to a folder. Keep .bin + APPLIED.txt together.
 
-## Makou edit (EALS_1)
+### 3. Makou
 
-Open workspace/csr-plus/FINALFANTASY7_D1.bin → field EALS_1 (Aerith house).
+Open the extract .bin → field **EALS_1**.
 
-1. On field entry (script that runs when Cloud enters at this story beat).
-2. Show Elmyra (mom) dialogue; player must close the window (not auto-only).
-3. After close: set Game Moment to the value that unlocks leave/continue.
-   - Prefer the GM written in vanilla or CSR EALS_1 at house-exit / playground beat.
-   - Open CSR or pristine EALS_1 in a second Makou window if needed; copy that GM. Write the number in Evidence.
-4. Confirm door/exit is not blocked by a GM check that never becomes true.
-5. Scope: EALS_1 only unless a second map is required (document if so).
+- On enter: Elmyra dialogue (must close).
+- After close: set Game Moment so exit/continue works (copy GM from CSR/vanilla
+  EALS_1 if unsure). Write GM in Evidence.
+- Save .bin back into the **same extract folder**.
 
-Save ISO to workspace/csr-plus/FINALFANTASY7_D1.bin.
-
-## Rebuild (copy-paste)
+### 4. Rebuild pack from zip (copy-paste)
 
     cd "$(git rev-parse --show-toplevel)"
+    git pull --ff-only
 
-    OLD=csr-plus-scene-aerith-house-v0.1.0
-    NEW=csr-plus-scene-aerith-house-v0.1.1
+    BUILT="/c/path/to/ff7-builder-d1+csr-v0.14.1+csr-plus-scene-aerith-house-v0.1.0"
 
-    python3 scripts/build_field_map_pack.py \
-      --pristine workspace/csr/FINALFANTASY7_D1.bin \
-      --flavor-image workspace/csr-plus/FINALFANTASY7_D1.bin \
-      --files FIELD/EALS_1.DAT \
-      --pack-id "$NEW" \
-      --version 0.1.1 \
-      --disc 1 \
-      --name "CSR+ Aerith's house" \
-      --group-label "CSR+ Aerith's house" \
-      --blurb "CSR+ Aerith's house: Elmyra dialogue on entry; advances game moment so you can leave." \
-      --no-exclusive-group \
-      --compatible-bases csr-v0.14.1
+    python3 scripts/update_addon_from_builder_zip.py "$BUILT"
+    # optional: --version 0.2.0   or   --addon csr-plus-scene-aerith-house
+
+    NEW=csr-plus-scene-aerith-house-v0.1.1   # use id the script printed if different
 
     python3 scripts/verify_builder_config.py \
       --pristine workspace/pristine/FINALFANTASY7_D1.bin \
@@ -76,15 +57,29 @@ Save ISO to workspace/csr-plus/FINALFANTASY7_D1.bin.
       --base csr-v0.14.1 \
       --addon "$NEW"
 
-Manifest: enable NEW; disable OLD; preset csr-plus addons swap OLD → NEW.
-Changelog: bases/csr-plus/CHANGELOG.md. Then git add builder/ + changelog + this file, commit, push.
+### 5. Playtest (layer stack — no re-download)
 
-## Playtest
+    mkdir -p temp
+    python3 scripts/apply_layer.py \
+      workspace/pristine/FINALFANTASY7_D1.bin \
+      builder/csr-v0.14.1/layers/disc1.layer.json \
+      -o temp/csr-d1.bin
+    python3 scripts/apply_layer.py \
+      temp/csr-d1.bin \
+      builder/$NEW/layers/disc1.layer.json \
+      -o temp/play-d1.bin
 
-CSR + CSR+ Aerith house v0.1.1. Enter house → Elmyra talks → close → leave/continue OK.
+Open temp/play-d1.bin in DuckStation (.cue if you need one). Iterate Makou on
+the extract → re-run update script → re-apply if needed.
+
+### 6. Ship
+
+- bases/csr-plus/CHANGELOG.md note for this bump.
+- git add builder/ changelog docs/windows-last-task.md → commit → push.
 
 ## Evidence
 
-    (GM value + which script group)
+    (GM value + script notes)
+    (update_addon_from_builder_zip stdout: new pack id)
     (verify PASS)
     (playtest one-liner)
