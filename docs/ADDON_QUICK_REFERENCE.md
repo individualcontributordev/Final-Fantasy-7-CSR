@@ -79,6 +79,19 @@ git commit -m "Add my-addon-v0.1.0."
 git push origin main
 ```
 
+## Update an existing CSR+ scene
+
+Skill detail: `ship-csr-plus-scene` → **Update existing**.
+
+1. Makou-edit maps on CSR / `workspace/csr-plus` (scope = `pack.json` `files`).
+2. Diff baseline remains **CSR** (`workspace/csr`), not pristine.
+3. **Bump pack id** (`…-v0.1.0` → `…-v0.1.1`), rebuild with `build_field_map_pack.py`.
+4. Disable/remove old id in `builder/manifest.json`; swap id in preset `csr-plus`.
+5. `verify_builder_config.py --base csr-v0.14.1 --addon <new-id>` → PASS.
+6. Changelog + commit `builder/` + push.
+
+Do not overwrite a shipped pack id in place for a real release.
+
 ## Multi-disc / multi-base
 
 - Multi-disc: same `--pack-id`, `--disc 2` or `--disc 3`.
