@@ -65,7 +65,7 @@ else:
 
     # CSR+ scene: disc from APPLIED.txt; bases/labels/baseline inferred
     python3 scripts/build_field_map_pack.py \
-      --edited-image "$EDITED" \
+      --edited-image "D:\Downloads\ff7-builder-d2+csr-v0.14.1+csr-plus-scene-hojo-fd-manip-v0.1.0 (1)\ff7-builder-d2+csr-v0.14.1+csr-plus-scene-hojo-fd-manip-v0.1.0.bin" \
       --changed-maps temp/cota-fd-manip-d2-diff.json \
       --pack-id csr-plus-scene-cota-fd-manip-v0.1.0
 

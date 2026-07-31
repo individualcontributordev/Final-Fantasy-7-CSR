@@ -1,0 +1,20 @@
+{
+  "id": "csr-plus-scene-cota-fd-manip-v0.1.0",
+  "name": "CSR+ COTA FD Manip",
+  "kind": "addon",
+  "version": "0.1.0",
+  "blurb": "CSR+ COTA FD Manip on CSR.",
+  "format": "ic-layer-v1",
+  "groupLabel": "CSR+ COTA FD Manip",
+  "optionLabel": "On",
+  "compatibleBases": [
+    "csr-v0.14.1"
+  ],
+  "files": [
+    "FIELD/BLIN70_4.DAT",
+    "FIELD/LOSLAKE1.DAT"
+  ],
+  "discs": {
+    "2": "./layers/disc2.layer.json"
+  }
+}

@@ -80,6 +80,23 @@
       },
       "enabled": true,
       "version": "0.1.1"
+    },
+    {
+      "id": "csr-plus-scene-cota-fd-manip-v0.1.0",
+      "name": "CSR+ COTA FD Manip",
+      "kind": "addon",
+      "version": "0.1.0",
+      "blurb": "CSR+ COTA FD Manip on CSR.",
+      "format": "ic-layer-v1",
+      "groupLabel": "CSR+ COTA FD Manip",
+      "optionLabel": "On",
+      "compatibleBases": [
+        "csr-v0.14.1"
+      ],
+      "discs": {
+        "2": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc2.layer.json"
+      },
+      "enabled": true
     }
   ],
   "presets": [
@@ -92,7 +109,8 @@
       ],
       "addons": [
         "csr-plus-scene-aerith-house-v0.1.1",
-        "csr-plus-scene-hojo-fd-manip-v0.1.0"
+        "csr-plus-scene-hojo-fd-manip-v0.1.0",
+        "csr-plus-scene-cota-fd-manip-v0.1.0"
       ]
     }
   ]

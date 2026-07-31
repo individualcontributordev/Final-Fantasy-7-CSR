@@ -1,10 +1,8 @@
 # CSR+ scene add-ons — changelog
 
-Player-facing notes for CSR+ checkbox scenes and the builder preset `csr-plus`.
-**Not a base.** Index: [CHANGELOGS.md](../../CHANGELOGS.md).
+## 2026-08-01
 
-Pack versions are independent (`csr-plus-scene-*-vX.Y.Z`). Section headers are
-family notes when one or more scene packs ship.
+- csr-plus-scene-cota-fd-manip-v0.1.0 (disc 2): when leaving the waterfall with Bugen the gang no longer gets a phone call and the FMV is removed. This impacts the existing Final Descent manipulation, specfically the List value increments will be altered.
 
 ## 2026-07-31
 
