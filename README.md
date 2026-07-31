@@ -64,11 +64,12 @@ Local discs (gitignored):
 | Role | Path |
 |------|------|
 | Retail (required) | `pristine/FINALFANTASY7_DN.bin` |
-| Optional CSR cache | `cache/csr/FINALFANTASY7_DN.bin` |
-| Optional Highwind cache | `cache/highwind/FINALFANTASY7_DN.bin` |
+| CSR base cache | `cache/csr/FINALFANTASY7_DN.bin` (auto-built by verify/scripts) |
+| Highwind base cache | `cache/highwind/FINALFANTASY7_DN.bin` |
 | Session edits | builder zip extract (not under pristine/) |
 
-`cache/` is optional — reconstruct from pristine + published layer, or start from a builder zip.
+`cache/` holds reconstructed **bases** for faster verify and add-on rebuilds. First
+`verify_builder_config --base csr-v…` writes `cache/csr/` if missing.
 
 Missing CSR/Highwind images? Reconstruct from pristine + published layer:
 

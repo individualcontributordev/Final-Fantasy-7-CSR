@@ -55,32 +55,38 @@ Changelogs: index [CHANGELOGS.md](CHANGELOGS.md) — bases in `bases/<name>/`, C
 pristine/                 retail ground truth (store once)
 builder zip .bin          session working disc (edit in Makou)
 builder/                  published layers (git)
-cache/csr|highwind|…      optional reconstructed bases — not the workflow owner
-workspace/                LEGACY name for cache/pristine (scripts still accept it)
+cache/csr|highwind|…      reconstructed bases — used by verify + pack builds
 ```
 
 Session work: site builder → unzip → Makou → `update_addon_from_builder_zip.py` (scenes)
-or `build_csr_base_layers.py <edited-folder>` (bases). Do **not** treat cache as the product.
+or `build_csr_base_layers.py <edited-folder>` (bases).
 
-## Optional cache (reconstruct published base)
+## cache/ (scripts use this)
+
+`verify_builder_config.py` and `update_addon_from_builder_zip.py` call
+`local_paths.ensure_cached_base`:
+
+1. If `cache/<flavor>/FINALFANTASY7_DN.bin` exists → load it
+2. Else apply published base layer onto `pristine/` and **write** the cache file
+
+So the first CSR verify on a machine populates `cache/csr/`; later runs hit cache.
+Manual seed (optional):
 
 ```bash
-mkdir -p cache/csr cache/highwind
 python3 scripts/apply_layer.py \
   pristine/FINALFANTASY7_D1.bin \
   builder/csr-v0.14.1/layers/disc1.layer.json \
   -o cache/csr/FINALFANTASY7_D1.bin
-# Disc 2/3 and Highwind: same pattern
 ```
 
-Prefer a **builder zip** (CSR-only / Highwind-only) as the Makou starting image when editing bases. Cache only speeds repeats. Never publish `cache/csr-plus` as a base — CSR+ scenes use `ship-csr-plus-scene`.
+`--no-cache` on verify skips read/write. Never publish cache images; never treat `cache/csr-plus` as a live base.
 
 ## Paths
 
 | What | Where |
 |------|--------|
 | Pristine discs | `pristine/FINALFANTASY7_DN.bin` |
-| Optional base cache | `cache/csr/`, `cache/highwind/` |
+| Base image cache (auto-filled) | `cache/csr/`, `cache/highwind/` |
 | Session edits | builder zip extract (e.g. Downloads) |
 | Published layers | `builder/<slug>-v<ver>/` + `builder/manifest.json` |
 | Skills | `.agents/skills/*` |

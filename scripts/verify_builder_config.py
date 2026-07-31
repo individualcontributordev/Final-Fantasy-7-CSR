@@ -34,7 +34,7 @@ if str(_SCRIPTS) not in sys.path:
 	sys.path.insert(0, str(_SCRIPTS))
 
 from apply_layer import apply_layer  # noqa: E402
-from local_paths import default_pristine_arg  # noqa: E402
+from local_paths import default_pristine_arg, ensure_cached_base  # noqa: E402
 
 
 def _load_manifest(path: Path) -> tuple[Path, dict]:
@@ -64,19 +64,26 @@ def _layer_path(meta: dict, disc: int) -> Path:
 	return (meta["builder_dir"] / str(rel).lstrip("./")).resolve()
 
 
-def _apply_and_check(image: bytearray, layer_path: Path) -> int:
+def _check_records(image: bytes | bytearray, layer_path: Path) -> int:
+	"""Fail unless every layer record already matches image (no write)."""
 	layer = json.loads(layer_path.read_text(encoding="utf-8"))
 	if layer.get("format") != "ic-layer-v1":
 		raise SystemExit(f"{layer_path}: expected ic-layer-v1")
 	records = layer.get("records") or []
-	apply_layer(image, layer)
-	# Confirm every record landed (builder success condition).
 	for rec in records:
 		off = int(rec["offset"])
 		data = bytes.fromhex(rec["hex"])
 		if bytes(image[off : off + len(data)]) != data:
-			raise SystemExit(f"post-apply mismatch in {layer_path.name} @ {off:#x}")
+			raise SystemExit(f"layer mismatch in {layer_path.name} @ {off:#x}")
 	return len(records)
+
+
+def _apply_and_check(image: bytearray, layer_path: Path) -> int:
+	layer = json.loads(layer_path.read_text(encoding="utf-8"))
+	if layer.get("format") != "ic-layer-v1":
+		raise SystemExit(f"{layer_path}: expected ic-layer-v1")
+	apply_layer(image, layer)
+	return _check_records(image, layer_path)
 
 
 def main() -> int:
@@ -120,6 +127,11 @@ def main() -> int:
 		default=None,
 		help="Optional write stacked image (gitignored temp)",
 	)
+	ap.add_argument(
+		"--no-cache",
+		action="store_true",
+		help="Do not read/write cache/<flavor>/ for the base image",
+	)
 	args = ap.parse_args()
 
 	pristine = (
@@ -139,7 +151,6 @@ def main() -> int:
 	print(f"Config: base={base_id} addons={args.addons or []} disc={args.disc}")
 	print(f"Pristine: {pristine}")
 
-	image = bytearray(pristine.read_bytes())
 	total_recs = 0
 	stack: list[str] = []
 
@@ -147,15 +158,23 @@ def main() -> int:
 		if base_id not in catalog:
 			raise SystemExit(f"Unknown base id {base_id!r}. Known: {sorted(catalog)[:20]}…")
 		meta = catalog[base_id]
-		if meta["entry"].get("kind") not in (None, "base") and meta["kind"] != "base":
-			# bases list entries usually kind=base
-			pass
 		lp = _layer_path(meta, args.disc)
-		n = _apply_and_check(image, lp)
+		# Prefer cache/<flavor>/; on miss, apply base layer once and store there.
+		base_bytes, cache_path = ensure_cached_base(
+			base_id=base_id,
+			disc=args.disc,
+			layer_path=lp,
+			pristine=pristine,
+			write_cache=not args.no_cache,
+		)
+		image = bytearray(base_bytes)
+		n = _check_records(image, lp)
 		total_recs += n
-		stack.append(f"base:{base_id} ({lp.name}, {n} records)")
-		print(f"  OK base {base_id} ← {lp.relative_to(meta['builder_dir'])} ({n} records)")
+		where = str(cache_path) if cache_path else str(lp)
+		stack.append(f"base:{base_id} ({n} records via cache/layer)")
+		print(f"  OK base {base_id} ← {lp.relative_to(meta['builder_dir'])} ({n} records, src={where})")
 	else:
+		image = bytearray(pristine.read_bytes())
 		stack.append("base:clean (pristine only)")
 		print("  OK base clean (no base layer)")
 

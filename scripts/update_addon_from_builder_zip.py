@@ -36,10 +36,9 @@ _ROOT = _SCRIPTS.parent
 if str(_SCRIPTS) not in sys.path:
 	sys.path.insert(0, str(_SCRIPTS))
 
-from apply_layer import apply_layer  # noqa: E402
 from bin_diff_to_layer import build_layer  # noqa: E402
 from build_field_map_pack import build_patched_image, write_pack  # noqa: E402
-from local_paths import cache_bin, default_pristine_arg  # noqa: E402
+from local_paths import default_pristine_arg, ensure_cached_base  # noqa: E402
 
 MANIFEST_PATH = _ROOT / "builder" / "manifest.json"
 _MODDING = _ROOT.parent / "Final-Fantasy-7-Modding"
@@ -191,23 +190,20 @@ def _layer_path(meta: dict, disc: int) -> Path:
 
 
 def _base_image_bytes(base_id: str, disc: int, catalog: dict[str, dict], pristine: Path) -> bytes:
-	"""Return baseline disc image for addon diff (CSR for csr-v…, not retail)."""
+	"""Baseline disc for addon diff: cache/<flavor>/ or build from pristine + base layer."""
 	if base_id in ("clean", "unmodified"):
 		return pristine.read_bytes()
 	if base_id not in catalog or catalog[base_id]["kind"] != "base":
 		raise SystemExit(f"Unknown base {base_id!r}")
-	flavor = "csr" if base_id.startswith("csr-v") else (
-		"highwind" if "highwind" in base_id else base_id
+	lp = _layer_path(catalog[base_id], disc)
+	data, _ = ensure_cached_base(
+		base_id=base_id,
+		disc=disc,
+		layer_path=lp,
+		pristine=pristine,
+		write_cache=True,
 	)
-	cached = cache_bin(flavor, disc)
-	if cached is not None:
-		print(f"Baseline image (cache): {cached}")
-		return cached.read_bytes()
-	print(f"Reconstructing baseline {base_id} disc {disc} → memory (no cache/{flavor})")
-	img = bytearray(pristine.read_bytes())
-	layer = json.loads(_layer_path(catalog[base_id], disc).read_text(encoding="utf-8"))
-	apply_layer(img, layer)
-	return bytes(img)
+	return data
 
 
 def _pick_target_addon(
