@@ -53,7 +53,7 @@ python3 scripts/field_jump_graph.py \
 # Build
 python3 scripts/build_field_map_pack.py \
   --pristine <baseline-dir>/FINALFANTASY7_DN.bin \
-  --flavor-image <addon-dir>/FINALFANTASY7_DN.bin \
+  --edited-image <addon-dir>/FINALFANTASY7_DN.bin \
   --files FIELD/<MAP>.DAT \
   --pack-id <id>-v0.1.0 \
   --disc N \

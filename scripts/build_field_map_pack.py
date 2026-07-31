@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Build an ic-layer addon pack from selected FIELD map files on a flavor image.
+"""Build an ic-layer addon pack from selected FIELD maps on an edited disc image.
 
 Free checkbox (omit exclusiveGroup — preferred for independent CSR+ scenes):
 
   python3 scripts/build_field_map_pack.py \\
     --pristine cache/csr/FINALFANTASY7_D1.bin \\
-    --flavor-image /path/to/builder-zip-extract/ff7-builder-….bin \\
+    --edited-image /path/to/builder-zip-extract/ff7-builder-….bin \\
     --files FIELD/EALS_1.DAT \\
     --pack-id csr-plus-scene-aerith-house-v0.1.0 \\
     --name "CSR+ scene — Aerith's house" \\
@@ -45,7 +45,7 @@ MANIFEST_PATH = _ROOT / "builder" / "manifest.json"
 
 def build_patched_image(
 	pristine: bytes,
-	flavor_image: bytes,
+	edited_image: bytes,
 	files: list[str],
 ) -> bytes:
 	img = bytearray(pristine)
@@ -53,7 +53,7 @@ def build_patched_image(
 		path = path.replace("\\", "/").upper()
 		if not path.startswith("FIELD/"):
 			path = f"FIELD/{path}"
-		new_data = extract_file(flavor_image, path)
+		new_data = extract_file(edited_image, path)
 		meta = find_file(pristine, path)
 		try:
 			replace_file(img, path, new_data)
@@ -163,8 +163,18 @@ def assert_no_overlap(layer_a: Path, layer_b: Path) -> None:
 
 def main() -> int:
 	ap = argparse.ArgumentParser(description="Build FIELD map-file addon pack")
-	ap.add_argument("--pristine", type=Path, required=True)
-	ap.add_argument("--flavor-image", type=Path, required=True)
+	ap.add_argument(
+		"--pristine",
+		type=Path,
+		required=True,
+		help="Baseline disc image (e.g. cache/csr for a CSR+ scene pack)",
+	)
+	ap.add_argument(
+		"--edited-image",
+		type=Path,
+		required=True,
+		help="Updated disc .bin after Makou (builder zip extract)",
+	)
 	ap.add_argument("--files", nargs="+", required=True, help="ISO paths e.g. FIELD/SHIP_1.DAT")
 	ap.add_argument("--pack-id", required=True)
 	ap.add_argument("--disc", type=int, default=1, help="Disc number (1/2/3). Default: 1")
@@ -215,10 +225,10 @@ def main() -> int:
 		# Back-compat default (dropdown). New free scenes should pass --no-exclusive-group.
 		exclusive = f"csr-scene-{args.pack_id.rsplit('-v', 1)[0]}"
 
-	print("=== inject maps onto pristine ===")
+	print("=== inject maps onto baseline ===")
 	pristine = args.pristine.read_bytes()
-	flavor = args.flavor_image.read_bytes()
-	patched = build_patched_image(pristine, flavor, files)
+	edited = args.edited_image.read_bytes()
+	patched = build_patched_image(pristine, edited, files)
 
 	with tempfile.TemporaryDirectory(prefix="csr-map-pack-") as tmp:
 		tmp_path = Path(tmp)

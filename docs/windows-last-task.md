@@ -65,7 +65,7 @@ else:
 
     python3 scripts/build_field_map_pack.py \
       --pristine cache/csr/FINALFANTASY7_D2.bin \
-      --flavor-image "$EDITED" \
+      --edited-image "$EDITED" \
       --files FIELD/REPLACE_ME.DAT \
       --pack-id csr-plus-scene-cota-fd-manip-v0.1.0 \
       --version 0.1.0 \

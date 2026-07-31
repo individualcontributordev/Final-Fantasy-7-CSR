@@ -73,7 +73,7 @@ Free checkbox (default recommendation for independent scenes):
 ```bash
 python3 scripts/build_field_map_pack.py \
   --pristine cache/csr/FINALFANTASY7_D1.bin \
-  --flavor-image temp/my-addon-name/FINALFANTASY7_D1.bin \
+  --edited-image temp/my-addon-name/FINALFANTASY7_D1.bin \
   --files FIELD/MIDEEL_1.DAT FIELD/MIDEEL_2.DAT FIELD/JUMIN.DAT \
   --pack-id my-addon-scene-v0.1.0 \
   --disc 1 \
@@ -88,7 +88,7 @@ Mutually exclusive variants: replace `--no-exclusive-group` with `--exclusive-gr
 
 **Flags:**
 - `--pristine` — inject/diff baseline image
-- `--flavor-image` — Makou-edited disc
+- `--edited-image` — Makou-edited disc
 - `--files` — changed `FIELD/*.DAT`
 - `--pack-id` — unique id with version
 - `--disc` — 1 / 2 / 3 (same pack-id across discs)
@@ -151,7 +151,7 @@ Checklist skill: `ship-csr-plus-scene`. Diff is **csr → csr-plus**, not pristi
 ```bash
 python3 scripts/build_field_map_pack.py \
   --pristine cache/csr/FINALFANTASY7_D1.bin \
-  --flavor-image cache/csr-plus/FINALFANTASY7_D1.bin \
+  --edited-image cache/csr-plus/FINALFANTASY7_D1.bin \
   --files FIELD/EALS_1.DAT \
   --pack-id csr-plus-scene-aerith-house-v0.1.0 \
   --disc 1 \

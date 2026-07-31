@@ -344,10 +344,10 @@ def main() -> int:
 	print(f"  diff baseline=base {base_id} (not full multi-addon stack)")
 
 	baseline = _base_image_bytes(base_id, disc, catalog, pristine_path)
-	flavor = bin_path.read_bytes()
+	edited = bin_path.read_bytes()
 
 	print("=== inject maps from edited image onto baseline ===")
-	patched = build_patched_image(baseline, flavor, files)
+	patched = build_patched_image(baseline, edited, files)
 
 	with tempfile.TemporaryDirectory(prefix="csr-update-addon-") as tmp:
 		tmp_path = Path(tmp)

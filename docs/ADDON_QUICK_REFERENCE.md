@@ -45,7 +45,7 @@ python3 scripts/field_jump_graph.py \
 ```bash
 python3 scripts/build_field_map_pack.py \
   --pristine cache/csr/FINALFANTASY7_D1.bin \
-  --flavor-image temp/my-addon/FINALFANTASY7_D1.bin \
+  --edited-image temp/my-addon/FINALFANTASY7_D1.bin \
   --files FIELD/MAP1.DAT FIELD/MAP2.DAT \
   --pack-id my-addon-v0.1.0 \
   --disc 1 \

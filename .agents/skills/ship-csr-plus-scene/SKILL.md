@@ -136,7 +136,7 @@ One connected component ⇒ one pack. Split packs if multiple components.
 ```bash
 python3 scripts/build_field_map_pack.py \
   --pristine cache/csr/FINALFANTASY7_DN.bin \
-  --flavor-image cache/csr-plus/FINALFANTASY7_DN.bin \
+  --edited-image cache/csr-plus/FINALFANTASY7_DN.bin \
   --files FIELD/<MAP>.DAT \
   --pack-id csr-plus-scene-<name>-v0.1.0 \
   --disc N \
