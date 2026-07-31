@@ -124,6 +124,7 @@ def write_pack(
 			"id": pack_id,
 			"name": name,
 			"kind": "addon",
+			"version": version,
 			"blurb": blurb,
 			"format": "ic-layer-v1",
 			"groupLabel": group_label,

@@ -44,7 +44,8 @@
       "discs": {
         "1": "./csr-plus-scene-aerith-house-v0.1.0/layers/disc1.layer.json"
       },
-      "enabled": false
+      "enabled": false,
+      "version": "0.1.0"
     },
     {
       "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
@@ -58,7 +59,8 @@
       "discs": {
         "2": "./csr-plus-scene-hojo-fd-manip-v0.1.0/layers/disc2.layer.json"
       },
-      "enabled": true
+      "enabled": true,
+      "version": "0.1.0"
     },
     {
       "id": "csr-plus-scene-aerith-house-v0.1.1",
@@ -74,7 +76,8 @@
       "discs": {
         "1": "./csr-plus-scene-aerith-house-v0.1.1/layers/disc1.layer.json"
       },
-      "enabled": true
+      "enabled": true,
+      "version": "0.1.1"
     }
   ],
   "presets": [
