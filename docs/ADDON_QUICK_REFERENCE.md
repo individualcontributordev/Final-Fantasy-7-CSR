@@ -28,7 +28,6 @@ Missing bins: `apply_layer.py` pristine + `builder/<base-id>/layers/discN.layer.
 python3 scripts/list_changed_field_maps.py \
   --pristine cache/csr/FINALFANTASY7_D1.bin \
   --patched temp/my-addon/FINALFANTASY7_D1.bin \
-  --flavor my-addon \
   -o temp/my-addon-diff.json
 ```
 

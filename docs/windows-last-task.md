@@ -38,7 +38,6 @@ Set BUILT to your unzipped builder folder (must contain .bin + APPLIED.txt).
     python3 scripts/list_changed_field_maps.py \
       --pristine cache/csr/FINALFANTASY7_D2.bin \
       --patched "$EDITED" \
-      --flavor cota-fd-manip \
       -o temp/cota-fd-manip-d2-diff.json
 
     python3 -c "

@@ -117,8 +117,7 @@ Still valid: Makou on `cache/csr-plus`, then
 python3 scripts/list_changed_field_maps.py \
   --pristine cache/csr/FINALFANTASY7_DN.bin \
   --patched cache/csr-plus/FINALFANTASY7_DN.bin \
-  --flavor csr-plus-increment \
-  -o cache/csr-plus-increment-field-diff-dN.json
+  -o temp/csr-plus-increment-field-diff-dN.json
 ```
 
 ### 2. Optional jump graph
@@ -126,8 +125,8 @@ python3 scripts/list_changed_field_maps.py \
 ```bash
 python3 scripts/field_jump_graph.py \
   --image cache/csr-plus/FINALFANTASY7_DN.bin \
-  --changed cache/csr-plus-increment-field-diff-dN.json \
-  -o cache/csr-plus-increment-graph-dN.json
+  --changed temp/csr-plus-increment-field-diff-dN.json \
+  -o temp/csr-plus-increment-graph-dN.json
 ```
 
 One connected component ⇒ one pack. Split packs if multiple components.

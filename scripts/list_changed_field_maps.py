@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""List FIELD/* files that differ between pristine and a patched Disc image.
+"""List FIELD/* files that differ between a baseline and a patched disc image.
 
-  python scripts/list_changed_field_maps.py \\
-    --pristine pristine/FINALFANTASY7_D1.bin \\
-    --patched cache/csr/FINALFANTASY7_D1.bin \\
-    --flavor csr -o temp/csr-field-diff.json
+  python scripts/list_changed_field_maps.py \
+    --pristine cache/csr/FINALFANTASY7_D2.bin \
+    --patched /path/to/makou-edited.bin \
+    -o temp/field-diff.json
 """
 
 from __future__ import annotations
@@ -29,12 +29,7 @@ def _sha16(blob: bytes) -> str:
 	return hashlib.sha256(blob).hexdigest()[:16]
 
 
-def list_changed(
-	pristine: bytes,
-	patched: bytes,
-	*,
-	flavor: str,
-) -> dict:
+def list_changed(pristine: bytes, patched: bytes) -> dict:
 	by_stem: dict[str, list[dict]] = defaultdict(list)
 	pr_files = {f.path: f for f in list_dir(pristine, "FIELD")}
 
@@ -81,13 +76,11 @@ def list_changed(
 			{
 				"stem": stem,
 				"files": [f["path"] for f in files],
-				"flavor": flavor,
 				"entries": files,
 			}
 		)
 
 	return {
-		"flavor": flavor,
 		"mapCount": len(maps),
 		"fileCount": sum(len(m["files"]) for m in maps),
 		"maps": maps,
@@ -96,21 +89,17 @@ def list_changed(
 
 def main() -> int:
 	ap = argparse.ArgumentParser(description="Diff FIELD maps between two Disc images")
-	ap.add_argument("--pristine", type=Path, required=True)
-	ap.add_argument("--patched", type=Path, required=True)
-	ap.add_argument("--flavor", required=True, help="Label e.g. csr / csr-plus")
+	ap.add_argument("--pristine", type=Path, required=True, help="Baseline image (e.g. CSR)")
+	ap.add_argument("--patched", type=Path, required=True, help="Edited image (e.g. Makou save)")
 	ap.add_argument("-o", "--output", type=Path, required=True)
 	args = ap.parse_args()
 
 	pristine = args.pristine.read_bytes()
 	patched = args.patched.read_bytes()
-	result = list_changed(pristine, patched, flavor=args.flavor)
+	result = list_changed(pristine, patched)
 	args.output.parent.mkdir(parents=True, exist_ok=True)
 	args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-	print(
-		f"Wrote {args.output}: {result['mapCount']} maps, "
-		f"{result['fileCount']} files ({args.flavor})"
-	)
+	print(f"Wrote {args.output}: {result['mapCount']} maps, {result['fileCount']} files")
 	return 0
 
 

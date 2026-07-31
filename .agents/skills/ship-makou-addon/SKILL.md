@@ -42,7 +42,7 @@ Missing baseline bins → `apply_layer.py` pristine + published base layer (see 
 python3 scripts/list_changed_field_maps.py \
   --pristine <baseline-dir>/FINALFANTASY7_DN.bin \
   --patched <addon-dir>/FINALFANTASY7_DN.bin \
-  --flavor <name> -o temp/<name>-diff-dN.json
+  -o temp/<name>-diff-dN.json
 
 # Optional graph
 python3 scripts/field_jump_graph.py \

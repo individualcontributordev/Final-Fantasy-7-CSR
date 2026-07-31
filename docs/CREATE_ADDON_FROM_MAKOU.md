@@ -48,7 +48,6 @@ cd /path/to/Final-Fantasy-7-CSR
 python3 scripts/list_changed_field_maps.py \
   --pristine cache/csr/FINALFANTASY7_D1.bin \
   --patched temp/my-addon-name/FINALFANTASY7_D1.bin \
-  --flavor my-addon \
   -o temp/my-addon-field-diff.json
 ```
 
