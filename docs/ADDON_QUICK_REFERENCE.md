@@ -104,7 +104,7 @@ python3 scripts/apply_layer.py temp/csr-d1.bin \
   builder/<new-id>/layers/disc1.layer.json -o temp/play-d1.bin
 ```
 
-6. Changelog + commit `builder/` + push.
+6. Changelog in `addons/csr-plus/CHANGELOG.md` (or `addons/<family>/` for new families) + commit `builder/` + push. Index: `CHANGELOGS.md`.
 
 Do not overwrite a shipped pack id in place for a real release.
 

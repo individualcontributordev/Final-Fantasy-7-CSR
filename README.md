@@ -32,11 +32,13 @@ An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+.
 
 ## Changelogs
 
-| Base / add-on | Changelog | Builder id |
-|------|-----------|--------------------|
+Full map: **[CHANGELOGS.md](CHANGELOGS.md)**.
+
+| Product | Changelog | Builder ids |
+|---------|-----------|-------------|
 | CSR (base) | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr-v0.14.1` |
-| CSR+ scene add-ons | [bases/csr-plus/CHANGELOG.md](bases/csr-plus/CHANGELOG.md) | `csr-plus-scene-aerith-house-v0.1.0`, more to come |
 | Highwind (base) | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind-v0.1.1` |
+| CSR+ scenes (add-ons) | [addons/csr-plus/CHANGELOG.md](addons/csr-plus/CHANGELOG.md) | `csr-plus-scene-*`, preset `csr-plus` |
 
 ## Play
 
@@ -118,13 +120,15 @@ Agent checklists: `.agents/skills/release-csr-base`, `ship-csr-plus-scene`, `shi
 ## Layout
 
 ```
-bases/           CHANGELOG.md per base (csr, csr-plus, highwind)
+bases/           base changelogs (csr, highwind)
+addons/          add-on family changelogs (csr-plus scenes)
 builder/         published layers + manifest.json (Pages CDN)
 scripts/         layer helpers + local_paths.py
 pristine/        retail discs (gitignored)
 cache/           optional reconstructed bases (gitignored)
 temp/            playtest apply_layer outputs (gitignored)
 images/          README assets
+CHANGELOGS.md    index of all release notes
 ```
 
 ## Contributors

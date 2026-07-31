@@ -91,7 +91,7 @@ Iterate: fix in Makou on the **builder extract** again → re-run
 
 ### U5. Changelog + ship
 
-- Note the bump in `bases/csr-plus/CHANGELOG.md`
+- Note the bump in `addons/csr-plus/CHANGELOG.md` (pack id + one line). See `CHANGELOGS.md`.
 - Commit `builder/` (+ changelog). Push. Pages CDN.
 - Optional: one more DuckStation pass from builder zip after Pages updates.
 
@@ -162,7 +162,7 @@ python3 scripts/verify_builder_config.py \
 
 ### 5. Changelog + preset
 
-- Update `bases/csr-plus/CHANGELOG.md`
+- Update `addons/csr-plus/CHANGELOG.md` (see `CHANGELOGS.md`)
 - If “CSR+ (all scenes)” should include it, add pack id to preset `csr-plus` in `builder/manifest.json`
 
 ### 6. Commit / push / playtest

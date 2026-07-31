@@ -1,6 +1,9 @@
-# Final Fantasy VII Highwind Change Log
+# Highwind base — changelog
 
-v(release).(feature).(bugfix)
+Published builder ids: `highwind-vX.Y.Z` (see `builder/manifest.json`).
+Index: [CHANGELOGS.md](../../CHANGELOGS.md).
+
+v(release).(feature).(bugfix) — newest at top.
 
 ## v0.1.0
 

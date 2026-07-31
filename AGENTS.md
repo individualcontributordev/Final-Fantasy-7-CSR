@@ -47,7 +47,7 @@ Short flags: `docs/ADDON_QUICK_REFERENCE.md`. Full Makou guide: `docs/CREATE_ADD
 | Add-on on Unmodified | `pristine/` | `clean` |
 | Add-on on Highwind only | Highwind image | `highwind-v0.1.1` |
 
-Changelogs: `bases/csr|csr-plus|highwind/CHANGELOG.md`.
+Changelogs: index [CHANGELOGS.md](CHANGELOGS.md) — bases in `bases/<name>/`, CSR+ scenes in `addons/csr-plus/`.
 
 ## Mental model (local discs)
 

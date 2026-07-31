@@ -1,7 +1,10 @@
 
-# Final Fantasy VII CSR Change log
+# CSR base — changelog
 
-v(release).(feature).(bugfix)
+Published builder ids: `csr-vX.Y.Z` (see `builder/manifest.json`).
+Index: [CHANGELOGS.md](../../CHANGELOGS.md).
+
+v(release).(feature).(bugfix) — newest at top.
 
 ## v0.14.0
 
