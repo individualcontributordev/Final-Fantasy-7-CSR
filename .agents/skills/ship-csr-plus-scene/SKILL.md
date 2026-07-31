@@ -151,6 +151,8 @@ Confirm `pack.json` / manifest **omit** `exclusiveGroup`. Never set Highwind in 
 
 ### 4. Verify (required before publish)
 
+Single stack (this pack on the CSR id you built against):
+
 ```bash
 python3 scripts/verify_builder_config.py \
   --pristine pristine/FINALFANTASY7_DN.bin \
@@ -158,6 +160,15 @@ python3 scripts/verify_builder_config.py \
   --base csr-v0.14.1 \
   --addon csr-plus-scene-<name>-v0.1.0
 ```
+
+`compatibleBases` must list **every live `csr-v*` base** in `builder/manifest.json` (backward compatible). After shipping a scene **or** a new CSR base:
+
+```bash
+python3 scripts/verify_csr_addon_compat.py
+# PASS = all live CSR bases × all enabled csr-plus-scene-* packs apply cleanly
+```
+
+If this fails after a CSR base bump: fix the **base** or the **add-on**, then re-run. Do not leave a silent break.
 
 ### 5. Changelog + preset
 

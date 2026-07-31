@@ -69,6 +69,12 @@ python3 scripts/verify_builder_config.py \
 
 Expect: `PASS — builder config applies cleanly`.
 
+CSR+ scenes must work on **all** live `csr-v*` bases. After a CSR base or scene ship:
+
+```bash
+python3 scripts/verify_csr_addon_compat.py
+```
+
 Optional map byte expect vs Makou image: `apply_layer.py` chain with `--expect` (see full guide).
 
 ## Publish

@@ -79,11 +79,24 @@ python3 scripts/verify_builder_config.py \
 
 Must print `PASS`. Sanity: record counts not thousands of zero-footer junk.
 
-## 8. Changelog + commit/push
+## 8. CSR base only — scene add-on regression (required)
+
+If this release is a **CSR** base (`csr-v*`), scene packs must still stack:
+
+```bash
+python3 scripts/verify_csr_addon_compat.py
+```
+
+PASS required. On FAIL: fix this base or update scene packs (`compatibleBases` + layers), then re-run.
+Then list the **new** `csr-v*` id on every enabled `csr-plus-scene-*` pack’s `compatibleBases` (and preset) when the stack is green.
+
+Highwind releases skip this (scenes are not compatible with Highwind).
+
+## 9. Changelog + commit/push
 
 Update `bases/csr/CHANGELOG.md` or `bases/highwind/CHANGELOG.md`. Commit `builder/` + `bases/`; push Pages CDN.
 
-## 9. If published **id** changed
+## 10. If published **id** changed
 
 Rebuild Modding Field/World packs: `ship-field-encounters` / `ship-world-encounters` with new `compatibleBases`.
 

@@ -38,6 +38,7 @@ Short flags: `docs/ADDON_QUICK_REFERENCE.md`. Full Makou guide: `docs/CREATE_ADD
 - **Highwind** = separate aggressive mod, not a bigger CSR+. Does **not** stack with CSR+ scene add-ons.
 - Free independent scenes: **omit** `exclusiveGroup` (builder → checkbox). Set `exclusiveGroup` only for mutually exclusive variants.
 - Diff **bases** against **pristine**. Diff **CSR+ scenes** against **CSR baseline** (published CSR layer / cache), not pristine.
+- **CSR+ scene add-ons must stay backward-compatible with every live `csr-v*` base.** After a CSR base release, either the base still stacks with each enabled scene pack, or you fix the base / fix the add-on. Scene packs list **all** live `csr-v*` ids in `compatibleBases` (not only the base they were first built on). Highwind is separate and does **not** take CSR+ scenes.
 - Multi-base general add-ons: multiple `compatibleBases` only if bytes are identical on each base; else **per-base packs**.
 
 | Goal | Diff baseline | compatibleBases |
@@ -92,6 +93,7 @@ python3 scripts/apply_layer.py \
 | Skills | `.agents/skills/*` |
 | Windows task handoff | `docs/windows-last-task.md` |
 | Builder config verify | `scripts/verify_builder_config.py` (required before publish) |
+| CSR × scene regression | `scripts/verify_csr_addon_compat.py` (required after CSR base or scene ship) |
 | Path helper | `scripts/local_paths.py` |
 
 ## After a CSR / Highwind base id changes
