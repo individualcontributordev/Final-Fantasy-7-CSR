@@ -1,42 +1,45 @@
-# Task: build CSR+ CoTA FD Manip pack from your Makou disc 2 edit
+# Task: build CoTA FD Manip pack (edited image includes Hojo add-on)
+
+## Problem
+
+Your Makou `.bin` is **CSR + Hojo FD manip + CoTA edits**. Diffing against **CSR only**
+lists Hojo maps (BLIN66_6, CANON_2, FSHIP_24) as well as CoTA.
+
+**Fix:** baseline = CSR + Hojo layer, then diff your edited image. Only CoTA maps remain.
+
+Do **not** put Hojo maps in the CoTA pack `--files` list.
 
 ## Goal
 
-You already trimmed Forgotten Capital / Bugenhagen (CoTA FD Manip) on a CSR disc 2
-builder zip. Now discover FIELD maps, build pack, verify, preset, changelog, push.
-
-Pack: csr-plus-scene-cota-fd-manip-v0.1.0  
-Not Hojo (BLIN66_6 / CANON_2 / FSHIP_24).
-
-## Success
-
-1. list_changed_field_maps shows CoTA maps only (paste list under Evidence).
-2. build_field_map_pack + verify_builder_config PASS.
-3. preset csr-plus includes new id; changelog newest-at-top.
-4. Optional DuckStation one-liner. Commit + push. Say **check**.
+Pack: csr-plus-scene-cota-fd-manip-v0.1.0 (disc 2, CSR only).
 
 ## Copy-paste
-
-Set BUILT to your unzipped builder folder (must contain .bin + APPLIED.txt).
 
     cd "$(git rev-parse --show-toplevel)"
     git pull --ff-only
 
-    BUILT="/c/path/to/ff7-builder-d2+csr-v0.14.1+..."
-    # .bin inside that folder:
+    BUILT="/c/path/to/ff7-builder-d2+csr-v0.14.1+csr-plus-scene-hojo-fd-manip-v0.1.0+..."
     EDITED=$(ls "$BUILT"/*.bin "$BUILT"/*.BIN 2>/dev/null | head -1)
     echo "EDITED=$EDITED"
-    test -f "$EDITED" && test -f "$BUILT/APPLIED.txt"
+    test -f "$EDITED"
 
     mkdir -p cache/csr temp
+
+    # 1) CSR disc 2 (if missing)
     test -f cache/csr/FINALFANTASY7_D2.bin || python3 scripts/apply_layer.py \
       pristine/FINALFANTASY7_D2.bin \
       builder/csr-v0.14.1/layers/disc2.layer.json \
       -o cache/csr/FINALFANTASY7_D2.bin
 
-    # Which FIELD maps differ from CSR baseline?
+    # 2) Baseline = CSR + existing Hojo pack (matches how you started in the builder)
+    python3 scripts/apply_layer.py \
+      cache/csr/FINALFANTASY7_D2.bin \
+      builder/csr-plus-scene-hojo-fd-manip-v0.1.0/layers/disc2.layer.json \
+      -o temp/csr-plus-hojo-d2.bin
+
+    # 3) Diff: only maps you changed on top of CSR+Hojo
     python3 scripts/list_changed_field_maps.py \
-      --pristine cache/csr/FINALFANTASY7_D2.bin \
+      --pristine temp/csr-plus-hojo-d2.bin \
       --patched "$EDITED" \
       -o temp/cota-fd-manip-d2-diff.json
 
@@ -48,11 +51,17 @@ for m in d.get('maps') or []:
     for p in m.get('files') or []:
         if p.upper().endswith('.DAT'):
             paths.append(p)
-print('mapCount', d.get('mapCount'), 'DAT files:')
-print(' '.join(paths) if paths else '(none — is EDITED really different from CSR D2?)')
+print('mapCount', d.get('mapCount'))
+print(' '.join(paths) if paths else '(none)')
+hojo={'FIELD/BLIN66_6.DAT','FIELD/CANON_2.DAT','FIELD/FSHIP_24.DAT'}
+bad=[p for p in paths if p.upper() in {h.upper() for h in hojo}]
+if bad:
+    print('ERROR still includes Hojo maps:', bad)
+else:
+    print('OK no Hojo maps in diff')
 "
 
-Copy those FIELD/....DAT paths into --files below (space-separated). Expect CoTA maps only; if you see BLIN66_6/CANON_2/FSHIP_24 you edited the Hojo pack by mistake.
+# Expect: CoTA FIELD/*.DAT only. Use those paths in --files:
 
     python3 scripts/build_field_map_pack.py \
       --pristine cache/csr/FINALFANTASY7_D2.bin \
@@ -67,23 +76,23 @@ Copy those FIELD/....DAT paths into --files below (space-separated). Expect CoTA
       --no-exclusive-group \
       --compatible-bases csr-v0.14.1
 
+# Build still diffs each --files map against CSR alone (correct for the pack).
+# Including Hojo in --files would bake Hojo into the CoTA pack — do not.
+
     python3 scripts/verify_builder_config.py \
       --pristine pristine/FINALFANTASY7_D2.bin \
       --disc 2 \
       --base csr-v0.14.1 \
       --addon csr-plus-scene-cota-fd-manip-v0.1.0
 
-Then hand-edit if needed:
+# Optional: stack CSR + Hojo + CoTA like your edit session
+#   --addon csr-plus-scene-hojo-fd-manip-v0.1.0 \
+#   --addon csr-plus-scene-cota-fd-manip-v0.1.0
 
-- builder/manifest.json preset csr-plus → append csr-plus-scene-cota-fd-manip-v0.1.0
-- addons/csr-plus/CHANGELOG.md — new section at **top**
-
-    git add builder/ addons/csr-plus/CHANGELOG.md docs/windows-last-task.md
-    git commit -m "CSR+ CoTA FD Manip v0.1.0 (disc 2)."
-    git push
+Then: preset csr-plus append new id; addons/csr-plus/CHANGELOG.md newest-at-top;
+git add builder/ changelog; commit; push; say **check**.
 
 ## Evidence
 
-    (diff map list)
+    (DAT list from step 3 — no Hojo)
     (verify PASS)
-    (playtest optional)
