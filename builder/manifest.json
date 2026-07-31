@@ -44,7 +44,7 @@
       "discs": {
         "1": "./csr-plus-scene-aerith-house-v0.1.0/layers/disc1.layer.json"
       },
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
@@ -59,6 +59,22 @@
         "2": "./csr-plus-scene-hojo-fd-manip-v0.1.0/layers/disc2.layer.json"
       },
       "enabled": true
+    },
+    {
+      "id": "csr-plus-scene-aerith-house-v0.1.1",
+      "name": "CSR+ Aerith's house",
+      "kind": "addon",
+      "blurb": "CSR+ trim of Aerith's house cutscene.",
+      "format": "ic-layer-v1",
+      "groupLabel": "CSR+ Aerith's house",
+      "optionLabel": "On",
+      "compatibleBases": [
+        "csr-v0.14.1"
+      ],
+      "discs": {
+        "1": "./csr-plus-scene-aerith-house-v0.1.1/layers/disc1.layer.json"
+      },
+      "enabled": true
     }
   ],
   "presets": [
@@ -70,7 +86,7 @@
         "csr-v0.14.1"
       ],
       "addons": [
-        "csr-plus-scene-aerith-house-v0.1.0",
+        "csr-plus-scene-aerith-house-v0.1.1",
         "csr-plus-scene-hojo-fd-manip-v0.1.0"
       ]
     }

@@ -1,19 +1,12 @@
 # Final Fantasy VII CSR+ Change Log
 
-v(release).(feature).(bugfix)
-
-## v0.1.0
-
-- Created Final Fantasy VII CSR+ based on Final Fantasy VII CSR v0.14.0
+July, 31 2026
 
 Disc 1
-- Aerith's house cutscene removed
+- Aerith's house cutscene updated. Now when you enter Elmyra talks to you and then you can continue.
 
 Disc 2
-- Hojo FD manip cutscene removed
+- no changes
 
 Disc 3
 - no changes
-## v0.1.1
-
-- Layer publish for disc builder.

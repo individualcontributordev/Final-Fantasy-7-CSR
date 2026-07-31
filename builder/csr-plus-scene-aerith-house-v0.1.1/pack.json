@@ -1,0 +1,19 @@
+{
+  "id": "csr-plus-scene-aerith-house-v0.1.1",
+  "name": "CSR+ Aerith's house",
+  "kind": "addon",
+  "version": "0.1.1",
+  "blurb": "CSR+ trim of Aerith's house cutscene.",
+  "format": "ic-layer-v1",
+  "groupLabel": "CSR+ Aerith's house",
+  "optionLabel": "On",
+  "compatibleBases": [
+    "csr-v0.14.1"
+  ],
+  "files": [
+    "FIELD/EALS_1.DAT"
+  ],
+  "discs": {
+    "1": "./layers/disc1.layer.json"
+  }
+}
