@@ -1,11 +1,10 @@
 {
   "id": "csr-plus-scene-aerith-house-v0.1.0",
   "name": "CSR+ Aerith's house",
-  "kind": "addon",
+  "kind": "pack",
   "version": "0.1.0",
   "blurb": "CSR+ trim of Aerith's house cutscene.",
   "format": "ic-layer-v1",
-
   "compatibleBases": [
     "csr-v0.14.1"
   ],

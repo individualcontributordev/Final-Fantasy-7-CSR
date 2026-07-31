@@ -233,10 +233,11 @@ def write_pack(
 	discs[str(disc)] = f"./layers/{layer_name}"
 	merged_files = list(dict.fromkeys([*prev_files, *files]))
 
+	layer_kind = "pack" if str(pack_id).startswith("csr-plus-scene-") else "addon"
 	pack = {
 		"id": pack_id,
 		"name": name,
-		"kind": "addon",
+		"kind": layer_kind,
 		"version": version,
 		"blurb": blurb,
 		"format": "ic-layer-v1",
@@ -256,7 +257,7 @@ def write_pack(
 		entry = {
 			"id": pack_id,
 			"name": name,
-			"kind": "addon",
+			"kind": layer_kind,
 			"version": version,
 			"blurb": blurb,
 			"format": "ic-layer-v1",

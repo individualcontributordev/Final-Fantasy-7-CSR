@@ -1,7 +1,7 @@
 {
   "id": "csr-plus-scene-cota-fd-manip-v0.1.0",
   "name": "CSR+ COTA FD Manip",
-  "kind": "addon",
+  "kind": "pack",
   "version": "0.1.0",
   "blurb": "CSR+ COTA FD Manip on CSR.",
   "format": "ic-layer-v1",

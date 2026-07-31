@@ -1,7 +1,7 @@
 {
   "id": "csr-plus-scene-aerith-house-v0.1.1",
   "name": "CSR+ Aerith's house",
-  "kind": "addon",
+  "kind": "pack",
   "version": "0.1.1",
   "blurb": "CSR+ Aerith house: Elmyra dialogue on entry; then leave and continue.",
   "format": "ic-layer-v1",

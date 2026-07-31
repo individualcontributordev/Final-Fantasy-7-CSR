@@ -37,7 +37,7 @@
     {
       "id": "csr-plus-scene-aerith-house-v0.1.0",
       "name": "CSR+ Aerith's house",
-      "kind": "addon",
+      "kind": "pack",
       "blurb": "CSR+ trim of Aerith's house cutscene.",
       "format": "ic-layer-v1",
       "compatibleBases": [
@@ -52,7 +52,7 @@
     {
       "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
       "name": "CSR+ Hojo FD manip",
-      "kind": "addon",
+      "kind": "pack",
       "blurb": "CSR+ trim of Hojo FD manip cutscene.",
       "format": "ic-layer-v1",
       "compatibleBases": [
@@ -67,7 +67,7 @@
     {
       "id": "csr-plus-scene-aerith-house-v0.1.1",
       "name": "CSR+ Aerith's house",
-      "kind": "addon",
+      "kind": "pack",
       "blurb": "CSR+ Aerith house: Elmyra dialogue on entry; then leave and continue.",
       "format": "ic-layer-v1",
       "groupLabel": "CSR+ Aerith's house",
@@ -84,7 +84,7 @@
     {
       "id": "csr-plus-scene-cota-fd-manip-v0.1.0",
       "name": "CSR+ COTA FD Manip",
-      "kind": "addon",
+      "kind": "pack",
       "version": "0.1.0",
       "blurb": "CSR+ COTA FD Manip on CSR.",
       "format": "ic-layer-v1",
@@ -111,7 +111,13 @@
         "csr-plus-scene-aerith-house-v0.1.1",
         "csr-plus-scene-hojo-fd-manip-v0.1.0",
         "csr-plus-scene-cota-fd-manip-v0.1.0"
-      ]
+      ],
+      "kind": "pack"
     }
-  ]
+  ],
+  "explainer": {
+    "base": "Base experience \u2014 only one applies (Unmodified, CSR, Highwind, \u2026).",
+    "packs": "Optional CSR+ scene packs on CSR. Stack any combination. Organized by disc.",
+    "mods": "Optional mods from other catalogs appear under Mods when available."
+  }
 }
