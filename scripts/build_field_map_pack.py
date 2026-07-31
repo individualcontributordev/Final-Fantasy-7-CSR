@@ -1,28 +1,30 @@
 #!/usr/bin/env python3
 """Build an ic-layer addon pack from selected FIELD maps on an edited disc image.
 
-Free checkbox (omit exclusiveGroup — preferred for independent CSR+ scenes):
+CSR+ scene (most fields inferred — preferred):
 
   python3 scripts/build_field_map_pack.py \\
-    --pristine cache/csr/FINALFANTASY7_D1.bin \\
-    --edited-image /path/to/builder-zip-extract/ff7-builder-….bin \\
+    --edited-image /path/to/makou.bin \\
     --changed-maps temp/field-diff.json \\
-    --pack-id csr-plus-scene-aerith-house-v0.1.0 \\
-  # or: --files FIELD/EALS_1.DAT \\
-    --name "CSR+ scene — Aerith's house" \\
-    --group-label "CSR+ scene — Aerith's house" \\
-    --blurb "CSR+ trim of Aerith's house on CSR." \\
-    --no-exclusive-group \\
-    --compatible-bases csr-v0.14.1
+    --pack-id csr-plus-scene-cota-fd-manip-v0.1.0 \\
+    --disc 2
 
-Mutually exclusive variants: pass --exclusive-group <id> (dropdown in builder).
-Without either flag, defaults to csr-scene-<pack-id-without-version> for back-compat.
+Infers for csr-plus-scene-* packs:
+  --compatible-bases  all live csr-v* from builder/manifest.json
+  --no-exclusive-group
+  --name / --group-label / --blurb / --version from pack-id
+  --pristine            cache/csr D{N} (built from pristine + CSR layer if needed)
+
+Explicit --name / --compatible-bases / etc. still override.
+
+General / non-scene packs still need the full flags (defaults stay explicit).
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 import sys
 import tempfile
@@ -34,6 +36,7 @@ if str(_SCRIPTS) not in sys.path:
 	sys.path.insert(0, str(_SCRIPTS))
 
 from bin_diff_to_layer import build_layer  # noqa: E402
+from local_paths import ensure_cached_base  # noqa: E402
 from psx_mode2_iso import (  # noqa: E402
 	byte_ranges_overlap,
 	extract_file,
@@ -42,6 +45,77 @@ from psx_mode2_iso import (  # noqa: E402
 )
 
 MANIFEST_PATH = _ROOT / "builder" / "manifest.json"
+
+
+def live_csr_base_ids() -> list[str]:
+	"""Enabled csr-v* base ids from builder/manifest.json (sorted)."""
+	if not MANIFEST_PATH.is_file():
+		return []
+	data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+	out = []
+	for b in data.get("bases") or []:
+		pid = str(b.get("id") or "")
+		if not pid.startswith("csr-v"):
+			continue
+		if b.get("enabled") is False:
+			continue
+		out.append(pid)
+	return sorted(out)
+
+
+def is_csr_plus_scene_pack(pack_id: str) -> bool:
+	return str(pack_id).startswith("csr-plus-scene-")
+
+
+def parse_pack_id(pack_id: str) -> tuple[str, str | None]:
+	"""csr-plus-scene-cota-fd-manip-v0.1.0 → (stem, version or None)."""
+	m = re.fullmatch(r"(.+)-v(\d+\.\d+\.\d+)", pack_id)
+	if m:
+		return m.group(1), m.group(2)
+	return pack_id, None
+
+
+def title_from_scene_stem(stem: str) -> str:
+	"""csr-plus-scene-cota-fd-manip → CSR+ Cota Fd Manip (readable enough)."""
+	body = stem
+	if body.startswith("csr-plus-scene-"):
+		body = body[len("csr-plus-scene-") :]
+	# Keep known acronyms uppercase when whole token
+	parts = []
+	for tok in body.replace("_", "-").split("-"):
+		if not tok:
+			continue
+		up = tok.upper()
+		if up in {"COTA", "FD", "HQ", "CSR"}:
+			parts.append(up)
+		else:
+			parts.append(tok[:1].upper() + tok[1:].lower() if len(tok) > 1 else up)
+	return "CSR+ " + " ".join(parts)
+
+
+def default_csr_scene_baseline(disc: int) -> Path:
+	"""CSR disc image path, creating cache/csr if needed from latest/live csr-v* layer."""
+	ids = live_csr_base_ids()
+	if not ids:
+		raise SystemExit(
+			"No live csr-v* bases in builder/manifest.json — pass --pristine explicitly"
+		)
+	# Prefer highest version string sort (csr-v0.14.1 > csr-v0.9.0 for normal scheme)
+	base_id = sorted(ids, key=lambda s: [int(x) for x in s.replace("csr-v", "").split(".")])[-1]
+	layer = _ROOT / "builder" / base_id / "layers" / f"disc{disc}.layer.json"
+	if not layer.is_file():
+		raise SystemExit(f"Missing layer for default baseline: {layer}")
+	data, path = ensure_cached_base(
+		base_id=base_id,
+		disc=disc,
+		layer_path=layer,
+		write_cache=True,
+	)
+	if path is None:
+		# should not happen with write_cache
+		raise SystemExit("ensure_cached_base did not return a path")
+	print(f"Baseline (inferred): {base_id} → {path}")
+	return path
 
 
 def files_from_changed_maps_json(path: Path) -> list[str]:
@@ -183,12 +257,15 @@ def assert_no_overlap(layer_a: Path, layer_b: Path) -> None:
 
 
 def main() -> int:
-	ap = argparse.ArgumentParser(description="Build FIELD map-file addon pack")
+	ap = argparse.ArgumentParser(
+		description="Build FIELD map-file addon pack",
+		epilog="csr-plus-scene-* packs infer bases, labels, checkbox, and CSR baseline.",
+	)
 	ap.add_argument(
 		"--pristine",
 		type=Path,
-		required=True,
-		help="Baseline disc image (e.g. cache/csr for a CSR+ scene pack)",
+		default=None,
+		help="Baseline disc image (default for csr-plus-scene-*: cache/csr D{disc})",
 	)
 	ap.add_argument(
 		"--edited-image",
@@ -206,40 +283,33 @@ def main() -> int:
 		"--changed-maps",
 		type=Path,
 		default=None,
-		help="JSON from list_changed_field_maps.py (uses FIELD/*.DAT paths from it)",
+		help="JSON from list_changed_field_maps.py",
 	)
 	ap.add_argument("--pack-id", required=True)
-	ap.add_argument("--disc", type=int, default=1, help="Disc number (1/2/3). Default: 1")
-	ap.add_argument("--version", default="0.1.0")
-	ap.add_argument("--name", required=True)
-	ap.add_argument("--blurb", required=True)
-	ap.add_argument("--group-label", required=True)
+	ap.add_argument("--disc", type=int, default=1, help="Disc 1/2/3 (default 1)")
+	ap.add_argument("--version", default=None, help="Default: from pack-id -vX.Y.Z or 0.1.0")
+	ap.add_argument("--name", default=None, help="Default: from pack-id for scenes")
+	ap.add_argument("--blurb", default=None, help="Default: for scenes")
+	ap.add_argument("--group-label", default=None, help="Default: same as name")
 	ap.add_argument("--option-label", default="On")
-	ap.add_argument(
-		"--exclusive-group",
-		default=None,
-		help="Mutex group id (builder dropdown). Default if neither flag: "
-		"csr-scene-<pack-id without version>",
-	)
+	ap.add_argument("--exclusive-group", default=None, help="Mutex dropdown id")
 	ap.add_argument(
 		"--no-exclusive-group",
 		action="store_true",
-		help="Omit exclusiveGroup (builder free checkbox). Preferred for independent scenes.",
+		help="Checkbox. Default for csr-plus-scene-*",
 	)
 	ap.add_argument(
 		"--compatible-bases",
-		nargs="+",
-		default=["clean"],
-		help="Base ids this addon may be applied on top of. Default: clean",
+		nargs="*",
+		default=None,
+		help="Default: all live csr-v* for scenes; clean otherwise",
 	)
 	ap.add_argument("--no-manifest", action="store_true")
-	ap.add_argument(
-		"--assert-no-overlap-with",
-		type=Path,
-		default=None,
-		help="Another disc1.layer.json that must not overlap",
-	)
+	ap.add_argument("--assert-no-overlap-with", type=Path, default=None)
 	args = ap.parse_args()
+
+	scene = is_csr_plus_scene_pack(args.pack_id)
+	stem, ver_from_id = parse_pack_id(args.pack_id)
 
 	if args.no_exclusive_group and args.exclusive_group:
 		raise SystemExit("Pass only one of --no-exclusive-group or --exclusive-group")
@@ -257,60 +327,105 @@ def main() -> int:
 			if not f.startswith("FIELD/"):
 				files[i] = f"FIELD/{f}"
 
-	if args.no_exclusive_group:
-		exclusive = None
-	elif args.exclusive_group:
-		exclusive = args.exclusive_group
+	version = args.version or ver_from_id or "0.1.0"
+	if scene:
+		name = args.name or title_from_scene_stem(stem)
+		group_label = args.group_label or name
+		blurb = args.blurb or f"{name} on CSR."
+		if args.compatible_bases:
+			compatible_bases = list(args.compatible_bases)
+		else:
+			compatible_bases = live_csr_base_ids()
+			if not compatible_bases:
+				raise SystemExit("No live csr-v* in manifest; pass --compatible-bases")
+			print(f"compatibleBases (inferred live CSR): {compatible_bases}")
+		if args.exclusive_group:
+			exclusive = args.exclusive_group
+		else:
+			exclusive = None
+			if not args.no_exclusive_group:
+				print("exclusiveGroup: omitted (csr-plus-scene default checkbox)")
 	else:
-		# Back-compat default (dropdown). New free scenes should pass --no-exclusive-group.
-		exclusive = f"csr-scene-{args.pack_id.rsplit('-v', 1)[0]}"
+		if not args.name or not args.blurb or not args.group_label:
+			raise SystemExit(
+				"Non-scene packs need --name, --group-label, --blurb "
+				"(or use pack-id csr-plus-scene-* )"
+			)
+		name = args.name
+		group_label = args.group_label
+		blurb = args.blurb
+		if args.compatible_bases:
+			compatible_bases = list(args.compatible_bases)
+		else:
+			compatible_bases = ["clean"]
+		if args.no_exclusive_group:
+			exclusive = None
+		elif args.exclusive_group:
+			exclusive = args.exclusive_group
+		else:
+			exclusive = f"csr-scene-{stem}"
+
+	if args.pristine:
+		pristine_path = args.pristine.expanduser().resolve()
+	elif scene:
+		pristine_path = default_csr_scene_baseline(args.disc)
+	else:
+		raise SystemExit("Pass --pristine (required unless pack-id is csr-plus-scene-*)")
+	if not pristine_path.is_file():
+		raise SystemExit(f"Missing baseline image: {pristine_path}")
+
+	edited_path = args.edited_image.expanduser().resolve()
+	if not edited_path.is_file():
+		raise SystemExit(f"Missing edited image: {edited_path}")
 
 	print("=== inject maps onto baseline ===")
-	pristine = args.pristine.read_bytes()
-	edited = args.edited_image.read_bytes()
+	print(f"  baseline={pristine_path}")
+	print(f"  edited={edited_path}")
+	pristine = pristine_path.read_bytes()
+	edited = edited_path.read_bytes()
 	patched = build_patched_image(pristine, edited, files)
 
 	with tempfile.TemporaryDirectory(prefix="csr-map-pack-") as tmp:
 		tmp_path = Path(tmp)
 		pr_bin = tmp_path / "pristine.bin"
 		pt_bin = tmp_path / "patched.bin"
-		# Avoid rewriting 700MB twice from Python if possible — write patched only,
-		# diff against original path on disk.
 		pt_bin.write_bytes(patched)
-		shutil.copyfile(args.pristine, pr_bin)
-
-		print("=== diff → layer ===")
+		shutil.copyfile(pristine_path, pr_bin)
+		print("=== diff -> layer ===")
 		layer = build_layer(
 			pr_bin,
 			pt_bin,
 			layer_id=f"{args.pack_id}-disc{args.disc}",
-			description=args.blurb,
+			description=blurb,
 		)
 
 	stats = layer["stats"]
 	print(f"  records={stats['records']} changedBytes={stats['changedBytes']}")
 	if stats["records"] == 0:
-		raise SystemExit("Empty layer — files identical to pristine?")
+		raise SystemExit("Empty layer — files identical to baseline?")
 
 	pack_dir = write_pack(
 		pack_id=args.pack_id,
-		version=args.version,
-		name=args.name,
-		blurb=args.blurb,
-		group_label=args.group_label,
+		version=version,
+		name=name,
+		blurb=blurb,
+		group_label=group_label,
 		option_label=args.option_label,
 		exclusive_group=exclusive,
-		compatible_bases=args.compatible_bases,
+		compatible_bases=compatible_bases,
 		disc=args.disc,
 		layer=layer,
 		files=files,
 		update_manifest=not args.no_manifest,
 	)
 	print(f"Wrote {pack_dir.relative_to(_ROOT)}")
+	print(f"  id={args.pack_id} name={name!r} bases={compatible_bases}")
 
 	if args.assert_no_overlap_with:
-		assert_no_overlap(pack_dir / "layers" / f"disc{args.disc}.layer.json", args.assert_no_overlap_with)
-
+		assert_no_overlap(
+			pack_dir / "layers" / f"disc{args.disc}.layer.json",
+			args.assert_no_overlap_with,
+		)
 	return 0
 
 

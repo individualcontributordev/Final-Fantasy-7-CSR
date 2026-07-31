@@ -63,18 +63,12 @@ else:
 
 # Expect: CoTA FIELD/*.DAT only (no Hojo). Then build from that JSON:
 
+    # CSR+ scene: bases/labels/checkbox/baseline inferred from pack-id + manifest
     python3 scripts/build_field_map_pack.py \
-      --pristine cache/csr/FINALFANTASY7_D2.bin \
       --edited-image "$EDITED" \
       --changed-maps temp/cota-fd-manip-d2-diff.json \
       --pack-id csr-plus-scene-cota-fd-manip-v0.1.0 \
-      --version 0.1.0 \
-      --disc 2 \
-      --name "CSR+ CoTA FD Manip" \
-      --group-label "CSR+ CoTA FD Manip" \
-      --blurb "CSR+ trim of Forgotten Capital / Bugenhagen (CoTA FD manip) on CSR." \
-      --no-exclusive-group \
-      --compatible-bases csr-v0.14.1
+      --disc 2
 
 # Pack still diffs those maps against CSR alone (correct).
 # Keep Hojo out of the diff JSON (CSR+Hojo baseline above) so they are not packed.

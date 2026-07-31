@@ -134,20 +134,16 @@ One connected component ⇒ one pack. Split packs if multiple components.
 ### 3. Build pack — free checkbox
 
 ```bash
+# csr-plus-scene-* infers: all live csr-v* bases, checkbox, name/blurb, cache/csr baseline
 python3 scripts/build_field_map_pack.py \
-  --pristine cache/csr/FINALFANTASY7_DN.bin \
-  --edited-image cache/csr-plus/FINALFANTASY7_DN.bin \
-  --files FIELD/<MAP>.DAT \
+  --edited-image /path/to/makou-or-builder.bin \
+  --changed-maps temp/field-diff.json \
   --pack-id csr-plus-scene-<name>-v0.1.0 \
-  --disc N \
-  --name "CSR+ scene — <Name>" \
-  --group-label "CSR+ scene — <Name>" \
-  --blurb "CSR+ trim of <scene> on top of CSR." \
-  --no-exclusive-group \
-  --compatible-bases csr-v0.14.1
+  --disc N
+# optional overrides: --name --blurb --pristine --files …
 ```
 
-Confirm `pack.json` / manifest **omit** `exclusiveGroup`. Never set Highwind in `compatibleBases`.
+Confirm `pack.json` / manifest **omit** `exclusiveGroup` and list every live `csr-v*` in `compatibleBases` (inferred). Never Highwind.
 
 ### 4. Verify (required before publish)
 

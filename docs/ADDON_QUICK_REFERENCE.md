@@ -43,18 +43,13 @@ python3 scripts/field_jump_graph.py \
 ## Build add-on (free checkbox)
 
 ```bash
+# CSR+ scene (minimal — rest inferred):
 python3 scripts/build_field_map_pack.py \
-  --pristine cache/csr/FINALFANTASY7_D1.bin \
   --edited-image temp/my-addon/FINALFANTASY7_D1.bin \
   --changed-maps temp/my-addon-diff.json \
-  --pack-id my-addon-v0.1.0 \
-  --disc 1 \
-  --name "Display Name" \
-  --group-label "Display Name" \
-  --blurb "Short description." \
-  --no-exclusive-group \
-  --compatible-bases csr-v0.14.1
-# or: --files FIELD/MAP1.DAT FIELD/MAP2.DAT
+  --pack-id csr-plus-scene-my-scene-v0.1.0 \
+  --disc 1
+# General pack: pass --pristine --name --group-label --blurb --compatible-bases …
 ```
 
 ## Verify (builder config — required)
