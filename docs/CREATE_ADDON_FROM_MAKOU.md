@@ -38,7 +38,7 @@ Do **not** invent an exclusive group for free CSR+ scenes.
 ### 1. Edit in Makou Reactor
 
 1. Open the correct baseline image (CSR / pristine / Highwind)
-2. Edit field maps → **File → Save** into `workspace/<your-folder>/FINALFANTASY7_DN.bin`
+2. Edit field maps → **File → Save** into `temp/<your-folder> or a builder zip extract/FINALFANTASY7_DN.bin`
 
 ### 2. Identify changed maps
 
@@ -47,9 +47,9 @@ cd /path/to/Final-Fantasy-7-CSR
 
 python3 scripts/list_changed_field_maps.py \
   --pristine cache/csr/FINALFANTASY7_D1.bin \
-  --patched workspace/my-addon-name/FINALFANTASY7_D1.bin \
+  --patched temp/my-addon-name/FINALFANTASY7_D1.bin \
   --flavor my-addon \
-  -o workspace/my-addon-field-diff.json
+  -o temp/my-addon-field-diff.json
 ```
 
 `--pristine` here means **diff baseline**, not always retail pristine.
@@ -60,9 +60,9 @@ Real CLI needs `--image` + `--changed`:
 
 ```bash
 python3 scripts/field_jump_graph.py \
-  --image workspace/my-addon-name/FINALFANTASY7_D1.bin \
-  --changed workspace/my-addon-field-diff.json \
-  -o workspace/my-addon-graph.json
+  --image temp/my-addon-name/FINALFANTASY7_D1.bin \
+  --changed temp/my-addon-field-diff.json \
+  -o temp/my-addon-graph.json
 ```
 
 One connected component ⇒ one pack. Multiple components ⇒ consider split packs.
@@ -74,7 +74,7 @@ Free checkbox (default recommendation for independent scenes):
 ```bash
 python3 scripts/build_field_map_pack.py \
   --pristine cache/csr/FINALFANTASY7_D1.bin \
-  --flavor-image workspace/my-addon-name/FINALFANTASY7_D1.bin \
+  --flavor-image temp/my-addon-name/FINALFANTASY7_D1.bin \
   --files FIELD/MIDEEL_1.DAT FIELD/MIDEEL_2.DAT FIELD/JUMIN.DAT \
   --pack-id my-addon-scene-v0.1.0 \
   --disc 1 \
@@ -126,7 +126,7 @@ python3 scripts/apply_layer.py \
 python3 scripts/apply_layer.py \
   temp/csr-base.bin \
   builder/my-addon-scene-v0.1.0/layers/disc1.layer.json \
-  --expect workspace/my-addon-name/FINALFANTASY7_D1.bin
+  --expect temp/my-addon-name/FINALFANTASY7_D1.bin
 ```
 
 ### 6. Commit and publish

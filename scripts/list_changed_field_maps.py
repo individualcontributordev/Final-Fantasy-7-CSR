@@ -2,9 +2,9 @@
 """List FIELD/* files that differ between pristine and a patched Disc image.
 
   python scripts/list_changed_field_maps.py \\
-    --pristine workspace/pristine/FINALFANTASY7_D1.bin \\
-    --patched workspace/csr/FINALFANTASY7_D1.bin \\
-    --flavor csr -o workspace/csr-field-diff.json
+    --pristine pristine/FINALFANTASY7_D1.bin \\
+    --patched cache/csr/FINALFANTASY7_D1.bin \\
+    --flavor csr -o temp/csr-field-diff.json
 """
 
 from __future__ import annotations

@@ -3,7 +3,7 @@
   "name": "CSR+ Aerith's house",
   "kind": "addon",
   "version": "0.1.1",
-  "blurb": "CSR+ trim of Aerith's house cutscene.",
+  "blurb": "CSR+ Aerith house: Elmyra dialogue on entry; then leave and continue.",
   "format": "ic-layer-v1",
   "groupLabel": "CSR+ Aerith's house",
   "optionLabel": "On",

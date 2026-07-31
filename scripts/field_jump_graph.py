@@ -2,9 +2,9 @@
 """Build a jump/gateway graph among changed FIELD maps.
 
   python scripts/field_jump_graph.py \\
-    --image workspace/csr/FINALFANTASY7_D1.bin \\
-    --changed workspace/csr-field-diff.json \\
-    -o workspace/csr-field-graph.json
+    --image cache/csr/FINALFANTASY7_D1.bin \\
+    --changed temp/csr-field-diff.json \\
+    -o temp/csr-field-graph.json
 """
 
 from __future__ import annotations

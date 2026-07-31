@@ -154,6 +154,7 @@ def update_manifest(info: dict, version: str, discs: list[int]) -> None:
         "id": pack_id,
         "name": f"{info['name']} v{version}",
         "kind": "base",
+        "version": version,
         "exclusiveGroup": "cutscenes",
         "blurb": info["blurb"],
         "format": "ic-layer-v1",
@@ -243,7 +244,7 @@ def main() -> int:
     )
     ap.add_argument(
         "base",
-        help="Base directory or slug: workspace/csr | csr | workspace/highwind | highwind "
+        help="Base directory or slug: cache/csr | csr | cache/highwind | highwind | /path/to/builder-extract "
         "(csr-plus is increment source only, not a normal publish base)",
     )
     ap.add_argument(
