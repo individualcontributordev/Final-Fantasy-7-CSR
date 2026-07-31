@@ -6,10 +6,10 @@ CSR+ scene (most fields inferred — preferred):
   python3 scripts/build_field_map_pack.py \\
     --edited-image /path/to/makou.bin \\
     --changed-maps temp/field-diff.json \\
-    --pack-id csr-plus-scene-cota-fd-manip-v0.1.0 \\
-    --disc 2
+    --pack-id csr-plus-scene-cota-fd-manip-v0.1.0
 
 Infers for csr-plus-scene-* packs:
+  --disc                APPLIED.txt next to edited image (else ff7-builder-dN stamp)
   --compatible-bases  all live csr-v* from builder/manifest.json
   --no-exclusive-group
   --name / --group-label / --blurb / --version from pack-id
@@ -91,6 +91,44 @@ def title_from_scene_stem(stem: str) -> str:
 		else:
 			parts.append(tok[:1].upper() + tok[1:].lower() if len(tok) > 1 else up)
 	return "CSR+ " + " ".join(parts)
+
+
+def disc_from_applied(edited_image: Path) -> int | None:
+	"""Read Disc: N from APPLIED.txt next to the edited .bin (builder zip)."""
+	applied = edited_image.expanduser().resolve().parent / "APPLIED.txt"
+	if not applied.is_file():
+		return None
+	text = applied.read_text(encoding="utf-8", errors="replace")
+	m = re.search(r"(?im)^\s*Disc:\s*([123])\s*$", text)
+	return int(m.group(1)) if m else None
+
+
+def disc_from_builder_stamp(edited_image: Path) -> int | None:
+	"""ff7-builder-d2+...bin → 2."""
+	name = edited_image.name
+	m = re.search(r"(?i)ff7-builder-d([123])\b", name)
+	if m:
+		return int(m.group(1))
+	# parent folder often has the same stamp
+	m = re.search(r"(?i)ff7-builder-d([123])\b", edited_image.parent.name)
+	return int(m.group(1)) if m else None
+
+
+def resolve_disc(cli_disc: int | None, edited_image: Path) -> int:
+	if cli_disc is not None:
+		return cli_disc
+	for source, fn in (
+		("APPLIED.txt", disc_from_applied),
+		("builder stamp", disc_from_builder_stamp),
+	):
+		d = fn(edited_image)
+		if d is not None:
+			print(f"disc (inferred from {source}): {d}")
+			return d
+	raise SystemExit(
+		"Could not infer --disc: pass --disc 1|2|3, or keep APPLIED.txt "
+		"(Disc: N) next to --edited-image"
+	)
 
 
 def default_csr_scene_baseline(disc: int) -> Path:
@@ -286,7 +324,13 @@ def main() -> int:
 		help="JSON from list_changed_field_maps.py",
 	)
 	ap.add_argument("--pack-id", required=True)
-	ap.add_argument("--disc", type=int, default=1, help="Disc 1/2/3 (default 1)")
+	ap.add_argument(
+		"--disc",
+		type=int,
+		default=None,
+		choices=(1, 2, 3),
+		help="Disc 1/2/3 (default: APPLIED.txt next to --edited-image, else builder filename)",
+	)
 	ap.add_argument("--version", default=None, help="Default: from pack-id -vX.Y.Z or 0.1.0")
 	ap.add_argument("--name", default=None, help="Default: from pack-id for scenes")
 	ap.add_argument("--blurb", default=None, help="Default: for scenes")
@@ -310,6 +354,10 @@ def main() -> int:
 
 	scene = is_csr_plus_scene_pack(args.pack_id)
 	stem, ver_from_id = parse_pack_id(args.pack_id)
+	edited_path = args.edited_image.expanduser().resolve()
+	if not edited_path.is_file():
+		raise SystemExit(f"Missing edited image: {edited_path}")
+	disc = resolve_disc(args.disc, edited_path)
 
 	if args.no_exclusive_group and args.exclusive_group:
 		raise SystemExit("Pass only one of --no-exclusive-group or --exclusive-group")
@@ -368,17 +416,14 @@ def main() -> int:
 	if args.pristine:
 		pristine_path = args.pristine.expanduser().resolve()
 	elif scene:
-		pristine_path = default_csr_scene_baseline(args.disc)
+		pristine_path = default_csr_scene_baseline(disc)
 	else:
 		raise SystemExit("Pass --pristine (required unless pack-id is csr-plus-scene-*)")
 	if not pristine_path.is_file():
 		raise SystemExit(f"Missing baseline image: {pristine_path}")
 
-	edited_path = args.edited_image.expanduser().resolve()
-	if not edited_path.is_file():
-		raise SystemExit(f"Missing edited image: {edited_path}")
-
 	print("=== inject maps onto baseline ===")
+	print(f"  disc={disc}")
 	print(f"  baseline={pristine_path}")
 	print(f"  edited={edited_path}")
 	pristine = pristine_path.read_bytes()
@@ -395,7 +440,7 @@ def main() -> int:
 		layer = build_layer(
 			pr_bin,
 			pt_bin,
-			layer_id=f"{args.pack_id}-disc{args.disc}",
+			layer_id=f"{args.pack_id}-disc{disc}",
 			description=blurb,
 		)
 
@@ -413,17 +458,17 @@ def main() -> int:
 		option_label=args.option_label,
 		exclusive_group=exclusive,
 		compatible_bases=compatible_bases,
-		disc=args.disc,
+		disc=disc,
 		layer=layer,
 		files=files,
 		update_manifest=not args.no_manifest,
 	)
 	print(f"Wrote {pack_dir.relative_to(_ROOT)}")
-	print(f"  id={args.pack_id} name={name!r} bases={compatible_bases}")
+	print(f"  id={args.pack_id} name={name!r} disc={disc} bases={compatible_bases}")
 
 	if args.assert_no_overlap_with:
 		assert_no_overlap(
-			pack_dir / "layers" / f"disc{args.disc}.layer.json",
+			pack_dir / "layers" / f"disc{disc}.layer.json",
 			args.assert_no_overlap_with,
 		)
 	return 0

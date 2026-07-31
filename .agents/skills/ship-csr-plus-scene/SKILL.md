@@ -134,13 +134,12 @@ One connected component ⇒ one pack. Split packs if multiple components.
 ### 3. Build pack — free checkbox
 
 ```bash
-# csr-plus-scene-* infers: all live csr-v* bases, checkbox, name/blurb, cache/csr baseline
+# csr-plus-scene-* infers disc (APPLIED.txt), live csr-v* bases, checkbox, name, baseline
 python3 scripts/build_field_map_pack.py \
   --edited-image /path/to/makou-or-builder.bin \
   --changed-maps temp/field-diff.json \
-  --pack-id csr-plus-scene-<name>-v0.1.0 \
-  --disc N
-# optional overrides: --name --blurb --pristine --files …
+  --pack-id csr-plus-scene-<name>-v0.1.0
+# optional: --disc N --name --blurb --pristine --files …
 ```
 
 Confirm `pack.json` / manifest **omit** `exclusiveGroup` and list every live `csr-v*` in `compatibleBases` (inferred). Never Highwind.

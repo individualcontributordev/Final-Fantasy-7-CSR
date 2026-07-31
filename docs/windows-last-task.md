@@ -63,12 +63,11 @@ else:
 
 # Expect: CoTA FIELD/*.DAT only (no Hojo). Then build from that JSON:
 
-    # CSR+ scene: bases/labels/checkbox/baseline inferred from pack-id + manifest
+    # CSR+ scene: disc from APPLIED.txt; bases/labels/baseline inferred
     python3 scripts/build_field_map_pack.py \
       --edited-image "$EDITED" \
       --changed-maps temp/cota-fd-manip-d2-diff.json \
-      --pack-id csr-plus-scene-cota-fd-manip-v0.1.0 \
-      --disc 2
+      --pack-id csr-plus-scene-cota-fd-manip-v0.1.0
 
 # Pack still diffs those maps against CSR alone (correct).
 # Keep Hojo out of the diff JSON (CSR+Hojo baseline above) so they are not packed.
