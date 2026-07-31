@@ -46,7 +46,7 @@ python3 scripts/field_jump_graph.py \
 python3 scripts/build_field_map_pack.py \
   --pristine cache/csr/FINALFANTASY7_D1.bin \
   --edited-image temp/my-addon/FINALFANTASY7_D1.bin \
-  --files FIELD/MAP1.DAT FIELD/MAP2.DAT \
+  --changed-maps temp/my-addon-diff.json \
   --pack-id my-addon-v0.1.0 \
   --disc 1 \
   --name "Display Name" \
@@ -54,6 +54,7 @@ python3 scripts/build_field_map_pack.py \
   --blurb "Short description." \
   --no-exclusive-group \
   --compatible-bases csr-v0.14.1
+# or: --files FIELD/MAP1.DAT FIELD/MAP2.DAT
 ```
 
 ## Verify (builder config — required)

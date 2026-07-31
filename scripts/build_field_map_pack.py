@@ -6,8 +6,9 @@ Free checkbox (omit exclusiveGroup — preferred for independent CSR+ scenes):
   python3 scripts/build_field_map_pack.py \\
     --pristine cache/csr/FINALFANTASY7_D1.bin \\
     --edited-image /path/to/builder-zip-extract/ff7-builder-….bin \\
-    --files FIELD/EALS_1.DAT \\
+    --changed-maps temp/field-diff.json \\
     --pack-id csr-plus-scene-aerith-house-v0.1.0 \\
+  # or: --files FIELD/EALS_1.DAT \\
     --name "CSR+ scene — Aerith's house" \\
     --group-label "CSR+ scene — Aerith's house" \\
     --blurb "CSR+ trim of Aerith's house on CSR." \\
@@ -41,6 +42,26 @@ from psx_mode2_iso import (  # noqa: E402
 )
 
 MANIFEST_PATH = _ROOT / "builder" / "manifest.json"
+
+
+def files_from_changed_maps_json(path: Path) -> list[str]:
+	"""FIELD/*.DAT paths from list_changed_field_maps.py JSON output."""
+	data = json.loads(path.read_text(encoding="utf-8"))
+	out: list[str] = []
+	seen: set[str] = set()
+	for m in data.get("maps") or []:
+		for p in m.get("files") or []:
+			p = str(p).replace("\\", "/").upper()
+			if not p.startswith("FIELD/"):
+				p = f"FIELD/{p}"
+			if not p.endswith(".DAT"):
+				continue
+			if p not in seen:
+				seen.add(p)
+				out.append(p)
+	if not out:
+		raise SystemExit(f"{path}: no FIELD/*.DAT paths in changed-maps JSON")
+	return out
 
 
 def build_patched_image(
@@ -175,7 +196,18 @@ def main() -> int:
 		required=True,
 		help="Updated disc .bin after Makou (builder zip extract)",
 	)
-	ap.add_argument("--files", nargs="+", required=True, help="ISO paths e.g. FIELD/SHIP_1.DAT")
+	ap.add_argument(
+		"--files",
+		nargs="+",
+		default=None,
+		help="ISO paths e.g. FIELD/SHIP_1.DAT (or use --changed-maps)",
+	)
+	ap.add_argument(
+		"--changed-maps",
+		type=Path,
+		default=None,
+		help="JSON from list_changed_field_maps.py (uses FIELD/*.DAT paths from it)",
+	)
 	ap.add_argument("--pack-id", required=True)
 	ap.add_argument("--disc", type=int, default=1, help="Disc number (1/2/3). Default: 1")
 	ap.add_argument("--version", default="0.1.0")
@@ -211,11 +243,19 @@ def main() -> int:
 
 	if args.no_exclusive_group and args.exclusive_group:
 		raise SystemExit("Pass only one of --no-exclusive-group or --exclusive-group")
+	if bool(args.files) == bool(args.changed_maps):
+		raise SystemExit("Pass exactly one of --files or --changed-maps")
 
-	files = [f.replace("\\", "/").upper() for f in args.files]
-	for i, f in enumerate(files):
-		if not f.startswith("FIELD/"):
-			files[i] = f"FIELD/{f}"
+	if args.changed_maps:
+		files = files_from_changed_maps_json(args.changed_maps.expanduser().resolve())
+		print(f"=== files from {args.changed_maps.name} ({len(files)}) ===")
+		for f in files:
+			print(f"  {f}")
+	else:
+		files = [f.replace("\\", "/").upper() for f in args.files]
+		for i, f in enumerate(files):
+			if not f.startswith("FIELD/"):
+				files[i] = f"FIELD/{f}"
 
 	if args.no_exclusive_group:
 		exclusive = None

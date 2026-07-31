@@ -61,12 +61,12 @@ else:
     print('OK no Hojo maps in diff')
 "
 
-# Expect: CoTA FIELD/*.DAT only. Use those paths in --files:
+# Expect: CoTA FIELD/*.DAT only (no Hojo). Then build from that JSON:
 
     python3 scripts/build_field_map_pack.py \
       --pristine cache/csr/FINALFANTASY7_D2.bin \
       --edited-image "$EDITED" \
-      --files FIELD/REPLACE_ME.DAT \
+      --changed-maps temp/cota-fd-manip-d2-diff.json \
       --pack-id csr-plus-scene-cota-fd-manip-v0.1.0 \
       --version 0.1.0 \
       --disc 2 \
@@ -76,8 +76,8 @@ else:
       --no-exclusive-group \
       --compatible-bases csr-v0.14.1
 
-# Build still diffs each --files map against CSR alone (correct for the pack).
-# Including Hojo in --files would bake Hojo into the CoTA pack — do not.
+# Pack still diffs those maps against CSR alone (correct).
+# Keep Hojo out of the diff JSON (CSR+Hojo baseline above) so they are not packed.
 
     python3 scripts/verify_builder_config.py \
       --pristine pristine/FINALFANTASY7_D2.bin \
