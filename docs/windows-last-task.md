@@ -1,85 +1,50 @@
-# Task: CSR+ Aerith house — Elmyra dialogue via builder-zip update flow
+# Task: adopt pristine/ + cache/ layout (one-time)
 
 ## Goal
 
-When the player enters Aerith's house, Elmyra (mom) shows dialogue the player must
-close; closing it advances Game Moment so they can leave and continue.
+Match the new local-disc mental model. Bins stay gitignored; only path names change.
 
-Use the **builder zip → Makou → update_addon_from_builder_zip.py** workflow
-(skill ship-csr-plus-scene → Update existing).
+## Mental model
+
+    pristine/                 retail ground truth (store once)
+    builder zip .bin          session working disc (edit in Makou)
+    builder/                  published layers (git)
+    cache/csr|highwind|…      optional reconstructed bases — not the workflow owner
+    workspace/                LEGACY (still works; scripts fall back)
 
 ## Success
 
-1. Builder zip: CSR + CSR+ Aerith's house only; edited in Makou; APPLIED.txt intact.
-2. update_addon_from_builder_zip.py → new pack (default v0.1.1); old disabled; preset ok.
-3. verify_builder_config.py PASS.
-4. Playtest via apply_layer stack (or DuckStation on play bin): enter house → Elmyra
-   dialogue → close → leave OK. Record Game Moment value.
-5. Changelog + commit builder/ + push. Say **check**.
+1. git pull
+2. Move or copy retail bins to pristine/
+3. Optionally move reconstructed bases to cache/
+4. Smoke: python3 -c import local_paths; print pristine_bin(1)
+5. Say check (optional note under Evidence)
 
-## Steps
-
-### 1. Pull
+## Copy-paste (Git Bash)
 
     cd "$(git rev-parse --show-toplevel)"
     git pull --ff-only
 
-### 2. Builder → unzip
+    mkdir -p pristine cache/csr cache/highwind
 
-1. https://individualcontributor.dev/builder/ — load pristine **Disc 1**.
-2. Base **CSR**. Enable **CSR+ Aerith's house** only (or preset if that is fine).
-3. Build → unzip to a folder. Keep .bin + APPLIED.txt together.
+    # If you still have workspace/pristine (common):
+    if [ -d workspace/pristine ]; then
+      cp -n workspace/pristine/FINALFANTASY7_D*.bin pristine/ 2>/dev/null || true
+      # or: mv workspace/pristine/FINALFANTASY7_D*.bin pristine/
+    fi
 
-### 3. Makou
+    # Optional caches:
+    if [ -d workspace/csr ]; then
+      cp -n workspace/csr/FINALFANTASY7_D*.bin cache/csr/ 2>/dev/null || true
+    fi
+    if [ -d workspace/highwind ]; then
+      cp -n workspace/highwind/FINALFANTASY7_D*.bin cache/highwind/ 2>/dev/null || true
+    fi
 
-Open the extract .bin → field **EALS_1**.
+    python3 -c "import sys; sys.path.insert(0,"scripts"); import local_paths as lp; print(lp.pristine_bin(1), lp.pristine_bin(1).is_file()); print("cache csr", lp.cache_bin("csr", 1))"
 
-- On enter: Elmyra dialogue (must close).
-- After close: set Game Moment so exit/continue works (copy GM from CSR/vanilla
-  EALS_1 if unsure). Write GM in Evidence.
-- Save .bin back into the **same extract folder**.
-
-### 4. Rebuild pack from zip (copy-paste)
-
-    cd "$(git rev-parse --show-toplevel)"
-    git pull --ff-only
-
-    BUILT="/c/path/to/ff7-builder-d1+csr-v0.14.1+csr-plus-scene-aerith-house-v0.1.0"
-
-    python3 scripts/update_addon_from_builder_zip.py "$BUILT"
-    # optional: --version 0.2.0   or   --addon csr-plus-scene-aerith-house
-
-    NEW=csr-plus-scene-aerith-house-v0.1.1   # use id the script printed if different
-
-    python3 scripts/verify_builder_config.py \
-      --pristine workspace/pristine/FINALFANTASY7_D1.bin \
-      --disc 1 \
-      --base csr-v0.14.1 \
-      --addon "$NEW"
-
-### 5. Playtest (layer stack — no re-download)
-
-    mkdir -p temp
-    python3 scripts/apply_layer.py \
-      workspace/pristine/FINALFANTASY7_D1.bin \
-      builder/csr-v0.14.1/layers/disc1.layer.json \
-      -o temp/csr-d1.bin
-    python3 scripts/apply_layer.py \
-      temp/csr-d1.bin \
-      builder/$NEW/layers/disc1.layer.json \
-      -o temp/play-d1.bin
-
-Open temp/play-d1.bin in DuckStation (.cue if you need one). Iterate Makou on
-the extract → re-run update script → re-apply if needed.
-
-### 6. Ship
-
-- bases/csr-plus/CHANGELOG.md note for this bump.
-- git add builder/ changelog docs/windows-last-task.md → commit → push.
+# You may delete workspace/ after copies verify. Not required — fallback remains.
 
 ## Evidence
 
-    (GM value + script notes)
-    (update_addon_from_builder_zip stdout: new pack id)
-    (verify PASS)
-    (playtest one-liner)
+    (paths that exist + local_paths printout)

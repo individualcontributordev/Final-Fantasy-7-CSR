@@ -16,16 +16,16 @@ description: >-
 | Edit type | Where |
 |-----------|--------|
 | Makou `FIELD/*.DAT` | **This skill** (CSR repo) |
-| CSR+ trim from `workspace/csr-plus` | `ship-csr-plus-scene` |
+| CSR+ trim from `cache/csr-plus` | `ship-csr-plus-scene` |
 | Engine `FIELD.BIN` / `WORLD.BIN` (Ghidra) | Modding `research-new-mod` |
 
 ## 2. Choose stack base
 
 | Goal | Diff baseline | `compatibleBases` |
 |------|---------------|-------------------|
-| On Unmodified | `workspace/pristine` | `clean` |
-| On CSR | `workspace/csr` | `csr-v0.14.1` (check manifest) |
-| On Highwind | `workspace/highwind` | `highwind-v0.1.1` |
+| On Unmodified | `pristine` | `clean` |
+| On CSR | `cache/csr` | `csr-v0.14.1` (check manifest) |
+| On Highwind | `cache/highwind` | `highwind-v0.1.1` |
 | CSR+ scene | stop → `ship-csr-plus-scene` | `csr-v0.14.1` only |
 
 Missing baseline bins → `apply_layer.py` pristine + published base layer (see `AGENTS.md`).
@@ -40,20 +40,20 @@ Missing baseline bins → `apply_layer.py` pristine + published base layer (see 
 ```bash
 # Diff
 python3 scripts/list_changed_field_maps.py \
-  --pristine workspace/<baseline>/FINALFANTASY7_DN.bin \
-  --patched workspace/<addon>/FINALFANTASY7_DN.bin \
-  --flavor <name> -o workspace/<name>-diff-dN.json
+  --pristine <baseline-dir>/FINALFANTASY7_DN.bin \
+  --patched <addon-dir>/FINALFANTASY7_DN.bin \
+  --flavor <name> -o temp/<name>-diff-dN.json
 
 # Optional graph
 python3 scripts/field_jump_graph.py \
-  --image workspace/<addon>/FINALFANTASY7_DN.bin \
-  --changed workspace/<name>-diff-dN.json \
-  -o workspace/<name>-graph-dN.json
+  --image <addon-dir>/FINALFANTASY7_DN.bin \
+  --changed temp/<name>-diff-dN.json \
+  -o temp/<name>-graph-dN.json
 
 # Build
 python3 scripts/build_field_map_pack.py \
-  --pristine workspace/<baseline>/FINALFANTASY7_DN.bin \
-  --flavor-image workspace/<addon>/FINALFANTASY7_DN.bin \
+  --pristine <baseline-dir>/FINALFANTASY7_DN.bin \
+  --flavor-image <addon-dir>/FINALFANTASY7_DN.bin \
   --files FIELD/<MAP>.DAT \
   --pack-id <id>-v0.1.0 \
   --disc N \
@@ -81,7 +81,7 @@ Same `--pack-id`, re-run with `--disc 2` or `--disc 3`.
 
 ```bash
 python3 scripts/verify_builder_config.py \
-  --pristine workspace/pristine/FINALFANTASY7_DN.bin \
+  --pristine pristine/FINALFANTASY7_DN.bin \
   --disc N \
   --base <compatibleBase-id> \
   --addon <pack-id>

@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """Verify a builder configuration by stacking ic-layer packs like the site builder.
 
-SRP: read-only resolve + apply + check. Does not publish or patch workspace bins.
+SRP: read-only resolve + apply + check. Does not publish or rewrite bins.
 
   python scripts/verify_builder_config.py \\
-    --pristine workspace/pristine/FINALFANTASY7_D1.bin \\
+    --pristine pristine/FINALFANTASY7_D1.bin \\
     --disc 1 \\
     --base csr-v0.14.1 \\
     --addon csr-plus-scene-aerith-house-v0.1.0
 
   # Cross-repo (Modding add-ons on CSR/Highwind/clean):
   python scripts/verify_builder_config.py \\
-    --pristine workspace/pristine/FINALFANTASY7_D1.bin \\
+    --pristine pristine/FINALFANTASY7_D1.bin \\
     --disc 1 --base clean \\
     --addon field-encounter-25-v0.1.2 \\
     --manifest builder/manifest.json \\
@@ -34,6 +34,7 @@ if str(_SCRIPTS) not in sys.path:
 	sys.path.insert(0, str(_SCRIPTS))
 
 from apply_layer import apply_layer  # noqa: E402
+from local_paths import default_pristine_arg  # noqa: E402
 
 
 def _load_manifest(path: Path) -> tuple[Path, dict]:
@@ -80,7 +81,12 @@ def _apply_and_check(image: bytearray, layer_path: Path) -> int:
 
 def main() -> int:
 	ap = argparse.ArgumentParser(description="Verify builder base+addon stack on a pristine disc")
-	ap.add_argument("--pristine", type=Path, required=True, help="Retail NTSC-U disc .bin")
+	ap.add_argument(
+		"--pristine",
+		type=Path,
+		default=None,
+		help="Retail NTSC-U disc .bin (default: pristine/FINALFANTASY7_DN.bin)",
+	)
 	ap.add_argument("--disc", type=int, required=True, choices=(1, 2, 3))
 	ap.add_argument(
 		"--base",
@@ -116,6 +122,14 @@ def main() -> int:
 	)
 	args = ap.parse_args()
 
+	pristine = (
+		args.pristine.expanduser().resolve()
+		if args.pristine
+		else default_pristine_arg(args.disc).resolve()
+	)
+	if not pristine.is_file():
+		raise SystemExit(f"Missing pristine image: {pristine}")
+
 	catalog: dict[str, dict] = {}
 	for man in [args.manifest, *args.extra_manifest]:
 		bdir, data = _load_manifest(man)
@@ -123,9 +137,9 @@ def main() -> int:
 
 	base_id = args.base.strip()
 	print(f"Config: base={base_id} addons={args.addons or []} disc={args.disc}")
-	print(f"Pristine: {args.pristine}")
+	print(f"Pristine: {pristine}")
 
-	image = bytearray(Path(args.pristine).expanduser().resolve().read_bytes())
+	image = bytearray(pristine.read_bytes())
 	total_recs = 0
 	stack: list[str] = []
 

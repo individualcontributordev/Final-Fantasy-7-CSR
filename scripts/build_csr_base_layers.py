@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """Build ic-layer-v1 packs for one publishable base (csr or highwind).
 
-Normal publish targets:
+Normal publish targets (base dir = edited images; often a builder-zip extract path):
 
-  python3 scripts/build_csr_base_layers.py workspace/csr --version 0.14.0
-  python3 scripts/build_csr_base_layers.py workspace/highwind --version 0.1.0 --discs 1,2,3
+  python3 scripts/build_csr_base_layers.py cache/csr --version 0.14.0
+  python3 scripts/build_csr_base_layers.py cache/highwind --version 0.1.0 --discs 1,2,3
+  python3 scripts/build_csr_base_layers.py /path/to/ff7-builder-d1+csr-…/ --slug csr --version …
 
-workspace/csr-plus is legacy / CSR+ scene increment *source* only — do not use this
-script to publish a monolithic CSR+ base. Ship scenes via build_field_map_pack.py
-and skill ship-csr-plus-scene.
+csr-plus under cache/ is legacy / scene increment *source* only — do not publish a
+monolithic CSR+ base. Ship scenes via update_addon_from_builder_zip / build_field_map_pack.
 
 Looks for:
-  workspace/pristine/FINALFANTASY7_DN.bin
+  pristine/FINALFANTASY7_DN.bin   (or legacy workspace/pristine/)
   <base-dir>/FINALFANTASY7_DN.bin
 
 Writes builder/<slug>-v<version>/layers/discN.layer.json, updates pack.json + manifest.json,
@@ -33,48 +33,66 @@ if str(_SCRIPTS) not in sys.path:
 
 from apply_layer import apply_layer  # noqa: E402
 from bin_diff_to_layer import build_layer  # noqa: E402
+from local_paths import pristine_bin, pristine_dir  # noqa: E402
 
 BASES = {
     "csr": {
         "slug": "csr",
         "name": "CSR",
         "blurb": "CutScenes Removed — skill checks kept.",
-        "dir": "workspace/csr",
+        "cache_key": "csr",
     },
     "csr-plus": {
         "slug": "csr-plus",
         "name": "CSR+",
         "blurb": "More aggressive cutscene removal.",
-        "dir": "workspace/csr-plus",
+        "cache_key": "csr-plus",
     },
     "highwind": {
         "slug": "highwind",
         "name": "Highwind",
         "blurb": "An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+.",
-        "dir": "workspace/highwind",
+        "cache_key": "highwind",
     },
 }
 
-PRISTINE_DIR = _ROOT / "workspace" / "pristine"
 MANIFEST_PATH = _ROOT / "builder" / "manifest.json"
 
 
 def resolve_base(dir_or_slug: str) -> tuple[str, dict, Path]:
     raw = Path(dir_or_slug)
-    # Accept workspace/csr, csr, csr-plus, etc.
+    # Accept cache/csr, workspace/csr, csr, or an arbitrary directory of edited bins.
     key = raw.name if raw.name in BASES else dir_or_slug.strip().strip("/\\")
-    if key not in BASES:
-        known = ", ".join(BASES)
-        raise SystemExit(f"Unknown base '{dir_or_slug}'. Use one of: {known}")
-    info = BASES[key]
-    base_dir = (_ROOT / info["dir"]).resolve()
+    if key in BASES:
+        info = BASES[key]
+        for cand in (
+            _ROOT / "cache" / info["cache_key"],
+            _ROOT / "workspace" / info["cache_key"],
+            raw if raw.is_absolute() else _ROOT / raw,
+        ):
+            if cand.is_dir():
+                return key, info, cand.resolve()
+        raise SystemExit(
+            f"Missing base directory for '{key}' "
+            f"(tried cache/{info['cache_key']}, workspace/{info['cache_key']}). "
+            "Pass a folder that contains FINALFANTASY7_DN.bin (e.g. builder zip extract)."
+        )
+    # Explicit path to edited images (builder zip extract, etc.)
+    base_dir = raw.expanduser().resolve()
     if not base_dir.is_dir():
         raise SystemExit(f"Missing base directory: {base_dir}")
-    return key, info, base_dir
+    # slug must be provided via --slug when using an arbitrary path — handled in main
+    info = {
+        "slug": base_dir.name,
+        "name": base_dir.name,
+        "blurb": "",
+        "cache_key": base_dir.name,
+    }
+    return base_dir.name, info, base_dir
 
 
 def disc_paths(base_dir: Path, disc: int) -> tuple[Path, Path]:
-    pristine = PRISTINE_DIR / f"FINALFANTASY7_D{disc}.bin"
+    pristine = pristine_bin(disc)
     # Prefer plain name in the flavor folder; keep legacy "(patched)" as fallback.
     plain = base_dir / f"FINALFANTASY7_D{disc}.bin"
     legacy = base_dir / f"FINALFANTASY7_D{disc} (patched).bin"
@@ -106,8 +124,8 @@ def parse_discs(spec: str | None, base_dir: Path) -> list[int]:
     found = available_discs(base_dir)
     if not found:
         raise SystemExit(
-            f"No disc pairs found under {base_dir} and {PRISTINE_DIR}.\n"
-            f"Expected FINALFANTASY7_DN.bin in pristine/ and in the flavor folder."
+            f"No disc pairs found under {base_dir} and {pristine_dir()}.\n"
+            f"Expected FINALFANTASY7_DN.bin in pristine/ and in the edited-image folder."
         )
     return found
 

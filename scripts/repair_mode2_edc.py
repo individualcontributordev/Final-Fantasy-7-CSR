@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Repair MODE2/2352 Form-1 EDC/ECC on a patched CSR working image.
 
-Before rebuilding ic-layer packs, run this on each workspace/<base>/FINALFANTASY7_DN.bin
+Before rebuilding ic-layer packs, run this on each cache/<base>/ or edited FINALFANTASY7_DN.bin
 so diffs do not bake zeroed footers into the layer JSON.
 
   # restore unchanged footers from pristine + recompute ECC where user data changed
   python3 scripts/repair_mode2_edc.py \\
-    --pristine workspace/pristine/FINALFANTASY7_D1.bin \\
-    --input workspace/csr-plus/FINALFANTASY7_D1.bin \\
-    --output workspace/csr-plus/FINALFANTASY7_D1.bin --in-place
+    --pristine pristine/FINALFANTASY7_D1.bin \\
+    --input cache/csr/FINALFANTASY7_D1.bin \\
+    --output cache/csr/FINALFANTASY7_D1.bin --in-place
 
 Neill Corlett / ECM public-domain Mode2 Form1 algorithm (verified vs retail).
 """
