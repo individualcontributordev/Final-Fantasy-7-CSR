@@ -37,43 +37,56 @@ Short flags: `docs/ADDON_QUICK_REFERENCE.md`. Full Makou guide: `docs/CREATE_ADD
 - **CSR+** is **not** a base. Extra trims ship as `csr-plus-scene-*` add-ons on `csr-v0.14.1` only.
 - **Highwind** = separate aggressive mod, not a bigger CSR+. Does **not** stack with CSR+ scene add-ons.
 - Free independent scenes: **omit** `exclusiveGroup` (builder → checkbox). Set `exclusiveGroup` only for mutually exclusive variants.
-- Diff **bases** against `workspace/pristine`. Diff **CSR+ scenes** against `workspace/csr` (not pristine).
+- Diff **bases** against **pristine**. Diff **CSR+ scenes** against **CSR baseline** (published CSR layer / cache), not pristine.
 - Multi-base general add-ons: multiple `compatibleBases` only if bytes are identical on each base; else **per-base packs**.
 
 | Goal | Diff baseline | compatibleBases |
 |------|---------------|-----------------|
-| CSR / Highwind **base** release | `workspace/pristine` | n/a (`kind=base`) |
-| CSR+ **scene** add-on | `workspace/csr` | `csr-v0.14.1` |
-| Add-on on Unmodified | `workspace/pristine` | `clean` |
-| Add-on on Highwind only | `workspace/highwind` | `highwind-v0.1.1` |
+| CSR / Highwind **base** release | `pristine/` | n/a (`kind=base`) |
+| CSR+ **scene** add-on | CSR image (layer or `cache/csr`) | `csr-v0.14.1` |
+| Add-on on Unmodified | `pristine/` | `clean` |
+| Add-on on Highwind only | Highwind image | `highwind-v0.1.1` |
 
 Changelogs: `bases/csr|csr-plus|highwind/CHANGELOG.md`.
 
-## Workspace images missing?
+## Mental model (local discs)
 
-Reconstruct published base images (no new dump):
-
-```bash
-mkdir -p workspace/csr workspace/highwind
-python3 scripts/apply_layer.py \
-  workspace/pristine/FINALFANTASY7_D1.bin \
-  builder/csr-v0.14.1/layers/disc1.layer.json \
-  -o workspace/csr/FINALFANTASY7_D1.bin
-# Disc 2/3 and Highwind: same pattern with discN + highwind-v0.1.1
+```text
+pristine/                 retail ground truth (store once)
+builder zip .bin          session working disc (edit in Makou)
+builder/                  published layers (git)
+cache/csr|highwind|…      optional reconstructed bases — not the workflow owner
+workspace/                LEGACY name for cache/pristine (scripts still accept it)
 ```
 
-`workspace/csr-plus/` = Makou source for scene **increments** only. Do **not** run `build_csr_base_layers.py` on it for a normal publish.
+Session work: site builder → unzip → Makou → `update_addon_from_builder_zip.py` (scenes)
+or `build_csr_base_layers.py <edited-folder>` (bases). Do **not** treat cache as the product.
+
+## Optional cache (reconstruct published base)
+
+```bash
+mkdir -p cache/csr cache/highwind
+python3 scripts/apply_layer.py \
+  pristine/FINALFANTASY7_D1.bin \
+  builder/csr-v0.14.1/layers/disc1.layer.json \
+  -o cache/csr/FINALFANTASY7_D1.bin
+# Disc 2/3 and Highwind: same pattern
+```
+
+Prefer a **builder zip** (CSR-only / Highwind-only) as the Makou starting image when editing bases. Cache only speeds repeats. Never publish `cache/csr-plus` as a base — CSR+ scenes use `ship-csr-plus-scene`.
 
 ## Paths
 
 | What | Where |
 |------|--------|
-| Pristine discs | `workspace/pristine/FINALFANTASY7_DN.bin` |
-| Patched images | `workspace/csr/`, `workspace/csr-plus/` (increment source), `workspace/highwind/` |
+| Pristine discs | `pristine/FINALFANTASY7_DN.bin` |
+| Optional base cache | `cache/csr/`, `cache/highwind/` |
+| Session edits | builder zip extract (e.g. Downloads) |
 | Published layers | `builder/<slug>-v<ver>/` + `builder/manifest.json` |
 | Skills | `.agents/skills/*` |
 | Windows task handoff | `docs/windows-last-task.md` |
-| Builder config verify | `scripts/verify_builder_config.py` (required in ship skills before publish) |
+| Builder config verify | `scripts/verify_builder_config.py` (required before publish) |
+| Path helper | `scripts/local_paths.py` |
 
 ## After a CSR / Highwind base id changes
 

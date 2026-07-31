@@ -3,13 +3,13 @@ name: ship-csr-plus-scene
 description: >-
   Build and publish a CSR+ scene trim as a free checkbox add-on on CSR base
   (csr-v0.14.1). Use when shipping csr-plus-scene-* packs, decomposing CSR+
-  increments from workspace/csr-plus, or updating the csr-plus preset. Not for
+  increments from cache/csr-plus, or updating the csr-plus preset. Not for
   Highwind bases or engine binary mods.
 ---
 
 # Ship a CSR+ scene add-on
 
-**Runner:** Windows (Git Bash + local `workspace/csr` + `workspace/csr-plus` bins). Mac agent instructs only; optional post-publish verify of `builder/` JSON.
+**Runner:** Windows (Git Bash + local `cache/csr` + `cache/csr-plus` bins). Mac agent instructs only; optional post-publish verify of `builder/` JSON.
 
 ## When
 
@@ -62,7 +62,7 @@ Script writes `builder/<stem>-vNEW/`, updates `manifest.json`, sets old pack
 
 ```bash
 python3 scripts/verify_builder_config.py \
-  --pristine workspace/pristine/FINALFANTASY7_DN.bin \
+  --pristine pristine/FINALFANTASY7_DN.bin \
   --disc N \
   --base csr-v0.14.1 \
   --addon csr-plus-scene-<name>-vX.Y.Z
@@ -76,7 +76,7 @@ Same stack the site will apply: pristine → base layer → **new** add-on layer
 ```bash
 mkdir -p temp
 python3 scripts/apply_layer.py \
-  workspace/pristine/FINALFANTASY7_D1.bin \
+  pristine/FINALFANTASY7_D1.bin \
   builder/csr-v0.14.1/layers/disc1.layer.json \
   -o temp/csr-d1.bin
 python3 scripts/apply_layer.py \
@@ -97,8 +97,8 @@ Iterate: fix in Makou on the **builder extract** again → re-run
 
 ### Manual fallback (no builder zip)
 
-Still valid: Makou on `workspace/csr-plus`, then
-`build_field_map_pack.py` with `--pristine workspace/csr/…`, explicit
+Still valid: Makou on `cache/csr-plus`, then
+`build_field_map_pack.py` with `--pristine cache/csr/…`, explicit
 `--files` / `--pack-id` / version, then hand-edit manifest/preset. Prefer
 `update_addon_from_builder_zip.py` for day-to-day updates.
 
@@ -108,26 +108,26 @@ Still valid: Makou on `workspace/csr-plus`, then
 
 ### Preconditions
 
-- `workspace/csr/` + `workspace/csr-plus/` images for needed discs
+- `cache/csr/` + `cache/csr-plus/` images for needed discs
 - Reconstruct CSR if missing (see U0).
 
 ### 1. Diff CSR → CSR+ (not pristine)
 
 ```bash
 python3 scripts/list_changed_field_maps.py \
-  --pristine workspace/csr/FINALFANTASY7_DN.bin \
-  --patched workspace/csr-plus/FINALFANTASY7_DN.bin \
+  --pristine cache/csr/FINALFANTASY7_DN.bin \
+  --patched cache/csr-plus/FINALFANTASY7_DN.bin \
   --flavor csr-plus-increment \
-  -o workspace/csr-plus-increment-field-diff-dN.json
+  -o cache/csr-plus-increment-field-diff-dN.json
 ```
 
 ### 2. Optional jump graph
 
 ```bash
 python3 scripts/field_jump_graph.py \
-  --image workspace/csr-plus/FINALFANTASY7_DN.bin \
-  --changed workspace/csr-plus-increment-field-diff-dN.json \
-  -o workspace/csr-plus-increment-graph-dN.json
+  --image cache/csr-plus/FINALFANTASY7_DN.bin \
+  --changed cache/csr-plus-increment-field-diff-dN.json \
+  -o cache/csr-plus-increment-graph-dN.json
 ```
 
 One connected component ⇒ one pack. Split packs if multiple components.
@@ -136,8 +136,8 @@ One connected component ⇒ one pack. Split packs if multiple components.
 
 ```bash
 python3 scripts/build_field_map_pack.py \
-  --pristine workspace/csr/FINALFANTASY7_DN.bin \
-  --flavor-image workspace/csr-plus/FINALFANTASY7_DN.bin \
+  --pristine cache/csr/FINALFANTASY7_DN.bin \
+  --flavor-image cache/csr-plus/FINALFANTASY7_DN.bin \
   --files FIELD/<MAP>.DAT \
   --pack-id csr-plus-scene-<name>-v0.1.0 \
   --disc N \
@@ -154,7 +154,7 @@ Confirm `pack.json` / manifest **omit** `exclusiveGroup`. Never set Highwind in 
 
 ```bash
 python3 scripts/verify_builder_config.py \
-  --pristine workspace/pristine/FINALFANTASY7_DN.bin \
+  --pristine pristine/FINALFANTASY7_DN.bin \
   --disc N \
   --base csr-v0.14.1 \
   --addon csr-plus-scene-<name>-v0.1.0
@@ -176,6 +176,6 @@ Commit `builder/` + changelog. One atomic DuckStation playtest task for human (*
 - `compatibleBases` Highwind / `clean` for CSR+ increments
 - `exclusiveGroup` for independent free scenes
 - Diff against pristine for CSR+ increments
-- Publish `workspace/csr-plus` via `build_csr_base_layers.py`
+- Publish `cache/csr-plus` via `build_csr_base_layers.py`
 - Overwrite a shipped pack id in place when the change is a real release (bump version id instead)
 - Merge unrelated csr-plus map deltas into an existing scene’s `--files` list

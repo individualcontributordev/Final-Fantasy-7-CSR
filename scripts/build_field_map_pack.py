@@ -4,8 +4,8 @@
 Free checkbox (omit exclusiveGroup — preferred for independent CSR+ scenes):
 
   python3 scripts/build_field_map_pack.py \\
-    --pristine workspace/csr/FINALFANTASY7_D1.bin \\
-    --flavor-image workspace/csr-plus/FINALFANTASY7_D1.bin \\
+    --pristine cache/csr/FINALFANTASY7_D1.bin \\
+    --flavor-image /path/to/builder-zip-extract/ff7-builder-….bin \\
     --files FIELD/EALS_1.DAT \\
     --pack-id csr-plus-scene-aerith-house-v0.1.0 \\
     --name "CSR+ scene — Aerith's house" \\

@@ -1,43 +1,55 @@
 # Local disc images — never commit game data or large binaries
+#
+# Layout:
+#   pristine/     retail NTSC-U masters (store once)
+#   cache/        optional reconstructed bases (csr, highwind, …) — not workflow owner
+#   workspace/    LEGACY alias (still gitignored; scripts fall back if present)
+#   temp/         layer-stack playtest outputs
+# Session edits live in builder zip extracts (Downloads/), not under pristine/.
 
-# workspace: ignore everything except .gitkeep placeholders
+pristine/*
+!pristine/**/
+!pristine/**/.gitkeep
+
+cache/*
+!cache/**/
+!cache/**/.gitkeep
+
+# Legacy path (pre rename)
 workspace/*
 !workspace/**/
 !workspace/**/.gitkeep
 
-# Disc / dump files anywhere under workspace
+# Disc / dump files in local image dirs
+pristine/**/*.bin
+pristine/**/*.BIN
+pristine/**/*.cue
+pristine/**/*.CUE
+cache/**/*.bin
+cache/**/*.BIN
+cache/**/*.cue
+cache/**/*.CUE
 workspace/**/*.bin
 workspace/**/*.BIN
 workspace/**/*.cue
 workspace/**/*.CUE
-workspace/**/*.img
-workspace/**/*.iso
-workspace/**/*.ISO
-workspace/**/*.ccd
-workspace/**/*.sub
-workspace/**/*.toc
-workspace/**/*.mds
-workspace/**/*.mdf
-workspace/**/*.nrg
-workspace/**/*.chd
-workspace/**/*.ecm
-workspace/**/*.dec
-workspace/**/*.dec.*
-workspace/**/*.new
-workspace/**/*.pristine
-workspace/**/*.gz
-workspace/**/*.gzip
+**/FINALFANTASY7_D*.bin
+**/FINALFANTASY7_D*.BIN
+
+# Other dump / intermediate forms
+**/*.{img,iso,ISO,ccd,sub,toc,mds,mdf,nrg,chd,ecm}
+**/*.dec
+**/*.dec.*
+**/*.new
+**/*.pristine
+**/*.{gz,gzip}
 
 # Extracted FIELD.BIN and intermediates
-workspace/**/FIELD.BIN
-workspace/**/FIELD.BIN.*
+**/FIELD.BIN
+**/FIELD.BIN.*
 
 # Emulator / save junk if dropped in the repo
-workspace/**/*.mcd
-workspace/**/*.sav
-workspace/**/*.srm
-workspace/**/*.state
-workspace/**/*.dst
+**/*.{mcd,sav,srm,state,dst}
 **/duckstation*/
 **/*.duckstation*
 

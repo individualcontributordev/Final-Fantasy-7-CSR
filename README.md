@@ -57,22 +57,24 @@ Run these steps on the **Windows** machine that has the disc images (Git Bash). 
 
 Publishable bases: **CSR** and **Highwind** only. CSR+ scene trims are add-ons (see `docs/ADDON_QUICK_REFERENCE.md` / skill `ship-csr-plus-scene`), not a third base.
 
-Local images (gitignored) under `workspace/`:
+Local discs (gitignored):
 
 | Role | Path |
 |------|------|
-| Pristine | `workspace/pristine/FINALFANTASY7_DN.bin` |
-| CSR | `workspace/csr/FINALFANTASY7_DN.bin` |
-| Highwind | `workspace/highwind/FINALFANTASY7_DN.bin` |
-| CSR+ increment source (not a publish base) | `workspace/csr-plus/FINALFANTASY7_DN.bin` |
+| Retail (required) | `pristine/FINALFANTASY7_DN.bin` |
+| Optional CSR cache | `cache/csr/FINALFANTASY7_DN.bin` |
+| Optional Highwind cache | `cache/highwind/FINALFANTASY7_DN.bin` |
+| Session edits | builder zip extract (not under pristine/) |
+
+`cache/` is optional — reconstruct from pristine + published layer, or start from a builder zip.
 
 Missing CSR/Highwind images? Reconstruct from pristine + published layer:
 
 ```bash
 python scripts/apply_layer.py \
-  workspace/pristine/FINALFANTASY7_D1.bin \
+  pristine/FINALFANTASY7_D1.bin \
   builder/csr-v0.14.1/layers/disc1.layer.json \
-  -o workspace/csr/FINALFANTASY7_D1.bin
+  -o cache/csr/FINALFANTASY7_D1.bin
 ```
 
 ### Clean EDC before layer rebuild (important)
@@ -84,10 +86,10 @@ Before `build_csr_base_layers.py`, repair each **base** disc against pristine:
 ```bash
 # names must be FINALFANTASY7_D1.bin … (rename Redump titles if needed)
 python scripts/repair_mode2_edc.py \
-  --pristine workspace/pristine/FINALFANTASY7_D1.bin \
-  --input workspace/csr/FINALFANTASY7_D1.bin \
+  --pristine pristine/FINALFANTASY7_D1.bin \
+  --input cache/csr/FINALFANTASY7_D1.bin \
   --in-place
-# repeat for D2/D3 and for workspace/highwind
+# repeat for D2/D3 and for cache/highwind
 ```
 
 Then rebuild **one** base at a time. Expect far fewer records (no thousands of footer-only zeros).
@@ -97,15 +99,15 @@ cd /c/path/to/Final-Fantasy-7-CSR   # Git Bash on Windows
 git pull
 
 # CSR or Highwind only — bump version, update bases/<base>/CHANGELOG.md
-python scripts/build_csr_base_layers.py workspace/csr --version 0.14.2
-# python scripts/build_csr_base_layers.py workspace/highwind --version 0.1.2
+python scripts/build_csr_base_layers.py cache/csr --version 0.14.2
+# python scripts/build_csr_base_layers.py cache/highwind --version 0.1.2
 
 git add builder/ bases/
 git commit -m "Release CSR v0.14.2."
 git push
 ```
 
-Do **not** run `build_csr_base_layers.py workspace/csr-plus` for a normal publish — that folder is Makou source for CSR+ scene increments.
+Do **not** run `build_csr_base_layers.py cache/csr-plus` for a normal publish — that folder is Makou source for CSR+ scene increments.
 
 Pages serves `builder/` JSON for the disc builder. Older packs stay enabled until you set `"enabled": false` in `builder/manifest.json`.
 
@@ -118,8 +120,10 @@ Agent checklists: `.agents/skills/release-csr-base`, `ship-csr-plus-scene`, `shi
 ```
 bases/           CHANGELOG.md per base (csr, csr-plus, highwind)
 builder/         published layers + manifest.json (Pages CDN)
-scripts/         build_csr_base_layers.py + layer helpers
-workspace/       local pristine / patched .bins (not committed)
+scripts/         layer helpers + local_paths.py
+pristine/        retail discs (gitignored)
+cache/           optional reconstructed bases (gitignored)
+temp/            playtest apply_layer outputs (gitignored)
 images/          README assets
 ```
 

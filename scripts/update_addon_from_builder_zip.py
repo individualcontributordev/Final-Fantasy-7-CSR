@@ -16,7 +16,7 @@ builds a new pack id with bumped version, updates manifest + csr-plus preset.
 
 Playtest after (without full builder):
 
-  python3 scripts/apply_layer.py workspace/pristine/FINALFANTASY7_D1.bin \\
+  python3 scripts/apply_layer.py pristine/FINALFANTASY7_D1.bin \\
     builder/csr-v0.14.1/layers/disc1.layer.json -o temp/csr-d1.bin
   python3 scripts/apply_layer.py temp/csr-d1.bin \\
     builder/<new-pack-id>/layers/disc1.layer.json -o temp/play-d1.bin
@@ -27,7 +27,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import shutil
 import sys
 import tempfile
 from pathlib import Path
@@ -40,6 +39,7 @@ if str(_SCRIPTS) not in sys.path:
 from apply_layer import apply_layer  # noqa: E402
 from bin_diff_to_layer import build_layer  # noqa: E402
 from build_field_map_pack import build_patched_image, write_pack  # noqa: E402
+from local_paths import cache_bin, default_pristine_arg  # noqa: E402
 
 MANIFEST_PATH = _ROOT / "builder" / "manifest.json"
 _MODDING = _ROOT.parent / "Final-Fantasy-7-Modding"
@@ -196,15 +196,14 @@ def _base_image_bytes(base_id: str, disc: int, catalog: dict[str, dict], pristin
 		return pristine.read_bytes()
 	if base_id not in catalog or catalog[base_id]["kind"] != "base":
 		raise SystemExit(f"Unknown base {base_id!r}")
-	# Prefer workspace cache if present
 	flavor = "csr" if base_id.startswith("csr-v") else (
 		"highwind" if "highwind" in base_id else base_id
 	)
-	cached = _ROOT / "workspace" / flavor / f"FINALFANTASY7_D{disc}.bin"
-	if cached.is_file():
-		print(f"Baseline image: {cached}")
+	cached = cache_bin(flavor, disc)
+	if cached is not None:
+		print(f"Baseline image (cache): {cached}")
 		return cached.read_bytes()
-	print(f"Reconstructing baseline {base_id} disc {disc} → memory")
+	print(f"Reconstructing baseline {base_id} disc {disc} → memory (no cache/{flavor})")
 	img = bytearray(pristine.read_bytes())
 	layer = json.loads(_layer_path(catalog[base_id], disc).read_text(encoding="utf-8"))
 	apply_layer(img, layer)
@@ -290,9 +289,8 @@ def main() -> int:
 	ap.add_argument(
 		"--pristine",
 		type=Path,
-		default=_ROOT / "workspace" / "pristine" / "FINALFANTASY7_D1.bin",
-		help="Retail disc image for this disc (default workspace/pristine D1; "
-		"override path/name for disc 2/3)",
+		default=None,
+		help="Retail disc image (default: pristine/FINALFANTASY7_DN.bin)",
 	)
 	ap.add_argument("--no-manifest", action="store_true")
 	ap.add_argument(
@@ -331,18 +329,19 @@ def main() -> int:
 	if new_id == old_id:
 		raise SystemExit(f"New id equals old ({new_id}); pass a higher --version")
 
-	# Pristine path: if default D1 but disc!=1, require explicit file
-	pristine_path = args.pristine.expanduser().resolve()
-	if disc != 1 and pristine_path.name.upper().endswith("D1.BIN"):
-		alt = pristine_path.parent / f"FINALFANTASY7_D{disc}.bin"
-		if alt.is_file():
-			pristine_path = alt
-		else:
-			raise SystemExit(
-				f"Disc {disc}: pass --pristine workspace/pristine/FINALFANTASY7_D{disc}.bin"
-			)
+	if args.pristine:
+		pristine_path = args.pristine.expanduser().resolve()
+		if disc != 1 and pristine_path.name.upper().endswith("D1.BIN"):
+			alt = pristine_path.parent / f"FINALFANTASY7_D{disc}.bin"
+			if alt.is_file():
+				pristine_path = alt
+	else:
+		pristine_path = default_pristine_arg(disc).resolve()
 	if not pristine_path.is_file():
-		raise SystemExit(f"Missing pristine image: {pristine_path}")
+		raise SystemExit(
+			f"Missing pristine image: {pristine_path} "
+			f"(copy retail discs into pristine/ or pass --pristine)"
+		)
 
 	print(f"Updating {old_id} → {new_id}")
 	print(f"  files={files}")

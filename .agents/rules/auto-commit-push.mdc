@@ -14,12 +14,12 @@ After finishing a task that changes tracked files in this repo, **commit and pus
 
 ## When not to commit
 
-- No tracked-file changes (only `workspace/` or other gitignored paths)
+- No tracked-file changes (only pristine/cache/workspace bins or other gitignored paths)
 - The user explicitly said not to commit in this turn
 - A commit hook failed — fix and create a **new** commit
 - Files likely contain secrets — warn instead
 
-Never commit `.bin` / `.cue` under `workspace/`.
+Never commit `.bin` / `.cue` under `pristine/`, `cache/`, or legacy `workspace/`.
 
 ## How
 

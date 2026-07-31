@@ -8,12 +8,12 @@ Skills: `ship-makou-addon`, `ship-csr-plus-scene`. Full guide: `docs/CREATE_ADDO
 
 | Goal | `--pristine` (diff baseline) | `--compatible-bases` |
 |------|------------------------------|----------------------|
-| CSR+ scene | `workspace/csr/...` | `csr-v0.14.1` |
-| On CSR | `workspace/csr/...` | `csr-v0.14.1` |
-| On Unmodified | `workspace/pristine/...` | `clean` |
-| On Highwind | `workspace/highwind/...` | `highwind-v0.1.1` |
+| CSR+ scene | `cache/csr/...` | `csr-v0.14.1` |
+| On CSR | `cache/csr/...` | `csr-v0.14.1` |
+| On Unmodified | `pristine/...` | `clean` |
+| On Highwind | `cache/highwind/...` | `highwind-v0.1.1` |
 
-Missing bins: `apply_layer.py` pristine + `builder/<base-id>/layers/discN.layer.json` → `workspace/<flavor>/`.
+Missing bins: `apply_layer.py` pristine + `builder/<base-id>/layers/discN.layer.json` → `cache/<flavor>/` (optional), or start from a builder zip.
 
 ## exclusiveGroup
 
@@ -26,27 +26,27 @@ Missing bins: `apply_layer.py` pristine + `builder/<base-id>/layers/discN.layer.
 
 ```bash
 python3 scripts/list_changed_field_maps.py \
-  --pristine workspace/csr/FINALFANTASY7_D1.bin \
-  --patched workspace/my-addon/FINALFANTASY7_D1.bin \
+  --pristine cache/csr/FINALFANTASY7_D1.bin \
+  --patched temp/my-addon/FINALFANTASY7_D1.bin \
   --flavor my-addon \
-  -o workspace/my-addon-diff.json
+  -o temp/my-addon-diff.json
 ```
 
 ## Optional jump graph
 
 ```bash
 python3 scripts/field_jump_graph.py \
-  --image workspace/my-addon/FINALFANTASY7_D1.bin \
-  --changed workspace/my-addon-diff.json \
-  -o workspace/my-addon-graph.json
+  --image temp/my-addon/FINALFANTASY7_D1.bin \
+  --changed temp/my-addon-diff.json \
+  -o temp/my-addon-graph.json
 ```
 
 ## Build add-on (free checkbox)
 
 ```bash
 python3 scripts/build_field_map_pack.py \
-  --pristine workspace/csr/FINALFANTASY7_D1.bin \
-  --flavor-image workspace/my-addon/FINALFANTASY7_D1.bin \
+  --pristine cache/csr/FINALFANTASY7_D1.bin \
+  --flavor-image temp/my-addon/FINALFANTASY7_D1.bin \
   --files FIELD/MAP1.DAT FIELD/MAP2.DAT \
   --pack-id my-addon-v0.1.0 \
   --disc 1 \
@@ -61,7 +61,7 @@ python3 scripts/build_field_map_pack.py \
 
 ```bash
 python3 scripts/verify_builder_config.py \
-  --pristine workspace/pristine/FINALFANTASY7_D1.bin \
+  --pristine pristine/FINALFANTASY7_D1.bin \
   --disc 1 \
   --base csr-v0.14.1 \
   --addon my-addon-v0.1.0
@@ -98,7 +98,7 @@ python3 scripts/update_addon_from_builder_zip.py "/path/to/extract-or.bin"
 
 ```bash
 mkdir -p temp
-python3 scripts/apply_layer.py workspace/pristine/FINALFANTASY7_D1.bin \
+python3 scripts/apply_layer.py pristine/FINALFANTASY7_D1.bin \
   builder/csr-v0.14.1/layers/disc1.layer.json -o temp/csr-d1.bin
 python3 scripts/apply_layer.py temp/csr-d1.bin \
   builder/<new-id>/layers/disc1.layer.json -o temp/play-d1.bin
@@ -127,10 +127,10 @@ Latest: `builder/manifest.json` → `bases[].id`. CSR+ is **not** a base.
 
 | Path | What |
 |------|------|
-| `workspace/pristine/` | Retail NTSC-U (never edit masters carelessly) |
-| `workspace/csr/` | CSR base images |
-| `workspace/csr-plus/` | CSR+ increment **source** (not a publish base) |
-| `workspace/highwind/` | Highwind images |
+| `pristine/` | Retail NTSC-U (never edit masters carelessly) |
+| `cache/csr/` | CSR base images |
+| `cache/csr-plus/` | CSR+ increment **source** (not a publish base) |
+| `cache/highwind/` | Highwind images |
 | `builder/<pack-id>/` | Published pack |
 | `builder/manifest.json` | Builder catalog |
 
