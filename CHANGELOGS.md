@@ -36,7 +36,7 @@ Do **not** put scene notes only in `bases/` — CSR+ is not a base anymore.
 - Disc 1 / 2 / 3 only when it helps (multi-disc packs).
 ```
 
-Oldest history stays at the **bottom**. Newest release at the **top**.
+**Rule: newest release at the top. Oldest at the bottom.** Always.
 
 ## Who updates the file
 

@@ -1,9 +1,13 @@
 # Highwind base — changelog
 
-Published builder ids: `highwind-vX.Y.Z` (see `builder/manifest.json`).
+Published builder ids: highwind-vX.Y.Z (see builder/manifest.json).
 Index: [CHANGELOGS.md](../../CHANGELOGS.md).
 
 v(release).(feature).(bugfix) — newest at top.
+
+## v0.1.1
+
+- Layer publish for disc builder.
 
 ## v0.1.0
 
@@ -17,7 +21,3 @@ Disc 2
 
 Disc 3
 - no changes
-
-## v0.1.1
-
-- Layer publish for disc builder.
