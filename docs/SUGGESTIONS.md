@@ -4,7 +4,7 @@ Ideas for **CSR**, **CSR+ packs**, and **Highwind**.
 Not a release promise.
 
 Community history (chats and milestones):
-https://github.com/individualcontributordev/Final-Fantasy-7-Modding/blob/main/docs/history/HISTORY.md
+https://individualcontributor.dev/history/
 
 Gameplay mods:
 https://github.com/individualcontributordev/Final-Fantasy-7-Modding/blob/main/docs/SUGGESTIONS.md

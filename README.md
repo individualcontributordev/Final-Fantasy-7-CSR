@@ -152,4 +152,4 @@ Community-prioritised CSR / CSR+ / Highwind ideas: [docs/SUGGESTIONS.md](docs/SU
 ## History
 
 Community development story (archived chats):
-https://github.com/individualcontributordev/Final-Fantasy-7-Modding/blob/main/docs/history/HISTORY.md
+https://individualcontributor.dev/history/
