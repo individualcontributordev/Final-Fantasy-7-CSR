@@ -64,4 +64,3 @@ Optional cuts that help some categories but should stay off CSR base:
 ## Feedback
 
 Play from the site builder; send concise notes (clip + what is wrong).
-This list is curated, not a public argument log.
