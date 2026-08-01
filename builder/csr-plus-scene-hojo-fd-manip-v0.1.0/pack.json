@@ -1,9 +1,9 @@
 {
   "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
-  "name": "CSR+ Hojo FD manip",
+  "name": "CSR+ Hojo FD trim",
   "kind": "pack",
   "version": "0.1.0",
-  "blurb": "CSR+ trim of Hojo FD manip cutscene.",
+  "blurb": "Extra cutscene trim on CSR (Hojo FD manip scene). Optional; not new content.",
   "format": "ic-layer-v1",
   "compatibleBases": [
     "csr-v0.14.1"
@@ -15,5 +15,6 @@
   ],
   "discs": {
     "2": "./layers/disc2.layer.json"
-  }
+  },
+  "groupLabel": "CSR+ Hojo FD trim"
 }

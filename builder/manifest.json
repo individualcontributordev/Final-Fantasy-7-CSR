@@ -51,9 +51,9 @@
     },
     {
       "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
-      "name": "CSR+ Hojo FD manip",
+      "name": "CSR+ Hojo FD trim",
       "kind": "pack",
-      "blurb": "CSR+ trim of Hojo FD manip cutscene.",
+      "blurb": "Extra cutscene trim on CSR (Hojo FD manip scene). Optional; not new content.",
       "format": "ic-layer-v1",
       "compatibleBases": [
         "csr-v0.14.1"
@@ -62,15 +62,16 @@
         "2": "./csr-plus-scene-hojo-fd-manip-v0.1.0/layers/disc2.layer.json"
       },
       "enabled": true,
-      "version": "0.1.0"
+      "version": "0.1.0",
+      "groupLabel": "CSR+ Hojo FD trim"
     },
     {
       "id": "csr-plus-scene-aerith-house-v0.1.1",
-      "name": "CSR+ Aerith's house",
+      "name": "CSR+ Aerith's house trim",
       "kind": "pack",
-      "blurb": "CSR+ Aerith house: Elmyra dialogue on entry; then leave and continue.",
+      "blurb": "Extra cutscene trim on CSR (Aerith's house). Elmyra dialogue on entry; then leave and continue. Optional; not new content.",
       "format": "ic-layer-v1",
-      "groupLabel": "CSR+ Aerith's house",
+      "groupLabel": "CSR+ Aerith's house trim",
       "optionLabel": "On",
       "compatibleBases": [
         "csr-v0.14.1"
@@ -83,12 +84,12 @@
     },
     {
       "id": "csr-plus-scene-cota-fd-manip-v0.1.0",
-      "name": "CSR+ COTA FD Manip",
+      "name": "CSR+ COTA FD trim",
       "kind": "pack",
       "version": "0.1.0",
-      "blurb": "CSR+ COTA FD Manip on CSR.",
+      "blurb": "Extra cutscene trim on CSR (COTA / waterfall FD-related). Optional; not new content. See changelog for List/FD impact.",
       "format": "ic-layer-v1",
-      "groupLabel": "CSR+ COTA FD Manip",
+      "groupLabel": "CSR+ COTA FD trim",
       "optionLabel": "On",
       "compatibleBases": [
         "csr-v0.14.1"
@@ -100,12 +101,12 @@
     },
     {
       "id": "csr-plus-scene-endgame-fd-manip-v0.1.0",
-      "name": "CSR+ Endgame FD manip",
+      "name": "CSR+ Endgame FD trim",
       "kind": "pack",
       "version": "0.1.0",
-      "blurb": "CSR+ trim of disc 3 endgame FD-related scene(s). Check changelog for List/FD impact.",
+      "blurb": "Extra cutscene trim on CSR (disc 3 endgame FD-related). Optional; not new content. See changelog for List/FD impact.",
       "format": "ic-layer-v1",
-      "groupLabel": "CSR+ Endgame FD manip",
+      "groupLabel": "CSR+ Endgame FD trim",
       "optionLabel": "On",
       "compatibleBases": [
         "csr-v0.14.1"
@@ -119,8 +120,8 @@
   "presets": [
     {
       "id": "csr-plus",
-      "name": "CSR+ (all scenes)",
-      "blurb": "All CSR+ scene trims, auto-applied per disc.",
+      "name": "CSR+ (all scene trims)",
+      "blurb": "All optional CSR+ cutscene trims on CSR, auto-applied per disc. Not new content \u2014 further removals beyond the CSR base.",
       "compatibleBases": [
         "csr-v0.14.1"
       ],
@@ -135,7 +136,7 @@
   ],
   "explainer": {
     "base": "Base experience \u2014 only one applies (Unmodified, CSR, Highwind, \u2026).",
-    "packs": "Optional CSR+ scene packs on CSR. Stack any combination. Organized by disc.",
+    "packs": "Optional extra cutscene trims on CSR only (not new content). Stack any combination. Organized by disc.",
     "mods": "Optional mods from other catalogs appear under Mods when available."
   }
 }

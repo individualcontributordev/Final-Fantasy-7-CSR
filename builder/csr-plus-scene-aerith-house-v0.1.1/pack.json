@@ -1,11 +1,11 @@
 {
   "id": "csr-plus-scene-aerith-house-v0.1.1",
-  "name": "CSR+ Aerith's house",
+  "name": "CSR+ Aerith's house trim",
   "kind": "pack",
   "version": "0.1.1",
-  "blurb": "CSR+ Aerith house: Elmyra dialogue on entry; then leave and continue.",
+  "blurb": "Extra cutscene trim on CSR (Aerith's house). Elmyra dialogue on entry; then leave and continue. Optional; not new content.",
   "format": "ic-layer-v1",
-  "groupLabel": "CSR+ Aerith's house",
+  "groupLabel": "CSR+ Aerith's house trim",
   "optionLabel": "On",
   "compatibleBases": [
     "csr-v0.14.1"

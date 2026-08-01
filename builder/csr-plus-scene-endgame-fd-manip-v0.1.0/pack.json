@@ -1,11 +1,11 @@
 {
   "id": "csr-plus-scene-endgame-fd-manip-v0.1.0",
-  "name": "CSR+ Endgame FD manip",
+  "name": "CSR+ Endgame FD trim",
   "kind": "pack",
   "version": "0.1.0",
-  "blurb": "CSR+ trim of disc 3 endgame FD-related scene(s). Check changelog for List/FD impact.",
+  "blurb": "Extra cutscene trim on CSR (disc 3 endgame FD-related). Optional; not new content. See changelog for List/FD impact.",
   "format": "ic-layer-v1",
-  "groupLabel": "CSR+ Endgame FD manip",
+  "groupLabel": "CSR+ Endgame FD trim",
   "optionLabel": "On",
   "compatibleBases": [
     "csr-v0.14.1"
