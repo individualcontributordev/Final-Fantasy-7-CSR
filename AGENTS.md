@@ -11,7 +11,7 @@ Cutscene-removed **bases** + CSR+ **scene packs** for the disc builder. Players:
 ## How we work
 
 - **Windows (human):** runs **all** ops — Makou, disc images, DuckStation, Git Bash, every `python scripts/…`, builds, commits, pushes, publish.
-- **Mac (this chat):** agent only — **commits Windows tasks into the repo first** (`docs/windows-last-task.md` + scripts), short chat pointer. Does **not** run release scripts as the real path (bins live on Windows).
+- **Mac (this chat):** agent only — **commits Windows tasks into the repo first** (`docs/INSTRUCTIONS.md` + scripts), short chat pointer. Does **not** run release scripts as the real path (bins live on Windows).
 - One atomic Windows task per reply; user says **check** / **check results**.
 - On **check**: Mac `git pull`s and reviews **what was committed in the repo**, then next steps. Live builder/CDN verify only when explicitly requested at end of flow.
 - Never give a Windows runbook that exists only in chat (see `.agents/rules/mac-human-workflow.mdc`).
@@ -91,7 +91,7 @@ python3 scripts/apply_layer.py \
 | Session edits | builder zip extract (e.g. Downloads) |
 | Published layers | `builder/<slug>-v<ver>/` + `builder/manifest.json` |
 | Skills | `.agents/skills/*` |
-| Windows task handoff | `docs/windows-last-task.md` |
+| Windows instructions handoff | `docs/INSTRUCTIONS.md` |
 | Builder config verify | `scripts/verify_builder_config.py` (required before publish) |
 | CSR × scene regression | `scripts/verify_csr_addon_compat.py` (required after CSR base or scene ship) |
 | Path helper | `scripts/local_paths.py` |
@@ -107,7 +107,7 @@ Rebuild Field/World encounter packs in **Final-Fantasy-7-Modding** (`ship-field-
 | **`.agents/rules/`**, **`.agents/skills/`** | **Canonical copies** in this repo — edit only here |
 | **`.augment/rules`**, **`.augment/skills`** | Relative symlinks → `../.agents/rules` / `../.agents/skills` (Auggie load path) |
 
-No machine-absolute paths. Windows **Git Bash**: `git config --global core.symlinks true`, then `git checkout -- .augment`; if still plain text, `cd .augment && rm -rf rules skills && ln -s ../.agents/rules rules && ln -s ../.agents/skills skills`. Do not duplicate content under `.augment/`. Full steps: Modding `docs/windows-last-task.md` when that task is active, or this section.
+No machine-absolute paths. Windows **Git Bash**: `git config --global core.symlinks true`, then `git checkout -- .augment`; if still plain text, `cd .augment && rm -rf rules skills && ln -s ../.agents/rules rules && ln -s ../.agents/skills skills`. Do not duplicate content under `.augment/`. Full steps: Modding `docs/INSTRUCTIONS.md` when that task is active, or this section.
 
 ## Repo hygiene
 
