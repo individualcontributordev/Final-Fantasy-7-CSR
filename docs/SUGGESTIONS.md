@@ -1,9 +1,12 @@
 # Suggestions backlog
 
 Ideas for **CSR**, **CSR+ packs**, and **Highwind**.
-Priority reflects usefulness and fit — not a release promise.
+Not a release promise.
 
-Mods (encounters, battle timing, etc.) live in the Modding repo:
+Community history (chats and milestones):
+https://github.com/individualcontributordev/Final-Fantasy-7-Modding/blob/main/docs/history/HISTORY.md
+
+Gameplay mods:
 https://github.com/individualcontributordev/Final-Fantasy-7-Modding/blob/main/docs/SUGGESTIONS.md
 
 ## Products
@@ -11,55 +14,54 @@ https://github.com/individualcontributordev/Final-Fantasy-7-Modding/blob/main/do
 | | |
 |--|--|
 | **CSR** | Skill checks kept; long filler cutscenes trimmed |
-| **CSR+ packs** | Optional scene trims on CSR only (builder) |
-| **Highwind** | Aggressive short playthrough; separate base (no CSR+ packs) |
-
----
+| **CSR+ packs** | Optional scene trims on CSR only |
+| **Highwind** | Aggressive short playthrough; separate base |
 
 ## Done
 
-- CSR base: large set of field trims across the run (skill-check scenes kept)
-- CSR+ packs: Aerith house, Hojo FD, CoTA FD (plus all-scenes preset)
+- CSR base trims across the run (skill-check scenes kept)
+- CSR+ packs: Aerith house, Hojo FD, CoTA FD (+ all-scenes preset)
 - Highwind base on the builder
 - Browser builder (base + packs + mods)
+- Early thread + later channel development chats archived (see history link)
 
----
-
-## Next (priority order)
+## Next (priority)
 
 ### 1. More CSR+ packs
 
-Optional cuts that help some categories but should stay off the CSR base:
+Optional cuts that help some categories but should stay off CSR base:
 
-- Side / All Bosses-style scenes (Gongaga and Gelnika pre-Turks, Wutai story, Kalm extras, and similar)
+- Side / All Bosses-style scenes (Gongaga and Gelnika pre-Turks, Wutai, Kalm extras, and similar)
 - Further return-to-Midgar / ship dialogue where safe
-- Always note FD / List / manip impact in the pack changelog
+- Always note FD / List / manip impact in pack changelogs
 
 ### 2. CSR base polish
 
-- Keep dialogue option cues close to vanilla (box count / timing before choices)
-- Skill-neutral trims only when they do not hurt practice transfer
+- Dialogue option cues close to vanilla (timing / box count before choices)
+- Restore mash or turbo cue boxes where over-trim felt wrong
+- Skill-neutral trims only when practice transfer stays intact
 
 ### 3. Highwind
 
-- More filler removal (short corridors, mash-only lines, freer order where safe)
-- Bigger order or structure changes stay Highwind-only
+- More filler removal (corridors, mash-only lines, freer order where safe)
+- Larger structure or order changes stay Highwind-only
 
----
+### 4. Platform quality
+
+- Prefer fixes verified on real console disc swap, not only emulator
+- Document hardware or FPGA limits when packs hit edge cases
 
 ## Not planned here
 
 | Idea | Why |
 |------|-----|
-| Strip skill-check scenes out of CSR | Use CSR+ packs instead |
+| Strip skill-check scenes from CSR | Use CSR+ packs |
 | Shorten Shinra stairs on CSR | Breaks elev-practice feel |
-| No-encounter or battle-speed on cutscene bases | Those are mods (Modding repo) |
-| A full base per category | Prefer optional packs on CSR |
-| Leaderboard / SRC category work | Out of scope for this list |
-
----
+| No-encounter or battle-speed on cutscene bases | Mods (Modding repo) |
+| Full base per category | Prefer packs on CSR |
+| Official SRC boards as a project goal | Out of scope for this list |
 
 ## Feedback
 
-Play builds from the site builder, then send concise feedback (clip + what felt wrong).
-Useful items get folded into this list; it is not a vote tally.
+Play from the site builder; send concise notes (clip + what is wrong).
+This list is curated, not a public argument log.
