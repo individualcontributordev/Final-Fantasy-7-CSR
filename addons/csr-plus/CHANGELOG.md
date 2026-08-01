@@ -2,7 +2,7 @@
 
 ## 2026-08-01
 
-- csr-plus-scene-endgame-fd-manip-v0.1.0 (disc 3): Converstaion before final descent removed, and sliding down the cliff from the Highwind removed.
+- csr-plus-scene-endgame-fd-manip-v0.1.0 (disc 3): Sliding down the cliff from the Highwind removed, trimmed green gas screen (FD manip list increments), removed Tifa jumping down from ledge at the top of FD spiral, conversation before final descent removed.
 
 - csr-plus-scene-cota-fd-manip-v0.1.0 (disc 2): when leaving the waterfall with Bugen the gang no longer gets a phone call and the FMV is removed. This impacts the existing Final Descent manipulation, specfically the List value increments will be altered.
 
