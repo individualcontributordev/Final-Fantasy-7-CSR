@@ -1,5 +1,5 @@
 ---
-description: Mac commits Windows task to repo first; human pulls and runs; check = pull evidence
+description: Mac commits Windows instructions to repo first; human pulls and runs; check = pull evidence
 alwaysApply: true
 ---
 
@@ -9,7 +9,7 @@ alwaysApply: true
 
 | Machine | Who | Does |
 |---------|-----|------|
-| **Mac (this chat)** | agent | Plans; **writes Windows tasks into the repo and pushes** before the human runs them; short chat pointer only. On **check**: pull and review committed work. Builder/CDN verify only if explicitly requested at end of flow. |
+| **Mac (this chat)** | agent | Plans; **writes Windows work into `docs/INSTRUCTIONS.md` and pushes** before the human runs it; short chat pointer only. On **check**: pull and review committed work. Builder/CDN verify only if explicitly requested at end of flow. |
 | **Windows** | human | **Everything operational:** Makou, discs, DuckStation, Git Bash, **all** scripts, builds, commits, pushes, publish. |
 
 No Windows Cursor agent.
@@ -20,10 +20,10 @@ No Windows Cursor agent.
 
 Before asking the human to execute:
 
-1. Write **`docs/windows-last-task.md`** (Goal, steps, COPY-PASTE, empty EVIDENCE) — or the matching skill’s committed checklist if that is the runbook.
+1. Write **`docs/INSTRUCTIONS.md`** (Goal, steps, COPY-PASTE, empty EVIDENCE) — or the matching skill’s committed checklist if that is the runbook. Overwrite each run; Discord post drafts go here too when needed.
 2. Prefer small **scripts** (`scripts/…`, SRP). Put the exact invoke line in COPY-PASTE.
 3. **Commit + push** from Mac.
-4. Chat: one-line goal + “pull and open `docs/windows-last-task.md`” + **check**.
+4. Chat: one-line goal + “pull and open `docs/INSTRUCTIONS.md`” + **check**.
 
 Mac must not: run CSR release scripts as the real publish path; expect local bins; paste-large-output-into-chat requests; “see the handoff”.
 
@@ -31,17 +31,17 @@ Mac must not: run CSR release scripts as the real publish path; expect local bin
 
 Exactly one Windows task per agent turn.
 
-## `docs/windows-last-task.md` layout (markdown)
+## `docs/INSTRUCTIONS.md` layout (markdown)
 
-Real markdown: `# Task`, `## Goal`, `## Steps`, `## Copy-paste` (bash fence), `## Evidence`.
+Real markdown: `# Task` (or `# Discord post`), `## Goal`, `## Steps`, `## Copy-paste` (bash fence), `## Evidence` when executing work. Idle = short status + last ship note.
 
 ## Windows loop
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 git pull --ff-only
-# STEPS / COPY-PASTE from docs/windows-last-task.md
-git add docs/windows-last-task.md builder/ bases/   # as applicable
+# STEPS / COPY-PASTE from docs/INSTRUCTIONS.md
+git add docs/INSTRUCTIONS.md builder/ bases/   # as applicable
 git commit -m "Windows: <task>"
 git push
 ```
