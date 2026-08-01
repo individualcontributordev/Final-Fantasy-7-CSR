@@ -146,3 +146,6 @@ IndividualContributor, Okamikaze, AwesomeWaves, Teeejj, Shoutblaster, HopeDRG, D
 ## Troubleshooting
 
 Keep each disc’s `.bin` and `.cue` in the same folder with the same stem. The `.cue` `FILE` line must match the `.bin` name. Update any `.m3u` to the patched cues.
+## Suggestions backlog
+
+Community-prioritised CSR / CSR+ / Highwind ideas: [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)

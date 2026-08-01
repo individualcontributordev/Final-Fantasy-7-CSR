@@ -1,4 +1,5 @@
-# Changelogs (CSR repo)
+# 
+Changelogs (CSR repo)
 
 Where release notes live. **Builder pack id** is what the disc builder / CDN use.
 
@@ -47,3 +48,6 @@ Do **not** put scene notes only in `bases/` — CSR+ is not a base anymore.
 | Other Makou add-on | `ship-makou-addon` | `addons/<family>/` if you add a family log; else skip |
 
 Commit changelog in the **same** push as `builder/` for that release.
+## Backlog
+
+- Community suggestions (prioritised): [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
