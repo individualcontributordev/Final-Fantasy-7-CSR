@@ -97,6 +97,23 @@
         "2": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc2.layer.json"
       },
       "enabled": true
+    },
+    {
+      "id": "csr-plus-scene-endgame-fd-manip-v0.1.0",
+      "name": "CSR+ Endgame FD manip",
+      "kind": "pack",
+      "version": "0.1.0",
+      "blurb": "CSR+ trim of disc 3 endgame FD-related scene(s). Check changelog for List/FD impact.",
+      "format": "ic-layer-v1",
+      "groupLabel": "CSR+ Endgame FD manip",
+      "optionLabel": "On",
+      "compatibleBases": [
+        "csr-v0.14.1"
+      ],
+      "discs": {
+        "3": "./csr-plus-scene-endgame-fd-manip-v0.1.0/layers/disc3.layer.json"
+      },
+      "enabled": true
     }
   ],
   "presets": [
@@ -110,7 +127,8 @@
       "addons": [
         "csr-plus-scene-aerith-house-v0.1.1",
         "csr-plus-scene-hojo-fd-manip-v0.1.0",
-        "csr-plus-scene-cota-fd-manip-v0.1.0"
+        "csr-plus-scene-cota-fd-manip-v0.1.0",
+        "csr-plus-scene-endgame-fd-manip-v0.1.0"
       ],
       "kind": "pack"
     }

@@ -1,0 +1,20 @@
+{
+  "id": "csr-plus-scene-endgame-fd-manip-v0.1.0",
+  "name": "CSR+ Endgame FD manip",
+  "kind": "pack",
+  "version": "0.1.0",
+  "blurb": "CSR+ trim of disc 3 endgame FD-related scene(s). Check changelog for List/FD impact.",
+  "format": "ic-layer-v1",
+  "groupLabel": "CSR+ Endgame FD manip",
+  "optionLabel": "On",
+  "compatibleBases": [
+    "csr-v0.14.1"
+  ],
+  "files": [
+    "FIELD/LAS0_3.DAT",
+    "FIELD/LAS4_0.DAT"
+  ],
+  "discs": {
+    "3": "./layers/disc3.layer.json"
+  }
+}

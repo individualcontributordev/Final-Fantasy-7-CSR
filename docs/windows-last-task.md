@@ -42,14 +42,14 @@ Diff baseline = **CSR disc 3**, not pristine:
 
 ```bash
 # If cache/csr/FINALFANTASY7_D3.bin is missing, populate once:
-# python3 scripts/apply_layer.py \
-#   pristine/FINALFANTASY7_D3.bin \
-#   builder/csr-v0.14.1/layers/disc3.layer.json \
-#   -o cache/csr/FINALFANTASY7_D3.bin
+python3 scripts/apply_layer.py \
+  pristine/FINALFANTASY7_D3.bin \
+  builder/csr-v0.14.1/layers/disc3.layer.json \
+  -o cache/csr/FINALFANTASY7_D3.bin
 
 python3 scripts/list_changed_field_maps.py \
   --pristine cache/csr/FINALFANTASY7_D3.bin \
-  --patched "/path/to/your-edited-extract/FINALFANTASY7_D3.bin" \
+  --patched "D:\Downloads\ff7-builder-d3+csr-v0.14.1\ff7-builder-d3+csr-v0.14.1.bin" \
   -o temp/endgame-fd-field-diff-d3.json
 ```
 
@@ -57,7 +57,7 @@ python3 scripts/list_changed_field_maps.py \
 
 ```bash
 python3 scripts/build_field_map_pack.py \
-  --edited-image "/path/to/your-edited-extract/FINALFANTASY7_D3.bin" \
+  --edited-image "D:\Downloads\ff7-builder-d3+csr-v0.14.1\ff7-builder-d3+csr-v0.14.1.bin" \
   --changed-maps temp/endgame-fd-field-diff-d3.json \
   --pack-id csr-plus-scene-endgame-fd-manip-v0.1.0 \
   --name "CSR+ Endgame FD manip" \
