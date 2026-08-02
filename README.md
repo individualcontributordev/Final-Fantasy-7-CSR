@@ -14,7 +14,7 @@ any% All Bosses | 🔄 WIP | 🔄 WIP | 🔄 WIP
 
 *Est. Completion Time: 1 bazillion years*
 
-Platforms: PS1 / PS2 disc, emulator, or PC via TMD's [Windows installer](https://drive.google.com/file/d/1VXQtJZD6TrG3RXO6kPYduW5EGEBmQsAP/view?usp=drive_link).
+Platforms: PS1 / PS2 disc, emulator, or PC via TMD's [PC installer](https://drive.google.com/file/d/1VXQtJZD6TrG3RXO6kPYduW5EGEBmQsAP/view?usp=drive_link).
 
 ## Definitions
 
@@ -55,7 +55,7 @@ PSX: soft-mod (e.g. [MechaPwn](https://github.com/MechaResearch/MechaPwn)), burn
 
 ## Release a base (maintainers)
 
-Run these steps on the **Windows** machine that has the disc images (Git Bash). Agent chat on Mac only supplies the checklist; it does not own the publish run.
+Run these steps on the machine that has the disc images. Agent chat supplies the checklist; it does not own the publish path when bins are only on the disc host.
 
 Publishable bases: **CSR** and **Highwind** only. CSR+ scene trims are add-ons (see `docs/ADDON_QUICK_REFERENCE.md` / skill `ship-csr-plus-scene`), not a third base.
 
@@ -98,7 +98,7 @@ python scripts/repair_mode2_edc.py \
 Then rebuild **one** base at a time. Expect far fewer records (no thousands of footer-only zeros).
 
 ```bash
-cd /c/path/to/Final-Fantasy-7-CSR   # Git Bash on Windows
+cd /c/path/to/Final-Fantasy-7-CSR   # shell on the disc host
 git pull
 
 # CSR or Highwind only — bump version, update bases/<base>/CHANGELOG.md

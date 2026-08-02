@@ -10,7 +10,7 @@ description: >-
 
 # Release CSR or Highwind base
 
-**Runner:** Windows (Git Bash + local pristine/ bins; optional cache/). Mac agent turns this checklist into one atomic chat task; does not run the build as the publish path.
+**Runner:** Runner (shell + local pristine/ bins; optional cache/). Agent turns this checklist into one atomic chat task; does not run the build as the publish path.
 
 ## 1. Choose target
 
@@ -43,7 +43,7 @@ Then human edits **that** image in Makou (builder zip extract preferred; or cach
 
 ## 4. Human (Makou) — one atomic chat task
 
-Open flavor image → edit → save into `cache/csr/` or `cache/highwind/`. Full steps in chat per `mac-human-workflow`. Never commit bins.
+Open flavor image → edit → save into `cache/csr/` or `cache/highwind/`. Full steps in chat per `agent-human-workflow`. Never commit bins.
 
 ## 5. EDC repair each disc
 

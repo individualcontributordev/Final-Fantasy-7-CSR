@@ -9,7 +9,7 @@ description: >-
 
 # Ship a CSR+ scene add-on
 
-**Runner:** Windows (Git Bash + local `workspace/csr` + `workspace/csr-plus` bins). Mac agent instructs only; optional post-publish verify of `builder/` JSON.
+**Runner:** Runner (shell + local `workspace/csr` + `workspace/csr-plus` bins). Agent instructs only; optional post-publish verify of `builder/` JSON.
 
 ## When
 

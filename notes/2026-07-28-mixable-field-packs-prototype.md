@@ -68,7 +68,7 @@ Two paths forward, not yet chosen:
 1. **Fix the ISO9660 size-field update** (update the directory record's byte-size field when the new file still fits within the same sector span) — unblocks Aerith + all 8 components above. More invasive: touches raw ISO9660 directory records shared by every pack, so a bug here risks corrupting discs across the board, not just one pack. Should get a real DuckStation boot test before shipping broadly.
 2. **Stop here at 6 packs** and treat the giant 152-map component as the "CSR core" base (unsplit), shipping only maps that fit as-is. Lower risk, but caps standalone scene-pack coverage well short of full CSR parity.
 
-## Builder playtest checklist (Windows)
+## Builder playtest checklist (disc host)
 
 1. Open https://individualcontributor.dev/builder/ (after Pages).  
 2. Load pristine NTSC-U Disc 1 `.bin`.  

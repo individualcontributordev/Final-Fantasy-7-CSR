@@ -9,7 +9,7 @@
 
 Burn of `ff7-builder-d1+csr-plus-v0.1.1` failed ImgBurn verify at LBA **614** / `\INIT\YAMADA.BIN` / offset **2072**. **Same CD-R boots and loads fine on PS2 Slim 77003 (MechaPwn).**
 
-## Verified on Mac (pristine vs builder bin)
+## Verified (pristine vs builder bin)
 
 | | LBA 614 @ offset 2072 (EDC) | User data vs pristine |
 |--|------------------------------|------------------------|

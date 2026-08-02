@@ -36,7 +36,7 @@ it's removed from `builder/manifest.json` but its files stay in the repo.
    `EALS_1` (Aerith's house)**, matching `bases/csr-plus/CHANGELOG.md`'s "Aerith's
    house cutscene removed" line exactly. Disc 2 has one more (Hojo FD manip
    cutscene per changelog) but there's no local `workspace/csr`/`workspace/csr-plus`
-   Disc 2 `.bin` to diff yet — needs Windows human to supply those. Disc 3: no
+   Disc 2 `.bin` to diff yet — needs human to supply those. Disc 3: no
    changes per changelog, nothing to do.
 
 3. **Fixed the systemic ISO-slot-growth blocker.** `EALS_1` grows 10192 → 10200
@@ -76,7 +76,7 @@ it's removed from `builder/manifest.json` but its files stay in the repo.
 
 ## Disc 2 + Disc 3 (2026-07-28, later same day)
 
-Turns out no Windows hand-off was needed: the builder's own published
+Turns out no handoff was needed: the builder's own published
 `csr-v0.14.1`/`csr-plus-v0.1.1` layers already encode the full pristine diff for
 every disc, so applying them to `workspace/pristine/*.bin` via `apply_layer.py`
 reconstructs the patched Disc 2/3 images locally — same trick used to verify
