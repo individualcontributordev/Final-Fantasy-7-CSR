@@ -22,7 +22,7 @@
       "name": "Highwind v0.1.1",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut. Separate mod, not CSR+.",
+      "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./highwind-v0.1.1/layers/disc1.layer.json",
@@ -38,7 +38,7 @@
       "kind": "base",
       "version": "0.2.0",
       "exclusiveGroup": "cutscenes",
-      "blurb": "Aggressively trimmed playthrough with CSR+ scene trims baked in. Separate mod, not optional CSR+ checkboxes.",
+      "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./highwind-v0.2.0/layers/disc1.layer.json",

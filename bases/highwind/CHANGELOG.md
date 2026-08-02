@@ -7,10 +7,9 @@ v(release).(feature).(bugfix) — newest at top.
 
 ## v0.2.0
 
-- Baked live CSR+ scene trims into the Highwind base (no separate checkboxes):
-  Aerith house (disc 1), Hojo FD + COTA FD (disc 2), Endgame FD (disc 3).
-- Same trims as optional CSR+ packs on CSR; on Highwind they are permanent.
-
+- Disc 1: Aerith house — Elmyra dialogue on entry; leave and continue.
+- Disc 2: Hojo FD manip scene trims; COTA waterfall leave — no phone call / FMV (affects List increments on Final Descent manip).
+- Disc 3: Endgame FD trims — cliff slide from Highwind removed; green gas screen trimmed (List); Tifa ledge jump removed; pre–Final Descent talk removed.
 
 ## v0.1.1
 

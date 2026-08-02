@@ -4,7 +4,7 @@
   "kind": "base",
   "exclusiveGroup": "cutscenes",
   "version": "0.2.0",
-  "blurb": "Aggressively trimmed playthrough with CSR+ scene trims baked in. Separate mod, not optional CSR+ checkboxes.",
+  "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json",
