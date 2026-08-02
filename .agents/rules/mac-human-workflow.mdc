@@ -62,3 +62,6 @@ git pull --ff-only
 ```
 
 Stop if pull fails.
+## Discord posts
+
+When shipping a player-facing release, put a **short** copy-paste under **Discord post** in `docs/INSTRUCTIONS.md` (see keep-repo-succinct). Do not write long channel essays.
