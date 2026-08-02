@@ -5,52 +5,51 @@ You: git pull --ff-only, run steps, fill Evidence, commit+push builder JSON only
 
 ## Goal
 
-Publish a **checkbox** Makou FIELD add-on that removes the four `Ask for disc`
-ops in **blackbgb** (#103) S0-Main on **Unmodified (clean)** Disc 1.
+Ship a **builder pack** (Makou FIELD **add-on**, not a base, not an engine mod).
+It removes the four Ask-for-disc ops in **blackbgb** (#103) S0-Main on
+**Unmodified (clean)** Disc 1 only.
 
-RE is done (Modding findings 2026-08-02-noswap-*). Working edit already
-playtested in DuckStation. This turn = **diff → pack → verify → commit**.
+RE done in Modding findings; working bin playtested in DuckStation.
+This turn = **diff to pack to verify to commit**.
 
-## Product
+## Product (pack)
 
 | Field | Value |
 |-------|--------|
-| Pack id | `no-swap-blackbgb-hub-v0.1.0` |
+| Kind | pack (add-on checkbox) |
+| Pack id | no-swap-blackbgb-hub-v0.1.0 |
 | Name | No disc-swap (hub) |
-| Disc | **1** only |
-| Baseline | **pristine** |
-| `compatibleBases` | `clean` only for v0.1.0 |
-| `exclusiveGroup` | none (`--no-exclusive-group`) |
-| Blurb | Skips disc 2/3 prompts at the blackbgb hub; map jumps still run. Unmodified disc 1. Prototype. |
+| Disc | 1 only |
+| Diff baseline | pristine |
+| compatibleBases | clean only (v0.1.0) |
+| exclusiveGroup | omit (--no-exclusive-group) |
+| Blurb | Skips disc 2/3 prompts at the blackbgb hub; map jumps still run. Unmodified disc 1. Prototype pack. |
 
-Do **not** claim full single-disc game yet (other Ask maps + multi-disc movies still open).
+Not a CSR/Highwind base bump. Not a Modding encounter/engine mod.
+Do not claim full single-disc game yet (other Ask maps + multi-disc movies open).
 
 ## Preconditions
 
-- CSR repo pull
-- Pristine: `pristine/FINALFANTASY7_D1.bin`
-- Edited image (from Modding RE machine), e.g. sibling path:
-  `../Final-Fantasy-7-Modding/workspace/iso-extract/ff7_d1_noswap_re.bin`
-  Copy into CSR if easier:
-  `mkdir -p temp/no-swap && cp <edited> temp/no-swap/FINALFANTASY7_D1.bin`
+- CSR git pull --ff-only
+- pristine/FINALFANTASY7_D1.bin
+- Edited image, e.g.
+  ../Final-Fantasy-7-Modding/workspace/iso-extract/ff7_d1_noswap_re.bin
+  or copy: mkdir -p temp/no-swap && cp <edited> temp/no-swap/FINALFANTASY7_D1.bin
 
 ## Steps
 
-1. `git pull --ff-only` (CSR)
-2. Set paths (adjust EDITED if needed):
+### 1. Paths
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 git pull --ff-only
 PRISTINE="pristine/FINALFANTASY7_D1.bin"
-# prefer local copy under temp/
 EDITED="temp/no-swap/FINALFANTASY7_D1.bin"
-# or:
-# EDITED="../Final-Fantasy-7-Modding/workspace/iso-extract/ff7_d1_noswap_re.bin"
+# or: EDITED="../Final-Fantasy-7-Modding/workspace/iso-extract/ff7_d1_noswap_re.bin"
 test -f "$PRISTINE" && test -f "$EDITED"
 ```
 
-3. List changed FIELD maps:
+### 2. Diff FIELD maps
 
 ```bash
 mkdir -p temp/no-swap
@@ -58,16 +57,14 @@ python3 scripts/list_changed_field_maps.py \
   --pristine "$PRISTINE" \
   --patched "$EDITED" \
   -o temp/no-swap/diff-d1.json
-# paste or summarize the map list under Evidence
 cat temp/no-swap/diff-d1.json
 ```
 
-Expect **blackbgb** (and maybe small Makou side files). If hundreds of maps, stop and re-check EDITED vs pristine.
+Expect blackbgb (maybe small Makou side files). Hundreds of maps -> stop, re-check EDITED.
 
-4. Build pack (use exact changed files from the JSON if more than one DAT):
+### 3. Build pack
 
 ```bash
-# If only blackbgb.DAT changed:
 python3 scripts/build_field_map_pack.py \
   --pristine "$PRISTINE" \
   --edited-image "$EDITED" \
@@ -76,15 +73,15 @@ python3 scripts/build_field_map_pack.py \
   --disc 1 \
   --name "No disc-swap (hub)" \
   --group-label "No disc-swap (hub)" \
-  --blurb "Skips disc 2/3 prompts at the blackbgb hub; map jumps still run. Unmodified disc 1. Prototype." \
+  --blurb "Skips disc 2/3 prompts at the blackbgb hub; map jumps still run. Unmodified disc 1. Prototype pack." \
   --no-exclusive-group \
   --compatible-bases clean \
   --version 0.1.0
 ```
 
-If `list_changed_field_maps` shows other `FIELD/*.DAT` that Makou rewrote for the same edit, include them in `--files` (space-separated). Prefer only maps required for the hub fix.
+Add any other FIELD/*.DAT from the diff that belong to this edit.
 
-5. Verify (required):
+### 4. Verify (required)
 
 ```bash
 python3 scripts/verify_builder_config.py \
@@ -95,36 +92,34 @@ python3 scripts/verify_builder_config.py \
 # must PASS
 ```
 
-6. Changelog / docs (short):
-   - If you keep a pack-adjacent note, one line in Evidence is enough this turn.
-   - Do **not** commit `.bin` / `temp/` extracts.
-
-7. Commit and push:
+### 5. Commit pack JSON only
 
 ```bash
 git add builder/no-swap-blackbgb-hub-v0.1.0 builder/manifest.json
-git status -sb   # no .bin
-git commit -m "Add no-swap-blackbgb-hub-v0.1.0 (clean D1 hub Ask removal)."
+git status -sb
+git commit -m "Pack: no-swap-blackbgb-hub-v0.1.0 (clean D1 hub)."
 git push
 ```
+
+Never commit .bin / temp/ extracts.
 
 ## Evidence
 
 ```
 EDITED path:
-Changed maps (from diff-d1.json):
+Changed maps:
 build_field_map_pack: OK / fail
-verify_builder_config clean + addon: PASS / fail
+verify clean + pack: PASS / fail
 commit:
 ```
 
 ## Done when
 
-- Pack on `main`, verify PASS
+- Pack on main under builder/, verify PASS
 - Say **check**
 
-## Out of scope this turn
+## Out of scope
 
 - CSR / Highwind compatibleBases (next: byte-compare or per-base packs)
 - blackbg3 / blackbge / multi-disc movies
-- Modding engine packs
+- Engine work in Final-Fantasy-7-Modding
