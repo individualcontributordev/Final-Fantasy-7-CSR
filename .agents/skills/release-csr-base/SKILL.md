@@ -35,7 +35,7 @@ python3 scripts/apply_layer.py \
   pristine/FINALFANTASY7_D1.bin \
   builder/csr-v0.14.1/layers/disc1.layer.json \
   -o cache/csr/FINALFANTASY7_D1.bin
-# Highwind: builder/highwind-v0.1.1/layers/discN.layer.json → cache/highwind/
+# Highwind: builder/highwind-v0.2.0/layers/discN.layer.json → cache/highwind/
 # Repeat for disc 2/3 as needed
 ```
 

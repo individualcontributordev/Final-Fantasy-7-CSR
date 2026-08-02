@@ -33,9 +33,9 @@ Short flags: `docs/ADDON_QUICK_REFERENCE.md`. Full Makou guide: `docs/CREATE_ADD
 
 ## Product rules
 
-- **Bases in builder:** Unmodified (`clean`), **CSR** (`csr-v0.14.1`), **Highwind** (`highwind-v0.1.1`).
+- **Bases in builder:** Unmodified (`clean`), **CSR** (`csr-v0.14.1`), **Highwind** (`highwind-v0.2.0`).
 - **CSR+** is **not** a base. Extra trims ship as `csr-plus-scene-*` packs on `csr-v0.14.1` only.
-- **Highwind** = separate aggressive mod, not a bigger CSR+. Does **not** stack with CSR+ scene add-ons.
+- **Highwind** = separate aggressive mod, not a bigger CSR+. Does **not** stack with CSR+ scene add-ons (those trims are already baked into Highwind v0.2.0+).
 - Free independent scenes: **omit** `exclusiveGroup` (builder → checkbox). Set `exclusiveGroup` only for mutually exclusive variants.
 - Diff **bases** against **pristine**. Diff **CSR+ scenes** against **CSR baseline** (published CSR layer / cache), not pristine.
 - **CSR+ scene packs must stay backward-compatible with every live `csr-v*` base.** After a CSR base release, either the base still stacks with each enabled scene pack, or you fix the base / fix the add-on. Scene packs list **all** live `csr-v*` ids in `compatibleBases` (not only the base they were first built on). Highwind is separate and does **not** take CSR+ scenes.
@@ -46,7 +46,7 @@ Short flags: `docs/ADDON_QUICK_REFERENCE.md`. Full Makou guide: `docs/CREATE_ADD
 | CSR / Highwind **base** release | `pristine/` | n/a (`kind=base`) |
 | CSR+ **scene** add-on | CSR image (layer or `cache/csr`) | `csr-v0.14.1` |
 | Add-on on Unmodified | `pristine/` | `clean` |
-| Add-on on Highwind only | Highwind image | `highwind-v0.1.1` |
+| Add-on on Highwind only | Highwind image | `highwind-v0.2.0` |
 
 Changelogs: index [CHANGELOGS.md](CHANGELOGS.md) — bases in `bases/<name>/`, CSR+ scenes in `addons/csr-plus/`.
 

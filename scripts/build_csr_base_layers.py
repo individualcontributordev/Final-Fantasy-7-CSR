@@ -51,7 +51,7 @@ BASES = {
     "highwind": {
         "slug": "highwind",
         "name": "Highwind",
-        "blurb": "An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+.",
+        "blurb": "Aggressively trimmed playthrough with CSR+ scene trims baked in. Separate mod, not optional CSR+ checkboxes.",
         "cache_key": "highwind",
     },
 }

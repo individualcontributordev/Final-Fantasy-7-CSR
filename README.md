@@ -37,7 +37,7 @@ Full map: **[CHANGELOGS.md](CHANGELOGS.md)**.
 | Product | Changelog | Builder ids |
 |---------|-----------|-------------|
 | CSR (base) | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr-v0.14.1` |
-| Highwind (base) | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind-v0.1.1` |
+| Highwind (base) | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind-v0.2.0` |
 | CSR+ scenes (add-ons) | [addons/csr-plus/CHANGELOG.md](addons/csr-plus/CHANGELOG.md) | `csr-plus-scene-*`, preset `csr-plus` |
 
 ## Play

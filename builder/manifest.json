@@ -29,8 +29,23 @@
         "2": "./highwind-v0.1.1/layers/disc2.layer.json",
         "3": "./highwind-v0.1.1/layers/disc3.layer.json"
       },
-      "enabled": true,
+      "enabled": false,
       "version": "0.1.1"
+    },
+    {
+      "id": "highwind-v0.2.0",
+      "name": "Highwind v0.2.0",
+      "kind": "base",
+      "version": "0.2.0",
+      "exclusiveGroup": "cutscenes",
+      "blurb": "Aggressively trimmed playthrough with CSR+ scene trims baked in. Separate mod, not optional CSR+ checkboxes.",
+      "format": "ic-layer-v1",
+      "discs": {
+        "1": "./highwind-v0.2.0/layers/disc1.layer.json",
+        "2": "./highwind-v0.2.0/layers/disc2.layer.json",
+        "3": "./highwind-v0.2.0/layers/disc3.layer.json"
+      },
+      "enabled": true
     }
   ],
   "addons": [
