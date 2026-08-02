@@ -12,10 +12,3 @@ alwaysApply: true
 - Prefer editing an existing doc over creating a new one.
 - Never commit game binaries.
 
-## Discord posts in `docs/INSTRUCTIONS.md`
-
-- **Succinct:** a few short lines for Discord paste
-- What shipped + one concrete detail if needed
-- Builder link on its own line: https://individualcontributor.dev/builder/
-- No long explanations, tables, commit hashes, or stack dumps
-- Latest post under **Discord post (copy-paste)**; overwrite old drafts

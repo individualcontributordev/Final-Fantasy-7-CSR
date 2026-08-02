@@ -20,7 +20,7 @@ No second agent on the disc/build machine.
 
 Before asking the human to execute:
 
-1. Write **`docs/INSTRUCTIONS.md`** (Goal, steps, COPY-PASTE, empty EVIDENCE) — or the matching skill's committed checklist if that is the runbook. Overwrite each run; Discord post drafts go here too when needed.
+1. Write **`docs/INSTRUCTIONS.md`** (Goal, steps, COPY-PASTE, empty EVIDENCE) — or the matching skill's committed checklist if that is the runbook. Overwrite each run.
 2. Prefer small **scripts** (`scripts/…`). Put the exact invoke line in COPY-PASTE.
 3. **Commit + push** from the agent side.
 4. Chat: one-line goal + "pull and open `docs/INSTRUCTIONS.md`" + **check**.
@@ -33,7 +33,7 @@ Exactly one operational task per agent turn.
 
 ## `docs/INSTRUCTIONS.md` layout (markdown)
 
-Real markdown: `# Task` (or `# Discord post`), `## Goal`, `## Steps`, `## Copy-paste` (bash fence), `## Evidence` when executing work. Idle = short status + last ship note.
+Real markdown: `# Task`, `## Goal`, `## Steps`, `## Copy-paste` (bash fence), `## Evidence` when executing work. Idle = short status + last ship note.
 
 ## Human loop
 
@@ -54,10 +54,6 @@ Pull → review committed evidence/diff → next single task in-repo.
 Not live builder/CDN unless explicitly requested.
 
 Confirmed RE/playtest conclusions that belong in **Final-Fantasy-7-Modding** (addresses, watches, stub behavior) must be journaled there under `docs/findings/` the same turn — do not leave them only in chat (Modding rule `capture-research-findings`).
-
-## Discord posts
-
-When shipping a player-facing release, put a **short** copy-paste under **Discord post** in `docs/INSTRUCTIONS.md` (see keep-repo-succinct). Do not write long channel essays.
 
 ## Before agent acts
 
