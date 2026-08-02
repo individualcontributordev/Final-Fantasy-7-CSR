@@ -6,14 +6,9 @@ Operational handoff. Agent overwrites this file and pushes.
 
 ## Status: idle
 
-### No-swap pack ship: ON HOLD
+### No-swap pack: ON HOLD
 
-Do **not** publish no-swap-blackbgb-hub until full-run work is done in
-**Final-Fantasy-7-Modding** (field Asks + movies + Supernova/SNOVA, playtest).
+Full-run RE is manual in **Final-Fantasy-7-Modding** (`docs/INSTRUCTIONS.md`).
+No CSR pack ship until playtest gate PASS there.
 
-Hub-only pack is incomplete and must not ship.
-
-### Next
-
-See Modding docs/INSTRUCTIONS.md (stage bins + freeze inventory).
-When RE is full-run ready, a new CSR task will ship one complete pack.
+Do not publish hub-only incomplete packs.
