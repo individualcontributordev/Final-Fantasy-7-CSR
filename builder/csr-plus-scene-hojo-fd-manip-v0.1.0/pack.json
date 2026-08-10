@@ -1,9 +1,9 @@
 {
   "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
-  "name": "CSR+ Hojo FD trim",
+  "name": "CSR+ Hojo lab trim",
   "kind": "pack",
   "version": "0.1.0",
-  "blurb": "Extra cutscene trim on CSR (Hojo FD manip scene). Optional; not new content.",
+  "blurb": "Shortens the Hojo lab cutscene on CSR. Story still plays out.",
   "format": "ic-layer-v1",
   "compatibleBases": [
     "csr-v0.14.1"

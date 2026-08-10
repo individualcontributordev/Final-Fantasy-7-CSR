@@ -1,9 +1,9 @@
 {
   "id": "csr-plus-scene-cota-fd-manip-v0.1.0",
-  "name": "CSR+ COTA FD trim",
+  "name": "CSR+ COTA trim",
   "kind": "pack",
   "version": "0.1.0",
-  "blurb": "Extra cutscene trim on CSR (COTA / waterfall FD-related). Optional; not new content. See changelog for List/FD impact.",
+  "blurb": "Shortens the City of the Ancients / waterfall cutscene on CSR.",
   "format": "ic-layer-v1",
   "groupLabel": "CSR+ COTA FD trim",
   "optionLabel": "On",

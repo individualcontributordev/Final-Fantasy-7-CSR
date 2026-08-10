@@ -4,7 +4,7 @@
   "kind": "base",
   "exclusiveGroup": "cutscenes",
   "version": "0.1.1",
-  "blurb": "An aggressively trimmed playthrough \u2014 its own separate mod, not a bigger CSR+.",
+  "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. Separate from CSR+.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json",

@@ -4,7 +4,7 @@
   "kind": "base",
   "exclusiveGroup": "cutscenes",
   "version": "0.2.0",
-  "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut.",
+  "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. Separate from CSR+.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json",

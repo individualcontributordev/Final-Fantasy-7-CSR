@@ -7,7 +7,7 @@
       "name": "CSR v0.14.1",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "Cutscenes removed, skill checks kept.",
+      "blurb": "Removes most cutscenes. Skill checks and gameplay stay.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./csr-v0.14.1/layers/disc1.layer.json",
@@ -22,7 +22,7 @@
       "name": "Highwind v0.1.1",
       "kind": "base",
       "exclusiveGroup": "cutscenes",
-      "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut.",
+      "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. Separate from CSR+.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./highwind-v0.1.1/layers/disc1.layer.json",
@@ -38,7 +38,7 @@
       "kind": "base",
       "version": "0.2.0",
       "exclusiveGroup": "cutscenes",
-      "blurb": "Aggressively trimmed playthrough. Story mechanics, choices, and dialogue cut.",
+      "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. Separate from CSR+.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./highwind-v0.2.0/layers/disc1.layer.json",
@@ -66,9 +66,9 @@
     },
     {
       "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
-      "name": "CSR+ Hojo FD trim",
+      "name": "CSR+ Hojo lab trim",
       "kind": "pack",
-      "blurb": "Extra cutscene trim on CSR (Hojo FD manip scene). Optional; not new content.",
+      "blurb": "Shortens the Hojo lab cutscene on CSR. Story still plays out.",
       "format": "ic-layer-v1",
       "compatibleBases": [
         "csr-v0.14.1"
@@ -82,9 +82,9 @@
     },
     {
       "id": "csr-plus-scene-aerith-house-v0.1.1",
-      "name": "CSR+ Aerith's house trim",
+      "name": "CSR+ Aerith house trim",
       "kind": "pack",
-      "blurb": "Extra cutscene trim on CSR (Aerith's house). Elmyra dialogue on entry; then leave and continue. Optional; not new content.",
+      "blurb": "Shortens Aerith house on CSR. Elmyra still speaks when you enter; then you leave and continue.",
       "format": "ic-layer-v1",
       "groupLabel": "CSR+ Aerith's house trim",
       "optionLabel": "On",
@@ -99,10 +99,10 @@
     },
     {
       "id": "csr-plus-scene-cota-fd-manip-v0.1.0",
-      "name": "CSR+ COTA FD trim",
+      "name": "CSR+ COTA trim",
       "kind": "pack",
       "version": "0.1.0",
-      "blurb": "Extra cutscene trim on CSR (COTA / waterfall FD-related). Optional; not new content. See changelog for List/FD impact.",
+      "blurb": "Shortens the City of the Ancients / waterfall cutscene on CSR.",
       "format": "ic-layer-v1",
       "groupLabel": "CSR+ COTA FD trim",
       "optionLabel": "On",
@@ -116,10 +116,10 @@
     },
     {
       "id": "csr-plus-scene-endgame-fd-manip-v0.1.0",
-      "name": "CSR+ Endgame FD trim",
+      "name": "CSR+ endgame trim",
       "kind": "pack",
       "version": "0.1.0",
-      "blurb": "Extra cutscene trim on CSR (disc 3 endgame FD-related). Optional; not new content. See changelog for List/FD impact.",
+      "blurb": "Shortens late-game cutscenes on Disc 3 on CSR.",
       "format": "ic-layer-v1",
       "groupLabel": "CSR+ Endgame FD trim",
       "optionLabel": "On",
