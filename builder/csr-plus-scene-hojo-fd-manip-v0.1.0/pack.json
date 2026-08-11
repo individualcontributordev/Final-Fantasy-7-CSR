@@ -14,7 +14,8 @@
     "FIELD/FSHIP_24.DAT"
   ],
   "discs": {
-    "2": "./layers/disc2.layer.json"
+    "2": "./layers/disc2.layer.json",
+    "1": "./layers/disc1.layer.json"
   },
   "groupLabel": "CSR+ Hojo FD trim"
 }

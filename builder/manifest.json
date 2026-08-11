@@ -74,7 +74,8 @@
         "csr-v0.14.1"
       ],
       "discs": {
-        "2": "./csr-plus-scene-hojo-fd-manip-v0.1.0/layers/disc2.layer.json"
+        "2": "./csr-plus-scene-hojo-fd-manip-v0.1.0/layers/disc2.layer.json",
+        "1": "./csr-plus-scene-hojo-fd-manip-v0.1.0/layers/disc1.layer.json"
       },
       "enabled": true,
       "version": "0.1.0",
@@ -110,7 +111,8 @@
         "csr-v0.14.1"
       ],
       "discs": {
-        "2": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc2.layer.json"
+        "2": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc2.layer.json",
+        "1": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc1.layer.json"
       },
       "enabled": true
     },
@@ -127,7 +129,8 @@
         "csr-v0.14.1"
       ],
       "discs": {
-        "3": "./csr-plus-scene-endgame-fd-manip-v0.1.0/layers/disc3.layer.json"
+        "3": "./csr-plus-scene-endgame-fd-manip-v0.1.0/layers/disc3.layer.json",
+        "1": "./csr-plus-scene-endgame-fd-manip-v0.1.0/layers/disc1.layer.json"
       },
       "enabled": true
     }

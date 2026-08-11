@@ -17,6 +17,7 @@
     "FIELD/LAS4_1.DAT"
   ],
   "discs": {
-    "3": "./layers/disc3.layer.json"
+    "3": "./layers/disc3.layer.json",
+    "1": "./layers/disc1.layer.json"
   }
 }
