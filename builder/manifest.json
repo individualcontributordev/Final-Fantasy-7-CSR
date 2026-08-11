@@ -62,7 +62,10 @@
         "1": "./csr-plus-scene-aerith-house-v0.1.0/layers/disc1.layer.json"
       },
       "enabled": false,
-      "version": "0.1.0"
+      "version": "0.1.0",
+      "beta": true,
+      "status": "beta",
+      "betaNote": "CSR+ scene trims are early; stack carefully with Single-disc."
     },
     {
       "id": "csr-plus-scene-hojo-fd-manip-v0.1.0",
@@ -79,7 +82,10 @@
       },
       "enabled": true,
       "version": "0.1.0",
-      "groupLabel": "CSR+ Hojo FD trim"
+      "groupLabel": "CSR+ Hojo FD trim",
+      "beta": true,
+      "status": "beta",
+      "betaNote": "CSR+ scene trims are early; stack carefully with Single-disc."
     },
     {
       "id": "csr-plus-scene-aerith-house-v0.1.1",
@@ -96,7 +102,10 @@
         "1": "./csr-plus-scene-aerith-house-v0.1.1/layers/disc1.layer.json"
       },
       "enabled": true,
-      "version": "0.1.1"
+      "version": "0.1.1",
+      "beta": true,
+      "status": "beta",
+      "betaNote": "CSR+ scene trims are early; stack carefully with Single-disc."
     },
     {
       "id": "csr-plus-scene-cota-fd-manip-v0.1.0",
@@ -114,7 +123,10 @@
         "2": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc2.layer.json",
         "1": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc1.layer.json"
       },
-      "enabled": true
+      "enabled": true,
+      "beta": true,
+      "status": "beta",
+      "betaNote": "CSR+ scene trims are early; stack carefully with Single-disc."
     },
     {
       "id": "csr-plus-scene-endgame-fd-manip-v0.1.0",
@@ -132,7 +144,10 @@
         "3": "./csr-plus-scene-endgame-fd-manip-v0.1.0/layers/disc3.layer.json",
         "1": "./csr-plus-scene-endgame-fd-manip-v0.1.0/layers/disc1.layer.json"
       },
-      "enabled": true
+      "enabled": true,
+      "beta": true,
+      "status": "beta",
+      "betaNote": "CSR+ scene trims are early; stack carefully with Single-disc."
     }
   ],
   "presets": [

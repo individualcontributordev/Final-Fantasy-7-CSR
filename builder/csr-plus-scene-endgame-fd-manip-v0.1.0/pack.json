@@ -19,5 +19,8 @@
   "discs": {
     "3": "./layers/disc3.layer.json",
     "1": "./layers/disc1.layer.json"
-  }
+  },
+  "beta": true,
+  "status": "beta",
+  "betaNote": "CSR+ scene trims are early; stack carefully with Single-disc."
 }
