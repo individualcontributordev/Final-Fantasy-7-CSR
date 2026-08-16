@@ -1,0 +1,265 @@
+# Layer Generation — Builder Format Requirements
+
+**CRITICAL:** Scripts that generate layers MUST output valid builder format.
+
+**Read first:** `individualcontributordev.github.io/.agents/rules/builder-layer-format.mdc`
+
+## The Problem
+
+Builder scripts sometimes output **internal formats** that work for development but **break the production builder**:
+
+❌ **Internal format (script output):**
+```json
+{
+  "version": "ic-layer-v1",  // WRONG field name
+  "records": [
+    {"path": "FIELD/LOST2.DAT", "data": "..."}  // WRONG format
+  ]
+}
+```
+
+✅ **Builder format (production):**
+```json
+{
+  "format": "ic-layer-v1",  // Correct field name
+  "records": [
+    {"offset": 129155592, "hex": "00"}  // Correct format
+  ]
+}
+```
+
+## Builder Validation (Enforced at Runtime)
+
+The homepage builder validates at `builder.js:631-642`:
+
+1. `layer.format === 'ic-layer-v1'` (NOT `version`)
+2. `records.length > 0`
+3. `stats.changedBytes > 0`
+4. Each record has `offset` (number) + `hex` (string) OR `offset` + `data` (array)
+
+**NO support for:**
+- `"version": "ic-layer-v1"` → throws "Invalid layer"
+- `{"path": "...", "data": "..."}` → throws runtime error
+- Empty records → throws "No changes"
+
+## Script Output Requirements
+
+### Minimal Valid Layer
+
+Every layer script MUST output this structure:
+
+```json
+{
+  "format": "ic-layer-v1",
+  "id": "pack-id-version-disc1",
+  "description": "Human description",
+  "target": "disc-image",
+  "stats": {
+    "originalBytes": 123456789,
+    "modifiedBytes": 123456789,
+    "changedBytes": 1,
+    "records": 1
+  },
+  "records": [
+    {"offset": 0, "hex": "00"}
+  ]
+}
+```
+
+**Fields:**
+- `format` (NOT `version`) — MUST be `"ic-layer-v1"`
+- `records` — Array of `{offset, hex}` pairs
+- `stats.changedBytes` — MUST be > 0
+- `stats.records` — MUST match `records.length`
+
+### Path/Data to Offset/Hex Conversion
+
+If your script generates path/data format, **you MUST convert** before writing the layer file.
+
+**Process:**
+1. Extract file from disc image at source path
+2. Calculate disc offset of file start
+3. Create offset/hex records for each byte changed
+4. Write builder-compatible layer
+
+**Example (Python):**
+```python
+from psx_mode2_iso import extract_file, find_file_offset
+
+# 1. Get file offset in disc
+offset = find_file_offset(disc_bytes, "FIELD/LOST2.DAT")
+
+# 2. Read patched file
+patched_file = compress(modified_field_data)
+
+# 3. Create offset/hex records
+records = []
+for i, byte in enumerate(patched_file):
+    if byte != original_file[i]:
+        records.append({
+            "offset": offset + i,
+            "hex": f"{byte:02x}"
+        })
+
+# 4. Write builder format
+layer = {
+    "format": "ic-layer-v1",
+    "stats": {
+        "changedBytes": len(records),
+        "records": len(records)
+    },
+    "records": records
+}
+```
+
+## Ship Scripts Pattern
+
+Ship scripts in `mods/<name>/scripts/ship_v*.py` MUST follow this pattern:
+
+```python
+#!/usr/bin/env python3
+"""
+<mod-name> v<version> — <description>
+
+Builder format requirements:
+- Output: builder/<pack-id>/layers/disc1.layer.json
+- Format: ic-layer-v1 with offset/hex records
+- Non-empty: changedBytes > 0, records.length > 0
+"""
+
+import json
+from pathlib import Path
+
+VERSION = "0.1.0"
+PACK_ID = f"my-mod-v{VERSION}"
+LAYER_DIR = Path(__file__).resolve().parents[3] / "builder" / PACK_ID
+
+def create_layer():
+    """Generate builder-compatible layer"""
+    
+    # Your mod logic here...
+    # Calculate offset/hex records
+    
+    records = [
+        {"offset": 12345, "hex": "aabbccdd"},
+        {"offset": 67890, "hex": "1122"}
+    ]
+    
+    # Builder format (NOT path/data!)
+    layer = {
+        "format": "ic-layer-v1",  # NOT "version"
+        "id": f"{PACK_ID}-disc1",
+        "description": "Mod description",
+        "target": "disc-image",
+        "stats": {
+            "originalBytes": 837561312,  # CSR D1 size
+            "modifiedBytes": 837561312,
+            "changedBytes": sum(len(r["hex"])//2 for r in records),
+            "records": len(records)
+        },
+        "records": records
+    }
+    
+    # Validate before writing
+    assert layer["format"] == "ic-layer-v1", "format field required"
+    assert len(records) > 0, "records cannot be empty"
+    assert layer["stats"]["changedBytes"] > 0, "changedBytes must be > 0"
+    
+    # Write layer
+    LAYER_DIR.mkdir(parents=True, exist_ok=True)
+    layers_dir = LAYER_DIR / "layers"
+    layers_dir.mkdir(exist_ok=True)
+    
+    layer_file = layers_dir / "disc1.layer.json"
+    layer_file.write_text(json.dumps(layer, indent=2))
+    
+    print(f"✅ Created {layer_file}")
+    print(f"   Format: {layer['format']}")
+    print(f"   Records: {len(records)}")
+    print(f"   Changed bytes: {layer['stats']['changedBytes']}")
+
+if __name__ == "__main__":
+    create_layer()
+```
+
+## Validation Script
+
+Add to every ship script:
+
+```python
+def validate_layer(layer_path):
+    """Validate layer matches builder requirements"""
+    with open(layer_path) as f:
+        layer = json.load(f)
+    
+    # Critical checks
+    assert layer.get("format") == "ic-layer-v1", \
+        f"format must be 'ic-layer-v1', got {layer.get('format')}"
+    
+    records = layer.get("records", [])
+    assert len(records) > 0, "records cannot be empty"
+    
+    changed = layer.get("stats", {}).get("changedBytes", 0)
+    assert changed > 0, "stats.changedBytes must be > 0"
+    
+    # Check record format
+    for i, rec in enumerate(records):
+        assert "offset" in rec, f"record {i} missing offset"
+        assert "hex" in rec or "data" in rec, \
+            f"record {i} needs hex or data"
+        assert "path" not in rec, \
+            f"record {i} has 'path' (unsupported by builder)"
+    
+    print("✅ Layer validation passed")
+```
+
+## Testing Before Publish
+
+```bash
+# 1. Run ship script
+python3 mods/<name>/scripts/ship_v<version>.py
+
+# 2. Validate output
+python3 -c "
+import json
+layer = json.load(open('builder/<pack-id>/layers/disc1.layer.json'))
+assert layer['format'] == 'ic-layer-v1'
+assert len(layer['records']) > 0
+assert layer['stats']['changedBytes'] > 0
+for r in layer['records']:
+    assert 'offset' in r and 'hex' in r
+print('✅ Valid builder format')
+"
+
+# 3. Update manifest with new version
+# 4. Commit and push
+# 5. Test in browser after CDN propagation
+```
+
+## Emergency: Fixing Broken Layers
+
+If you accidentally pushed a broken layer:
+
+1. **Immediate fix:**
+   ```bash
+   cd Final-Fantasy-7-Modding
+   # Fix the layer file format
+   # BUMP version in manifest.json
+   git add builder/<pack-id>/ builder/manifest.json
+   git commit -m "Fix layer format + version bump"
+   git push origin main
+   ```
+
+2. **Version bump is CRITICAL:**
+   - Browser caches by `id@version`
+   - Same version = stale cache served
+   - Bump: `0.1.37` → `0.1.38`
+
+3. **Wait 5+ minutes for CDN, then test**
+
+## Reference
+
+- Builder validation: `individualcontributordev.github.io/builder/builder.js:631-642`
+- Layer application: `individualcontributordev.github.io/builder/layer.js`
+- Format spec: `individualcontributordev.github.io/.agents/rules/builder-layer-format.mdc`
+- Publish workflow: `individualcontributordev.github.io/.agents/skills/publish-builder-layer/`
