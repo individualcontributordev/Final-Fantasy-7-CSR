@@ -6,16 +6,16 @@
       "id": "csr-v0.14.1",
       "name": "CSR v0.14.1",
       "kind": "base",
+      "version": "0.14.1",
       "exclusiveGroup": "cutscenes",
-      "blurb": "Removes most cutscenes. Skill checks and gameplay stay.",
+      "blurb": "CutScenes Removed \u2014 skill checks kept.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./csr-v0.14.1/layers/disc1.layer.json",
         "2": "./csr-v0.14.1/layers/disc2.layer.json",
         "3": "./csr-v0.14.1/layers/disc3.layer.json"
       },
-      "enabled": true,
-      "version": "0.14.1"
+      "enabled": true
     },
     {
       "id": "highwind-v0.1.1",
