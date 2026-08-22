@@ -1,7 +1,7 @@
-# Manual CSR/Highwind base build guide (no agent)
+# Manual CSR/Highwind base build guide
 
-Human-only runbook for editing a CSR or Highwind base disc and publishing a
-new version. Run everything from the repo root (`Final-Fantasy-7-CSR`) with
+Runbook for editing a CSR or Highwind base disc and publishing a new
+version. Run everything from the repo root (`Final-Fantasy-7-CSR`) with
 Python 3. Never commit `.bin`/`.cue`.
 
 ## Tools
