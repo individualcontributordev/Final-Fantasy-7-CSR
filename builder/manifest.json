@@ -15,7 +15,7 @@
         "2": "./csr-v0.14.1/layers/disc2.layer.json",
         "3": "./csr-v0.14.1/layers/disc3.layer.json"
       },
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "highwind-v0.1.1",
@@ -46,6 +46,21 @@
         "3": "./highwind-v0.2.0/layers/disc3.layer.json"
       },
       "enabled": true
+    },
+    {
+      "id": "csr-v0.14.2",
+      "name": "CSR v0.14.2",
+      "kind": "base",
+      "version": "0.14.2",
+      "exclusiveGroup": "cutscenes",
+      "blurb": "CutScenes Removed \u2014 skill checks kept.",
+      "format": "ic-layer-v1",
+      "discs": {
+        "1": "./csr-v0.14.2/layers/disc1.layer.json",
+        "2": "./csr-v0.14.2/layers/disc2.layer.json",
+        "3": "./csr-v0.14.2/layers/disc3.layer.json"
+      },
+      "enabled": true
     }
   ],
   "addons": [
@@ -74,7 +89,7 @@
       "blurb": "Shortens the Hojo lab cutscene on CSR. Story still plays out.",
       "format": "ic-layer-v1",
       "compatibleBases": [
-        "csr-v0.14.1"
+        "csr-v0.14.2"
       ],
       "discs": {
         "2": "./csr-plus-scene-hojo-fd-manip-v0.1.0/layers/disc2.layer.json",
@@ -96,7 +111,7 @@
       "groupLabel": "CSR+ Aerith's house trim",
       "optionLabel": "On",
       "compatibleBases": [
-        "csr-v0.14.1"
+        "csr-v0.14.2"
       ],
       "discs": {
         "1": "./csr-plus-scene-aerith-house-v0.1.1/layers/disc1.layer.json"
@@ -123,7 +138,7 @@
         "2": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc2.layer.json",
         "1": "./csr-plus-scene-cota-fd-manip-v0.1.0/layers/disc1.layer.json"
       },
-      "enabled": true,
+      "enabled": false,
       "beta": true,
       "status": "beta",
       "betaNote": "CSR+ scene trims are early; stack carefully with Single-disc."
@@ -138,7 +153,7 @@
       "groupLabel": "CSR+ Endgame FD trim",
       "optionLabel": "On",
       "compatibleBases": [
-        "csr-v0.14.1"
+        "csr-v0.14.2"
       ],
       "discs": {
         "3": "./csr-plus-scene-endgame-fd-manip-v0.1.0/layers/disc3.layer.json",
@@ -156,12 +171,11 @@
       "name": "CSR+ (all scene trims)",
       "blurb": "All optional CSR+ cutscene trims on CSR, auto-applied per disc. Not new content \u2014 further removals beyond the CSR base.",
       "compatibleBases": [
-        "csr-v0.14.1"
+        "csr-v0.14.2"
       ],
       "addons": [
         "csr-plus-scene-aerith-house-v0.1.1",
         "csr-plus-scene-hojo-fd-manip-v0.1.0",
-        "csr-plus-scene-cota-fd-manip-v0.1.0",
         "csr-plus-scene-endgame-fd-manip-v0.1.0"
       ],
       "kind": "pack"
