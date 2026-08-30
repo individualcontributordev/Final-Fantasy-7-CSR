@@ -61,6 +61,22 @@
         "3": "./csr-v0.14.2/layers/disc3.layer.json"
       },
       "enabled": true
+    },
+    {
+      "id": "csr-plus-v0.1.0",
+      "name": "CSR+ (single-disc)",
+      "kind": "base",
+      "version": "0.1.0",
+      "exclusiveGroup": "cutscenes",
+      "blurb": "CutScenes Removed + scene trims (Hojo, Aerith house, endgame), collapsed onto one Disc 1 image. Ask-menu removed, Supernova granted. Ending/credits movies ship separately; other non-ending movies are not preserved.",
+      "format": "ic-layer-v1",
+      "discs": {
+        "1": "./csr-plus-v0.1.0/layers/disc1.layer.json"
+      },
+      "enabled": true,
+      "beta": true,
+      "status": "beta",
+      "betaNote": "Single-disc is still playtesting; known freezes and glitches on some paths. Non-ending movies may show the wrong clip or glitch -- this is expected."
     }
   ],
   "addons": [
