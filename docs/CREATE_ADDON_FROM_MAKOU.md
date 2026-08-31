@@ -186,6 +186,20 @@ It writes only below this repo's gitignored `build/` directory. The candidate
 layer remains there for review; publishing is still a separate, explicit copy
 into `builder/csr-plus/`.
 
+For stage-by-stage debugging, run these Modding-repo scripts in order:
+
+1. `csrplus_stage_1_sources.py`
+2. `csrplus_stage_2_collapse.py`
+3. `prepare_working_bin.py`
+4. Edit the working BIN in Makou and save a new file.
+5. `stabilize_working_bin.py`
+6. `csrplus_stage_5_snova.py`
+7. `build_release_artifacts.py`
+
+Each command takes the preceding artifact as an explicit input and writes a
+new output plus `stage-report.json`. The complete commands and the generic
+base/mod workflow are in the Modding repo's `docs/08-engineer-build-guide.md`.
+
 **COLLISION warnings** (`differs on [2, 3]`) mean a field's D2 and D3
 copies both diverge from D1 *and* from each other — the script skips these
 rather than guessing which disc's version should win. Resolve manually
