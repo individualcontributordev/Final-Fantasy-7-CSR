@@ -14,8 +14,14 @@ Looks for:
   pristine/FINALFANTASY7_DN.bin   (or legacy workspace/pristine/)
   <base-dir>/FINALFANTASY7_DN.bin
 
-Writes builder/<slug>-v<version>/layers/discN.layer.json, updates pack.json + manifest.json,
-and verifies each layer against the patched image.
+Writes builder/<slug>/layers/discN.layer.json, updates pack.json + VERSION +
+manifest.json, and verifies each layer against the patched image.
+
+Base directories are unversioned (builder/csr, builder/highwind, ...). Each
+holds a plain-text VERSION file with the current release version; re-running
+this script for the same slug overwrites its layers/pack.json/VERSION in
+place rather than creating a new builder/<slug>-v<version>/ folder. Git
+history is the version log — use it instead of keeping old versioned dirs.
 """
 
 from __future__ import annotations
@@ -132,7 +138,7 @@ def parse_discs(spec: str | None, base_dir: Path) -> list[int]:
 
 def write_pack_json(pack_dir: Path, info: dict, version: str, discs: list[int]) -> None:
     pack = {
-        "id": f"{info['slug']}-v{version}",
+        "id": info["slug"],
         "name": info["name"],
         "kind": "base",
         "exclusiveGroup": "cutscenes",
@@ -143,16 +149,17 @@ def write_pack_json(pack_dir: Path, info: dict, version: str, discs: list[int]) 
     }
     pack_dir.mkdir(parents=True, exist_ok=True)
     (pack_dir / "pack.json").write_text(json.dumps(pack, indent=2) + "\n", encoding="utf-8")
+    (pack_dir / "VERSION").write_text(version + "\n", encoding="utf-8")
 
 
 def update_manifest(info: dict, version: str, discs: list[int]) -> None:
     if not MANIFEST_PATH.is_file():
         raise SystemExit(f"Missing {MANIFEST_PATH}")
     data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    pack_id = f"{info['slug']}-v{version}"
+    pack_id = info["slug"]
     entry = {
         "id": pack_id,
-        "name": f"{info['name']} v{version}",
+        "name": info["name"],
         "kind": "base",
         "version": version,
         "exclusiveGroup": "cutscenes",
@@ -207,12 +214,12 @@ def build_one_disc(
     if not patched.is_file():
         raise SystemExit(f"Missing patched: {patched}")
 
-    pack_id = f"{info['slug']}-v{version}"
+    pack_id = info["slug"]
     out_dir = _ROOT / "builder" / pack_id / "layers"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"disc{disc}.layer.json"
 
-    layer_id = f"{info['slug']}-disc{disc}-v{version}"
+    layer_id = f"{info['slug']}-disc{disc}"
     description = f"{info['name']} v{version} — NTSC-U Disc {disc}"
     print(f"\n=== Disc {disc}: diff ===")
     print(f"  pristine: {pristine}")
@@ -270,7 +277,7 @@ def main() -> int:
 
     _key, info, base_dir = resolve_base(args.base)
     discs = parse_discs(args.discs, base_dir)
-    pack_id = f"{info['slug']}-v{version}"
+    pack_id = info["slug"]
     pack_dir = _ROOT / "builder" / pack_id
 
     print(f"Base:    {info['name']} ({info['slug']})")

@@ -1,6 +1,6 @@
 {
   "format": "ic-layer-v1",
-  "id": "csr-plus-v0.1.0-disc1",
+  "id": "csr-plus-disc1",
   "description": "CSR+ single-disc: CSR core merges + scene trims + ask-removal + SNOVA, collapsed",
   "target": "disc-image",
   "stats": {

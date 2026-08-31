@@ -3,67 +3,37 @@
   "source": "Final-Fantasy-7-CSR",
   "bases": [
     {
-      "id": "csr-v0.14.1",
-      "name": "CSR v0.14.1",
-      "kind": "base",
-      "version": "0.14.1",
-      "exclusiveGroup": "cutscenes",
-      "blurb": "CutScenes Removed \u2014 skill checks kept.",
-      "format": "ic-layer-v1",
-      "discs": {
-        "1": "./csr-v0.14.1/layers/disc1.layer.json",
-        "2": "./csr-v0.14.1/layers/disc2.layer.json",
-        "3": "./csr-v0.14.1/layers/disc3.layer.json"
-      },
-      "enabled": false
-    },
-    {
-      "id": "highwind-v0.1.1",
-      "name": "Highwind v0.1.1",
-      "kind": "base",
-      "exclusiveGroup": "cutscenes",
-      "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. Separate from CSR+.",
-      "format": "ic-layer-v1",
-      "discs": {
-        "1": "./highwind-v0.1.1/layers/disc1.layer.json",
-        "2": "./highwind-v0.1.1/layers/disc2.layer.json",
-        "3": "./highwind-v0.1.1/layers/disc3.layer.json"
-      },
-      "enabled": false,
-      "version": "0.1.1"
-    },
-    {
-      "id": "highwind-v0.2.0",
-      "name": "Highwind v0.2.0",
+      "id": "highwind",
+      "name": "Highwind",
       "kind": "base",
       "version": "0.2.0",
       "exclusiveGroup": "cutscenes",
       "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. Separate from CSR+.",
       "format": "ic-layer-v1",
       "discs": {
-        "1": "./highwind-v0.2.0/layers/disc1.layer.json",
-        "2": "./highwind-v0.2.0/layers/disc2.layer.json",
-        "3": "./highwind-v0.2.0/layers/disc3.layer.json"
+        "1": "./highwind/layers/disc1.layer.json",
+        "2": "./highwind/layers/disc2.layer.json",
+        "3": "./highwind/layers/disc3.layer.json"
       },
       "enabled": true
     },
     {
-      "id": "csr-v0.14.2",
-      "name": "CSR v0.14.2",
+      "id": "csr",
+      "name": "CSR",
       "kind": "base",
       "version": "0.14.2",
       "exclusiveGroup": "cutscenes",
       "blurb": "CutScenes Removed \u2014 skill checks kept.",
       "format": "ic-layer-v1",
       "discs": {
-        "1": "./csr-v0.14.2/layers/disc1.layer.json",
-        "2": "./csr-v0.14.2/layers/disc2.layer.json",
-        "3": "./csr-v0.14.2/layers/disc3.layer.json"
+        "1": "./csr/layers/disc1.layer.json",
+        "2": "./csr/layers/disc2.layer.json",
+        "3": "./csr/layers/disc3.layer.json"
       },
       "enabled": true
     },
     {
-      "id": "csr-plus-v0.1.0",
+      "id": "csr-plus",
       "name": "CSR+ (single-disc)",
       "kind": "base",
       "version": "0.1.0",
@@ -71,7 +41,7 @@
       "blurb": "CutScenes Removed + scene trims (Hojo, Aerith house, endgame), collapsed onto one Disc 1 image. Ask-menu removed, Supernova granted. Ending/credits movies ship separately; other non-ending movies are not preserved.",
       "format": "ic-layer-v1",
       "discs": {
-        "1": "./csr-plus-v0.1.0/layers/disc1.layer.json"
+        "1": "./csr-plus/layers/disc1.layer.json"
       },
       "enabled": true,
       "beta": true,

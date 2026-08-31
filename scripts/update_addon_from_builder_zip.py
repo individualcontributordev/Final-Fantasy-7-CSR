@@ -10,14 +10,14 @@ Workflow:
   python3 scripts/update_addon_from_builder_zip.py path/to/extract --version 0.2.0
 
 Reads Disc/Base/Add-ons from APPLIED.txt only. Diff baseline = that base image
-(CSR for csr-v0.14.1, reconstructed from pristine + base layer if needed).
+(CSR base, reconstructed from pristine + base layer if needed).
 Injects the old pack's FIELD files from your edited .bin onto the baseline,
 builds a new pack id with bumped version, updates manifest + csr-plus preset.
 
 Playtest after (without full builder):
 
   python3 scripts/apply_layer.py pristine/FINALFANTASY7_D1.bin \\
-    builder/csr-v0.14.1/layers/disc1.layer.json -o temp/csr-d1.bin
+    builder/csr/layers/disc1.layer.json -o temp/csr-d1.bin
   python3 scripts/apply_layer.py temp/csr-d1.bin \\
     builder/<new-pack-id>/layers/disc1.layer.json -o temp/play-d1.bin
 """
@@ -375,7 +375,7 @@ def main() -> int:
 	exclusive = old_pack.get("exclusiveGroup")
 	if exclusive is not None:
 		exclusive = str(exclusive)
-	compat = list(old_pack.get("compatibleBases") or ["csr-v0.14.1"])
+	compat = list(old_pack.get("compatibleBases") or ["csr"])
 
 	pack_dir = write_pack(
 		pack_id=new_id,

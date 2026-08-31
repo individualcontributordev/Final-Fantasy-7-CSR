@@ -8,7 +8,7 @@ Policy (AGENTS.md):
 
   python3 scripts/verify_csr_addon_compat.py
   python3 scripts/verify_csr_addon_compat.py --disc 2
-  python3 scripts/verify_csr_addon_compat.py --base csr-v0.14.1 --addon csr-plus-scene-aerith-house-v0.1.1
+  python3 scripts/verify_csr_addon_compat.py --base csr --addon csr-plus-scene-aerith-house
 
 Exit 0 only if every required (base, addon, disc) stack applies cleanly and
 each add-on's compatibleBases includes every live CSR base id.

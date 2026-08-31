@@ -6,7 +6,7 @@ SRP: read-only resolve + apply + check. Does not publish or rewrite bins.
   python scripts/verify_builder_config.py \\
     --pristine pristine/FINALFANTASY7_D1.bin \\
     --disc 1 \\
-    --base csr-v0.14.1 \\
+    --base csr \\
     --addon csr-plus-scene-aerith-house-v0.1.0
 
   # Cross-repo (Modding add-ons on CSR/Highwind/clean):

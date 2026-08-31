@@ -34,11 +34,15 @@ An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+.
 
 Full map: **[CHANGELOGS.md](CHANGELOGS.md)**.
 
-| Product | Changelog | Builder ids |
-|---------|-----------|-------------|
-| CSR (base) | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr-v0.14.1` |
-| Highwind (base) | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind-v0.2.0` |
-| CSR+ scenes (add-ons) | [addons/csr-plus/CHANGELOG.md](addons/csr-plus/CHANGELOG.md) | `csr-plus-scene-*`, preset `csr-plus` |
+| Product | Changelog | Builder id | Current version |
+|---------|-----------|------------|------------------|
+| CSR (base) | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr` | see `builder/csr/VERSION` |
+| Highwind (base) | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind` | see `builder/highwind/VERSION` |
+| CSR+ (base) | [addons/csr-plus/CHANGELOG.md](addons/csr-plus/CHANGELOG.md) | `csr-plus` | see `builder/csr-plus/VERSION` |
+
+Builder ids are stable across releases — only the `VERSION` file and
+changelog entry change per release. Old versioned directories are not kept
+on disk; use `git log` on the base's folder for history.
 
 ## Play
 

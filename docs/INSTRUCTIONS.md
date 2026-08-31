@@ -38,13 +38,17 @@ python3 scripts/repair_mode2_edc.py \
 python3 scripts/build_csr_base_layers.py cache/csr --version 0.14.2
 ```
 
+This overwrites `builder/csr/layers/`, `builder/csr/pack.json`, and
+`builder/csr/VERSION` in place (base id stays `csr`) — no new versioned
+directory is created. Git history is the version log.
+
 ### 5. Verify (must print PASS)
 
 ```bash
 python3 scripts/verify_builder_config.py \
   --pristine pristine/FINALFANTASY7_D1.bin \
   --disc 1 \
-  --base csr-v0.14.2
+  --base csr
 ```
 
 ### 6. Scene add-on regression (required for a CSR base release)
@@ -78,6 +82,7 @@ The agent will `git pull` and re-run the movie-requirements scan against
 this repo to confirm NRTHMK's `dir/31` `MOVIE` opcode is now excluded from
 the disc-1 movie requirement set.
 
-Note: if `csr-v0.14.2` differs from `csr-v0.14.1`, the published base id
-changed — Modding's Field/World encounter packs will need `compatibleBases`
-rebuilt afterward (separate task, not blocking this one).
+Note: the published base id (`csr`) does not change between releases — only
+`builder/csr/VERSION` and the `CHANGELOG.md` entry do. Modding's Field/World
+encounter packs' `compatibleBases: ["csr"]` do not need updating for a normal
+patch release.
