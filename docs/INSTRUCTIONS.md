@@ -76,11 +76,11 @@ git commit --author="individualcontributordev <contributorindividual@gmail.com>"
 git push
 ```
 
-### 9. Tell the agent "check"
+### 9. Re-verify
 
-The agent will `git pull` and re-run the movie-requirements scan against
-this repo to confirm NRTHMK's `dir/31` `MOVIE` opcode is now excluded from
-the disc-1 movie requirement set.
+`git pull` and re-run the movie-requirements scan against this repo to
+confirm NRTHMK's `dir/31` `MOVIE` opcode is now excluded from the disc-1
+movie requirement set.
 
 Note: the published base id (`csr`) does not change between releases — only
 `builder/csr/VERSION` and the `CHANGELOG.md` entry do. Modding's Field/World

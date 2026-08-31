@@ -59,7 +59,7 @@ PSX: soft-mod (e.g. [MechaPwn](https://github.com/MechaResearch/MechaPwn)), burn
 
 ## Release a base (maintainers)
 
-Run these steps on the machine that has the disc images. Agent chat supplies the checklist; it does not own the publish path when bins are only on the disc host.
+Run these steps on the machine that has the disc images. The checklists below are a guide; they don't own the publish path when bins are only on the disc host.
 
 Publishable bases: **CSR** and **Highwind** only. CSR+ scene trims are add-ons (see `docs/ADDON_QUICK_REFERENCE.md` / skill `ship-csr-plus-scene`), not a third base.
 
@@ -120,7 +120,7 @@ Pages serves `builder/` JSON for the disc builder. Older packs stay enabled unti
 
 If the published base **id** changed (e.g. `csr-v0.14.2`), rebuild Field/World encounter packs in **Final-Fantasy-7-Modding** against the new ids.
 
-Agent checklists: `.agents/skills/release-csr-base`, `ship-csr-plus-scene`, `ship-makou-addon`.
+Checklists: `.agents/skills/release-csr-base`, `ship-csr-plus-scene`, `ship-makou-addon`.
 
 ## Layout
 

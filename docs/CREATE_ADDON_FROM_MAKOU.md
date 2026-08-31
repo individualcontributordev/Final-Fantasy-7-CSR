@@ -4,7 +4,7 @@ Complete workflow for turning **Makou Reactor field map edits** into builder add
 
 **Scope:** `FIELD/*.DAT` via Makou. **Engine binary** (`FIELD.BIN` / `WORLD.BIN`, Ghidra) → `Final-Fantasy-7-Modding` (`research-new-mod`, `docs/06-new-mod-research.md`).
 
-Agent checklists: `ship-makou-addon` (general), `ship-csr-plus-scene` (CSR+ increments). Flags: `docs/ADDON_QUICK_REFERENCE.md`.
+Checklists: `ship-makou-addon` (general), `ship-csr-plus-scene` (CSR+ increments). Flags: `docs/ADDON_QUICK_REFERENCE.md`.
 
 ## Prerequisites
 
