@@ -144,6 +144,45 @@ Live via Pages in ~2 minutes.
 - **Playtest:** pristine → CSR base → enable add-on → DuckStation
 - **Naming:** `<category>-<scene>-v<version>` (e.g. `csr-plus-scene-aerith-house-v0.1.0`)
 
+## Collapsed single-disc bases (csr-plus, highwind)
+
+`csr-plus` and `highwind` are not addons — they are **bases** whose entire
+Disc 2/Disc 3 field content has been merged onto a single Disc 1 image, so
+players never swap discs. This is a different workflow from the addon
+pipeline above and lives in `Final-Fantasy-7-Modding`, not this repo.
+
+**Script:** `Final-Fantasy-7-Modding/mods/single-disc/scripts/build_collapsed_bases.py`
+
+What it does per base (see the script's module docstring for the exact
+step order): merges safe D2/D3→D1 field files, applies any base-specific
+patches (JUNAIR precision fix, BLACKBGB ask-removal, CSR+ scene trims),
+runs `fix_field_and_world_bins()` (**required** — see the "Invalid archive"
+row in `docs/reference/layer-engineering.md`'s failure-modes table; this
+step resizes many `FIELD/*.DAT` files in one pass), injects SNOVA D3→D1,
+then diffs the result against pristine Disc 1 and writes
+`builder/<base>/layers/disc1.layer.json` plus updates that base's
+`discs` entry in `pack.json` and `builder/manifest.json` to `{"1": ...}`
+only (deleting any stale `disc2.layer.json`/`disc3.layer.json`).
+
+```bash
+cd /path/to/Final-Fantasy-7-Modding
+python3 mods/single-disc/scripts/build_collapsed_bases.py
+# or, if csr-plus's intermediate .bin is already cached:
+python3 mods/single-disc/scripts/build_collapsed_bases.py --skip-csrplus
+```
+
+**COLLISION warnings** (`differs on [2, 3]`) mean a field's D2 and D3
+copies both diverge from D1 *and* from each other — the script skips these
+rather than guessing which disc's version should win. Resolve manually
+(edit the field, or decide which disc source is correct) before
+considering the base's D2/D3 merge complete; a collision means that
+scene's content on the collapsed disc is still whatever D1 already had,
+which may be stale in the collapsed image.
+
+**Publish:** same as any base — commit `builder/<base>/layers/disc1.layer.json`,
+`builder/<base>/pack.json`, and `builder/manifest.json` in this repo, then
+`git push`.
+
 ## Example: CSR+ scene (free checkbox)
 
 Checklist skill: `ship-csr-plus-scene`. Diff is **csr → csr-plus**, not pristine.
