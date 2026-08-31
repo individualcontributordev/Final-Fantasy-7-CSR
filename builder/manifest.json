@@ -181,22 +181,7 @@
       "betaNote": "CSR+ scene trims are early; stack carefully with Single-disc."
     }
   ],
-  "presets": [
-    {
-      "id": "csr-plus",
-      "name": "CSR+ (all scene trims)",
-      "blurb": "All optional CSR+ cutscene trims on CSR, auto-applied per disc. Not new content \u2014 further removals beyond the CSR base.",
-      "compatibleBases": [
-        "csr-v0.14.2"
-      ],
-      "addons": [
-        "csr-plus-scene-aerith-house-v0.1.1",
-        "csr-plus-scene-hojo-fd-manip-v0.1.0",
-        "csr-plus-scene-endgame-fd-manip-v0.1.0"
-      ],
-      "kind": "pack"
-    }
-  ],
+  "presets": [],
   "explainer": {
     "base": "Base experience \u2014 only one applies (Unmodified, CSR, Highwind, \u2026).",
     "packs": "Optional extra cutscene trims on CSR only (not new content). Stack any combination. Organized by disc.",
