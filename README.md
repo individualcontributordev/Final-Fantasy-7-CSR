@@ -80,7 +80,7 @@ Missing CSR/Highwind images? Reconstruct from pristine + published layer:
 ```bash
 python scripts/apply_layer.py \
   pristine/FINALFANTASY7_D1.bin \
-  builder/csr-v0.14.1/layers/disc1.layer.json \
+  builder/csr/layers/disc1.layer.json \
   -o cache/csr/FINALFANTASY7_D1.bin
 ```
 

@@ -55,7 +55,7 @@ def live_csr_base_ids() -> list[str]:
 	out = []
 	for b in data.get("bases") or []:
 		pid = str(b.get("id") or "")
-		if not pid.startswith("csr-v"):
+		if not (pid == "csr" or pid.startswith("csr-v")):
 			continue
 		if b.get("enabled") is False:
 			continue
@@ -138,8 +138,14 @@ def default_csr_scene_baseline(disc: int) -> Path:
 		raise SystemExit(
 			"No live csr-v* bases in builder/manifest.json — pass --pristine explicitly"
 		)
-	# Prefer highest version string sort (csr-v0.14.1 > csr-v0.9.0 for normal scheme)
-	base_id = sorted(ids, key=lambda s: [int(x) for x in s.replace("csr-v", "").split(".")])[-1]
+	# Unversioned "csr" is the current live slug post-normalization; prefer it.
+	# Otherwise fall back to highest version string sort (legacy csr-v0.14.1 > csr-v0.9.0).
+	if "csr" in ids:
+		base_id = "csr"
+	else:
+		base_id = sorted(
+			ids, key=lambda s: [int(x) for x in s.replace("csr-v", "").split(".")]
+		)[-1]
 	layer = _ROOT / "builder" / base_id / "layers" / f"disc{disc}.layer.json"
 	if not layer.is_file():
 		raise SystemExit(f"Missing layer for default baseline: {layer}")

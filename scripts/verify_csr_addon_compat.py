@@ -44,7 +44,7 @@ def _live_csr_base_ids(catalog: dict[str, dict]) -> list[str]:
 	for pid, meta in catalog.items():
 		if meta.get("kind") != "base":
 			continue
-		if not str(pid).startswith("csr-v"):
+		if not (str(pid) == "csr" or str(pid).startswith("csr-v")):
 			continue
 		if not _enabled(meta["entry"]):
 			continue

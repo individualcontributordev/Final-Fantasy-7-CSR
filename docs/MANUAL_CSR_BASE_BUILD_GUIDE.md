@@ -24,7 +24,7 @@ missing for the disc you need, rebuild it from the last published layer:
 mkdir -p cache/csr cache/highwind
 python3 scripts/apply_layer.py \
   pristine/FINALFANTASY7_D1.bin \
-  builder/csr-v0.14.1/layers/disc1.layer.json \
+  builder/csr/layers/disc1.layer.json \
   -o cache/csr/FINALFANTASY7_D1.bin
 # repeat per disc (2/3) and per flavor (swap csr -> highwind, use its own
 # current published version's layer)

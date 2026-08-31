@@ -7,8 +7,8 @@ Where release notes live. **Builder pack id** is what the disc builder / CDN use
 
 | Product | Kind | Changelog | Live builder ids (see `builder/manifest.json`) |
 |---------|------|-----------|-----------------------------------------------|
-| **CSR** | base | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr-v0.14.1` |
-| **Highwind** | base | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind-v0.1.1` |
+| **CSR** | base | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr` |
+| **Highwind** | base | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind` |
 | **CSR+ scenes** | add-ons (+ preset) | [addons/csr-plus/CHANGELOG.md](addons/csr-plus/CHANGELOG.md) | `csr-plus-scene-*`, preset `csr-plus` |
 
 ```text

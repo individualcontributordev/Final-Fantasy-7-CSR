@@ -98,7 +98,7 @@ def main() -> int:
 	ap.add_argument(
 		"--base",
 		required=True,
-		help="Base id: clean | csr-v… | highwind-v…",
+		help="Base id: clean | csr | csr-plus | highwind",
 	)
 	ap.add_argument(
 		"--addon",

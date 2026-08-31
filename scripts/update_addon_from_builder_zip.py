@@ -97,7 +97,11 @@ def _match_base(label: str, catalog: dict[str, dict]) -> str:
 	for pid, _ in bases:
 		if "highwind" in bn and "highwind" in pid:
 			return pid
-		if bn.startswith("csr") and pid.startswith("csr-v") and "highwind" not in bn:
+		if (
+			bn.startswith("csr")
+			and (pid == "csr" or pid.startswith("csr-v"))
+			and "highwind" not in bn
+		):
 			return pid
 	raise SystemExit(f"APPLIED Base not in catalog: {label!r}")
 

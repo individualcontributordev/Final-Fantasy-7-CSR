@@ -15,10 +15,10 @@ Agent checklists: `ship-makou-addon` (general), `ship-csr-plus-scene` (CSR+ incr
 
 | Goal | Diff baseline (`--pristine` / inject base) | `compatibleBases` |
 |------|--------------------------------------------|-------------------|
-| CSR+ **scene** add-on | `cache/csr` | `csr-v0.14.1` |
-| Add-on on CSR | `cache/csr` | `csr-v0.14.1` |
+| CSR+ **scene** add-on | `cache/csr` | `csr` |
+| Add-on on CSR | `cache/csr` | `csr` |
 | Add-on on Unmodified | `pristine` | `clean` |
-| Add-on on Highwind only | `cache/highwind` | `highwind-v0.1.1` |
+| Add-on on Highwind only | `cache/highwind` | `highwind` |
 
 Multi-base: one pack with several `compatibleBases` **only if** map bytes are identical on each base; otherwise **per-base packs**.
 
@@ -81,7 +81,7 @@ python3 scripts/build_field_map_pack.py \
   --group-label "My Scene Name" \
   --blurb "Brief description of what this addon does." \
   --no-exclusive-group \
-  --compatible-bases csr-v0.14.1
+  --compatible-bases csr
 ```
 
 Mutually exclusive variants: replace `--no-exclusive-group` with `--exclusive-group my-addon-scene`.
@@ -107,7 +107,7 @@ Map growth within the same ISO sector span is allowed (`replace_file` patches th
 python3 scripts/verify_builder_config.py \
   --pristine pristine/FINALFANTASY7_D1.bin \
   --disc 1 \
-  --base csr-v0.14.1 \
+  --base csr \
   --addon my-addon-scene-v0.1.0
 ```
 
@@ -119,7 +119,7 @@ Optional Makou byte expect:
 mkdir -p temp
 python3 scripts/apply_layer.py \
   pristine/FINALFANTASY7_D1.bin \
-  builder/csr-v0.14.1/layers/disc1.layer.json \
+  builder/csr/layers/disc1.layer.json \
   -o temp/csr-base.bin
 
 python3 scripts/apply_layer.py \
@@ -159,7 +159,7 @@ python3 scripts/build_field_map_pack.py \
   --group-label "CSR+ scene — Aerith's house" \
   --blurb "CSR+ trim of the Aerith's house cutscene on top of CSR." \
   --no-exclusive-group \
-  --compatible-bases csr-v0.14.1
+  --compatible-bases csr
 ```
 
 History: `notes/2026-07-28-csr-plus-increment-pivot.md` (not the runbook).

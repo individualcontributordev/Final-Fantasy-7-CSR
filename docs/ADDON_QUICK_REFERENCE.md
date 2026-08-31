@@ -8,10 +8,10 @@ Skills: `ship-makou-addon`, `ship-csr-plus-scene`. Full guide: `docs/CREATE_ADDO
 
 | Goal | `--pristine` (diff baseline) | `--compatible-bases` |
 |------|------------------------------|----------------------|
-| CSR+ scene | `cache/csr/...` | `csr-v0.14.1` |
-| On CSR | `cache/csr/...` | `csr-v0.14.1` |
+| CSR+ scene | `cache/csr/...` | `csr` |
+| On CSR | `cache/csr/...` | `csr` |
 | On Unmodified | `pristine/...` | `clean` |
-| On Highwind | `cache/highwind/...` | `highwind-v0.1.1` |
+| On Highwind | `cache/highwind/...` | `highwind` |
 
 Missing bins: `apply_layer.py` pristine + `builder/<base-id>/layers/discN.layer.json` → `cache/<flavor>/` (optional), or start from a builder zip.
 
@@ -58,7 +58,7 @@ python3 scripts/build_field_map_pack.py \
 python3 scripts/verify_builder_config.py \
   --pristine pristine/FINALFANTASY7_D1.bin \
   --disc 1 \
-  --base csr-v0.14.1 \
+  --base csr \
   --addon my-addon-v0.1.0
 ```
 
@@ -94,13 +94,13 @@ python3 scripts/update_addon_from_builder_zip.py "/path/to/extract-or.bin"
 # python3 scripts/update_addon_from_builder_zip.py "/path/to/extract" --version 0.2.0
 ```
 
-4. `verify_builder_config.py --base csr-v0.14.1 --addon <new-id>` → PASS.
+4. `verify_builder_config.py --base csr --addon <new-id>` → PASS.
 5. Playtest layer stack (no site rebuild required):
 
 ```bash
 mkdir -p temp
 python3 scripts/apply_layer.py pristine/FINALFANTASY7_D1.bin \
-  builder/csr-v0.14.1/layers/disc1.layer.json -o temp/csr-d1.bin
+  builder/csr/layers/disc1.layer.json -o temp/csr-d1.bin
 python3 scripts/apply_layer.py temp/csr-d1.bin \
   builder/<new-id>/layers/disc1.layer.json -o temp/play-d1.bin
 ```
@@ -119,8 +119,8 @@ Do not overwrite a shipped pack id in place for a real release.
 | Base | ID |
 |------|-----|
 | Unmodified | `clean` |
-| CSR | `csr-v0.14.1` |
-| Highwind | `highwind-v0.1.1` |
+| CSR | `csr` |
+| Highwind | `highwind` |
 
 Latest: `builder/manifest.json` → `bases[].id`. CSR+ is **not** a base.
 
