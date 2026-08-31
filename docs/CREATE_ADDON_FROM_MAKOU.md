@@ -171,6 +171,21 @@ python3 mods/single-disc/scripts/build_collapsed_bases.py
 python3 mods/single-disc/scripts/build_collapsed_bases.py --skip-csrplus
 ```
 
+For a CSR+ image that will be edited and saved in Makou Reactor, use the
+artifact-preserving pipeline:
+
+```bash
+python3 mods/single-disc/scripts/build_csrplus_staged.py prepare
+# Edit 07-editable/FINALFANTASY7_D1.bin and save a new file.
+python3 mods/single-disc/scripts/build_csrplus_staged.py finalize \
+  --run-dir ../Final-Fantasy-7-CSR/build/csr-plus/<run> \
+  --edited-image /path/to/makou-saved.bin
+```
+
+It writes only below this repo's gitignored `build/` directory. The candidate
+layer remains there for review; publishing is still a separate, explicit copy
+into `builder/csr-plus/`.
+
 **COLLISION warnings** (`differs on [2, 3]`) mean a field's D2 and D3
 copies both diverge from D1 *and* from each other — the script skips these
 rather than guessing which disc's version should win. Resolve manually

@@ -15,6 +15,9 @@ cache/*
 !cache/**/
 !cache/**/.gitkeep
 
+# Reproducible local build runs and their disc artifacts
+build/
+
 # Legacy path (pre rename)
 workspace/*
 !workspace/**/
