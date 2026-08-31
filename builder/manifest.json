@@ -32,7 +32,7 @@
     },
     {
       "id": "csr-plus",
-      "name": "CSR+ (single-disc)",
+      "name": "CSR+",
       "kind": "base",
       "version": "0.1.0",
       "exclusiveGroup": "cutscenes",
