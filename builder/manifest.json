@@ -8,7 +8,7 @@
       "kind": "base",
       "version": "0.4.0",
       "exclusiveGroup": "cutscenes",
-      "blurb": "Heavily shortened story, collapsed onto one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened. Disc 1 only. Separate from CSR+.",
+      "blurb": "Heavily shortened story, collapsed onto one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened due to space constraints.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./highwind/layers/disc1.layer.json"
@@ -32,11 +32,11 @@
     },
     {
       "id": "csr-plus",
-      "name": "CSR+",
+      "name": "CSR+ (single-disc)",
       "kind": "base",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "exclusiveGroup": "cutscenes",
-      "blurb": "CutScenes Removed + scene trims (Hojo, Aerith house, City of the Ancients, endgame), collapsed onto one Disc 1 image. The ending movie plays but is shortened. Disc 1 only.",
+      "blurb": "CutScenes Removed and collapsed onto one Disc 1 image. Supernova included, ending credits movies removed due to space constraints.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./csr-plus/layers/disc1.layer.json"

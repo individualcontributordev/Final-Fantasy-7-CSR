@@ -37,18 +37,14 @@ BASES = {
         "slug": "csr-plus",
         "name": "CSR+",
         "blurb": (
-            "CutScenes Removed + scene trims (Hojo, Aerith house, City of the "
-            "Ancients, endgame), collapsed onto one Disc 1 image. The ending "
-            "movie plays but is shortened. Disc 1 only."
+            "CutScenes Removed and collapsed onto one Disc 1 image. Supernova included, ending credits movies removed due to space constraints."
         ),
     },
     "highwind": {
         "slug": "highwind",
         "name": "Highwind",
         "blurb": (
-            "Heavily shortened story, collapsed onto one Disc 1 image. Many "
-            "dialogue choices and scenes are cut. The ending movie plays but "
-            "is shortened. Disc 1 only. Separate from CSR+."
+            "Heavily shortened story, collapsed onto one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened due to space constraints."
         ),
     },
 }

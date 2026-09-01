@@ -88,9 +88,9 @@ Form 1 footers on appended sectors.
 
 ```bash
 python3 scripts/apply_layer.py \
-  pristine/FINALFANTASY7_D1.bin \
-  builder/csr-plus/layers/disc1.layer.json \
-  --expect cache/csr-plus/FINALFANTASY7_D1.bin
+  "pristine/FINALFANTASY7_D${disc}.bin" \
+  "builder/$base/layers/disc${disc}.layer.json" \
+  --expect "cache/$base/FINALFANTASY7_D${disc}.bin"
 ```
 
 Automated checks do not replace DuckStation/MiSTer testing, optical-media
@@ -98,12 +98,14 @@ verification, or a console playtest.
 
 ## Script reference
 
-| Command | Purpose |
-|---|---|
-| `apply_layer.py IMAGE LAYER [-o OUT\|--expect BIN]` | Apply or byte-verify an `ic-layer-v1` disc patch. |
-| `build_base_layer.py IMAGE --version X.Y.Z` | Publish one exclusive-base disc layer and merge pack/manifest metadata. |
-| `repair_mode2_edc.py PRISTINE IMAGE -o OUT` | Restore or recompute MODE2 Form 1 footers after editing. |
-| `verify_builder_config.py --disc N --base ID [--addon ID]` | Reconstruct and validate the selected builder stack. |
+
+| Command                                                    | Purpose                                                                 |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `apply_layer.py IMAGE LAYER [-o OUT|--expect BIN]`         | Apply or byte-verify an `ic-layer-v1` disc patch.                       |
+| `build_base_layer.py IMAGE --version X.Y.Z`                | Publish one exclusive-base disc layer and merge pack/manifest metadata. |
+| `repair_mode2_edc.py PRISTINE IMAGE -o OUT`                | Restore or recompute MODE2 Form 1 footers after editing.                |
+| `verify_builder_config.py --disc N --base ID [--addon ID]` | Reconstruct and validate the selected builder stack.                    |
+
 
 Shared implementation lives under `scripts/libs/`; files directly under
 `scripts/` are supported commands.
