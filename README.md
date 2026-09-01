@@ -28,28 +28,20 @@ the BIN, repair Form 1 footers, then publish a replacement layer.
 Choose the base and its discs:
 
 ```bash
-# CSR
-base=csr
-discs=(1 2 3)
-
-# CSR+ (use instead of the two lines above)
-# base=csr-plus
-# discs=(1)
-
-# Highwind (use instead of the two lines above)
-# base=highwind
-# discs=(1)
+# set in terminal env
+BASE=csr # csr-plus, highwind
+DISCS=(1 2 3) # DISCS=(1)
 ```
 
 Materialize the currently published base:
 
 ```bash
-mkdir -p "cache/$base"
-for disc in "${discs[@]}"; do
+mkdir -p "cache/$BASE"
+for disc in "${DISCS[@]}"; do
   python3 scripts/apply_layer.py \
     "pristine/FINALFANTASY7_D${disc}.bin" \
-    "builder/$base/layers/disc${disc}.layer.json" \
-    -o "cache/$base/FINALFANTASY7_D${disc}.bin"
+    "builder/$BASE/layers/disc${disc}.layer.json" \
+    -o "cache/$BASE/FINALFANTASY7_D${disc}.bin"
 done
 ```
 
@@ -58,9 +50,9 @@ overwriting an edited BIN, keep one backup. Repair and publish every edited
 disc with the same loop:
 
 ```bash
-version=X.Y.Z
-for disc in "${discs[@]}"; do
-  image="cache/$base/FINALFANTASY7_D${disc}.bin"
+VERSION=X.Y.Z
+for disc in "${DISCS[@]}"; do
+  image="cache/$BASE/FINALFANTASY7_D${disc}.bin"
   test -e "$image.bak" || cp "$image" "$image.bak"
 
   python3 scripts/repair_mode2_edc.py \
@@ -70,11 +62,11 @@ for disc in "${discs[@]}"; do
 
   python3 scripts/build_base_layer.py \
     "$image" \
-    --version "$version"
+    --version "$VERSION"
 
   python3 scripts/verify_builder_config.py \
     --disc "$disc" \
-    --base "$base" \
+    --base "$BASE" \
     --no-cache
 done
 ```
@@ -88,9 +80,9 @@ Form 1 footers on appended sectors.
 
 ```bash
 python3 scripts/apply_layer.py \
-  "pristine/FINALFANTASY7_D${disc}.bin" \
-  "builder/$base/layers/disc${disc}.layer.json" \
-  --expect "cache/$base/FINALFANTASY7_D${disc}.bin"
+  "pristine/FINALFANTASY7_D${DISCS}.bin" \
+  "builder/$BASE/layers/disc${DISCS}.layer.json" \
+  --expect "cache/$BASE/FINALFANTASY7_D${DISCS}.bin"
 ```
 
 Automated checks do not replace DuckStation/MiSTer testing, optical-media
