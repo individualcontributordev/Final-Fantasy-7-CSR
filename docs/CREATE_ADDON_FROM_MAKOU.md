@@ -184,9 +184,10 @@ For stage-by-stage debugging, use the base-specific first two stages:
 6. `build_release_artifacts.py`
 
 Each command takes the preceding artifact as an explicit input and writes a
-new output plus `stage-report.json`. Highwind's report lists every field kept
-from Disc 1 because both later discs differed; this conservative policy avoids
-replacing early-game behavior without a playtested field-specific verdict.
+new output plus `stage-report.json`. Highwind applies a fixed list of extra
+Disc 1 fields after the shared CSR+ collapse; it does not skip D2/D3 merges
+as collisions. Prefer Makou on the collapsed `03-working` image, then
+`finalize`, so SNOVA and EDC/ECC run on the burn candidate.
 
 `build_release_artifacts.py` creates a second image from the declared layer
 base plus candidate layer and requires a byte-perfect match. After copying the
