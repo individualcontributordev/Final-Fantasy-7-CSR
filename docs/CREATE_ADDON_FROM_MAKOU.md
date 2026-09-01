@@ -146,71 +146,54 @@ Live via Pages in ~2 minutes.
 
 ## Collapsed single-disc bases (csr-plus, highwind)
 
-`csr-plus` and `highwind` are not addons — they are **bases** whose entire
-Disc 2/Disc 3 field content has been merged onto a single Disc 1 image, so
-players never swap discs. This is a different workflow from the addon
-pipeline above and lives in `Final-Fantasy-7-Modding`, not this repo.
-
-**Script:** `Final-Fantasy-7-Modding/mods/single-disc/scripts/build_collapsed_bases.py`
-
-What it does per base (see the script's module docstring for the exact
-step order): merges safe D2/D3→D1 field files, applies any base-specific
-patches (JUNAIR precision fix, BLACKBGB ask-removal, CSR+ scene trims),
-runs `fix_field_and_world_bins()` (**required** — see the "Invalid archive"
-row in `docs/reference/layer-engineering.md`'s failure-modes table; this
-step resizes many `FIELD/*.DAT` files in one pass), injects SNOVA D3→D1,
-then diffs the result against pristine Disc 1 and writes
-`builder/<base>/layers/disc1.layer.json` plus updates that base's
-`discs` entry in `pack.json` and `builder/manifest.json` to `{"1": ...}`
-only (deleting any stale `disc2.layer.json`/`disc3.layer.json`).
+`csr-plus` and `highwind` are **bases**, not addons. Their staged builders live
+in `Final-Fantasy-7-Modding`; binary artifacts stay in this repo's gitignored
+`build/` directory, while only reviewed layer/metadata files are copied into
+`builder/`.
 
 ```bash
 cd /path/to/Final-Fantasy-7-Modding
-python3 mods/single-disc/scripts/build_collapsed_bases.py
-# or, if csr-plus's intermediate .bin is already cached:
-python3 mods/single-disc/scripts/build_collapsed_bases.py --skip-csrplus
+python3 mods/single-disc/scripts/build_csrplus_staged.py prepare \
+  --run-name csrplus-v0.1.2
+python3 mods/single-disc/scripts/build_highwind_staged.py prepare \
+  --run-name highwind-v0.2.1
 ```
 
-For a CSR+ image that will be edited and saved in Makou Reactor, use the
-artifact-preserving pipeline:
+Open each reported working BIN in Makou, save to a new file, and finalize:
 
 ```bash
-python3 mods/single-disc/scripts/build_csrplus_staged.py prepare
-# Edit 07-editable/FINALFANTASY7_D1.bin and save a new file.
 python3 mods/single-disc/scripts/build_csrplus_staged.py finalize \
-  --run-dir ../Final-Fantasy-7-CSR/build/csr-plus/<run> \
-  --edited-image /path/to/makou-saved.bin
+  --run-dir ../Final-Fantasy-7-CSR/build/csr-plus/csrplus-v0.1.2 \
+  --edited-image /path/to/csrplus-makou-saved.bin \
+  --version 0.1.2
+
+python3 mods/single-disc/scripts/build_highwind_staged.py finalize \
+  --run-dir ../Final-Fantasy-7-CSR/build/highwind/highwind-v0.2.1 \
+  --edited-image /path/to/highwind-makou-saved.bin \
+  --version 0.2.1
 ```
 
-It writes only below this repo's gitignored `build/` directory. The candidate
-layer remains there for review; publishing is still a separate, explicit copy
-into `builder/csr-plus/`.
+For stage-by-stage debugging, use the base-specific first two stages:
 
-For stage-by-stage debugging, run these Modding-repo scripts in order:
-
-1. `csrplus_stage_1_sources.py`
-2. `csrplus_stage_2_collapse.py`
-3. `prepare_working_bin.py`
-4. Edit the working BIN in Makou and save a new file.
-5. `stabilize_working_bin.py`
-6. `csrplus_stage_5_snova.py`
-7. `build_release_artifacts.py`
+1. `csrplus_stage_1_sources.py` + `csrplus_stage_2_collapse.py`, or
+   `highwind_stage_1_sources.py` + `highwind_stage_2_collapse.py`
+2. `prepare_working_bin.py`
+3. Edit the working BIN in Makou and save a new file.
+4. `stabilize_working_bin.py`
+5. `csrplus_stage_5_snova.py` (historical name; shared by both bases)
+6. `build_release_artifacts.py`
 
 Each command takes the preceding artifact as an explicit input and writes a
-new output plus `stage-report.json`. The complete commands and the generic
-base/mod workflow are in the Modding repo's `docs/08-engineer-build-guide.md`.
+new output plus `stage-report.json`. Highwind's report lists every field kept
+from Disc 1 because both later discs differed; this conservative policy avoids
+replacing early-game behavior without a playtested field-specific verdict.
 
-**COLLISION warnings** (`differs on [2, 3]`) mean a field's D2 and D3
-copies both diverge from D1 *and* from each other — the script skips these
-rather than guessing which disc's version should win. Resolve manually
-(edit the field, or decide which disc source is correct) before
-considering the base's D2/D3 merge complete; a collision means that
-scene's content on the collapsed disc is still whatever D1 already had,
-which may be stale in the collapsed image.
-
-**Publish:** same as any base — commit `builder/<base>/layers/disc1.layer.json`,
-`builder/<base>/pack.json`, and `builder/manifest.json` in this repo, then
-`git push`.
+`build_release_artifacts.py` creates a second image from the declared layer
+base plus candidate layer and requires a byte-perfect match. After copying the
+candidate into `builder/<base>/`, run `scripts/verify_builder_config.py` again
+through the published manifest. Complete commands, publication steps, hash
+comparison, and the emulator/MiSTer/burn/console ladder are in the Modding
+repo's `docs/08-engineer-build-guide.md`.
 
 ## Example: CSR+ scene (free checkbox)
 
