@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """Repair MODE2/2352 Form 1 footers using a pristine same-disc reference.
 
-Before rebuilding ic-layer packs, run this on each cache/<base>/ or edited FINALFANTASY7_DN.bin
+Before rebuilding ic-layer packs, run this on each edited FINALFANTASY7_DN.bin
 so diffs do not bake zeroed footers into the layer JSON.
 
-  # restore unchanged footers from pristine + recompute ECC where user data changed
   python3 scripts/repair_mode2_edc.py \\
-    --pristine pristine/FINALFANTASY7_D1.bin \\
-    --input cache/csr/FINALFANTASY7_D1.bin \\
-    --output cache/csr/FINALFANTASY7_D1.bin --in-place
+    pristine/FINALFANTASY7_D1.bin \\
+    cache/csr/FINALFANTASY7_D1.bin \\
+    -o cache/csr/FINALFANTASY7_D1.bin
 
 Neill Corlett / ECM public-domain Mode2 Form1 algorithm (verified vs retail).
 
@@ -16,8 +15,8 @@ Input and pristine images must have identical, sector-aligned lengths. When
 user data is unchanged, the known retail 280-byte EDC/ECC footer is restored
 verbatim; when Form 1 user data changed, EDC and P/Q parity are recomputed.
 Form 2 sectors are left untouched because their 2336-byte payload does not
-have a Form 1 ECC footer. Output is new unless ``--in-place`` is explicit;
-make a backup before choosing that mode.
+have a Form 1 ECC footer. The pristine image is never overwritten; ``-o`` may
+point at the input image. Make a backup before overwriting an edited BIN.
 """
 
 from __future__ import annotations
@@ -155,19 +154,15 @@ def main() -> None:
 	ap = argparse.ArgumentParser(
 		description="Fix MODE2 Form1 EDC/ECC on a patched image before layer rebuild"
 	)
-	ap.add_argument("--pristine", type=Path, required=True)
-	ap.add_argument("--input", type=Path, required=True)
-	ap.add_argument("--output", type=Path, default=None, help="Output path (default: --in-place)")
-	ap.add_argument(
-		"--in-place",
-		action="store_true",
-		help="Overwrite --input (backup first if unsure)",
-	)
+	ap.add_argument("pristine", type=Path, help="Unmodified same-disc BIN")
+	ap.add_argument("image", type=Path, help="Edited BIN to repair")
+	ap.add_argument("-o", "--output", type=Path, required=True, help="Repaired BIN")
 	args = ap.parse_args()
-	out = args.input if args.in_place else args.output
-	if out is None:
-		raise SystemExit("Pass --output PATH or --in-place")
-	stats = repair(args.pristine.expanduser(), args.input.expanduser(), out.expanduser())
+	stats = repair(
+		args.pristine.expanduser(),
+		args.image.expanduser(),
+		args.output.expanduser(),
+	)
 	for k, v in stats.items():
 		print(f"{k}: {v}")
 

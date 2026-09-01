@@ -34,24 +34,27 @@ done
 ```
 
 Edit `cache/csr/FINALFANTASY7_D1.bin` through `D3.bin` in Makou Reactor. Before
-an in-place footer repair, keep one backup:
+overwriting an edited BIN, keep one backup, then repair each disc:
 
 ```bash
-image=cache/csr/FINALFANTASY7_D1.bin
-test -e "$image.bak" || cp "$image" "$image.bak"
-python3 scripts/repair_mode2_edc.py \
-  --pristine pristine/FINALFANTASY7_D1.bin \
-  --input "$image" \
-  --in-place
+for disc in 1 2 3; do
+  image=cache/csr/FINALFANTASY7_D${disc}.bin
+  test -e "$image.bak" || cp "$image" "$image.bak"
+  python3 scripts/repair_mode2_edc.py \
+    pristine/FINALFANTASY7_D${disc}.bin \
+    "$image" \
+    -o "$image"
+done
 ```
 
-Repeat the repair for each edited disc, then regenerate the published layers,
-pack metadata, version, and manifest entry:
+Regenerate each published layer (pack metadata, version, and manifest merge
+per disc):
 
 ```bash
-python3 scripts/build_csr_base_layers.py cache/csr \
-  --version X.Y.Z --discs 1,2,3
 for disc in 1 2 3; do
+  python3 scripts/build_csr_base_layer.py \
+    cache/csr/FINALFANTASY7_D${disc}.bin \
+    --version X.Y.Z
   python3 scripts/verify_builder_config.py --disc "$disc" --base csr --no-cache
 done
 ```
@@ -151,13 +154,13 @@ verification, or a console playtest.
 |---|---|
 | `apply_layer.py IMAGE LAYER [-o OUT\|--expect BIN]` | Apply or byte-verify an `ic-layer-v1` disc patch. |
 | `bin_diff_to_layer.py ORIGINAL MODIFIED -o LAYER --id ID` | Encode changed byte runs as a builder layer. |
-| `build_csr_base_layers.py BASE --version X.Y.Z` | Publish CSR-style disc layers plus pack and manifest metadata. |
+| `build_csr_base_layer.py IMAGE --version X.Y.Z` | Publish one CSR-style disc layer and merge pack/manifest metadata. |
 | `build_csrplus_staged.py prepare\|finalize ...` | Build, stabilize, and package the CSR+ single-disc workflow. |
 | `build_highwind_staged.py prepare\|finalize ...` | Run the equivalent independent Highwind workflow. |
 | `publish_release_candidate.py --run-dir RUN --pack-id ID` | Copy a finalized CSR+/Highwind candidate into `builder/` and update the manifest. |
 | `verify_builder_config.py --disc N --base ID [--addon ID]` | Reconstruct and validate the selected builder stack. |
 | `verify_iso_integrity.py IMAGE` | Report ISO9660 duplicate LBAs, overlaps, and ff7tk-unsafe gaps. |
-| `repair_mode2_edc.py --pristine BIN --input BIN (--in-place\|--output BIN)` | Restore or recompute MODE2 Form 1 footers after editing. |
+| `repair_mode2_edc.py PRISTINE IMAGE -o OUT` | Restore or recompute MODE2 Form 1 footers after editing. |
 | `merge_rework_fields.py --bin BIN (--in-place\|-o BIN)` | Splice selected Disc 2 script slots into collapsed Disc 1 fields. |
 | `merge_safe_fields.py --bin BIN (--in-place\|-o BIN)` | Copy fields edited on only one later CSR disc. |
 | `fix_junair_air0_slot3.py --bin BIN (--in-place\|-o BIN)` | Apply the guarded JUNAIR slot/text-table splice. |
