@@ -19,7 +19,7 @@
       "id": "csr",
       "name": "CSR",
       "kind": "base",
-      "version": "0.14.2",
+      "version": "0.14.3",
       "exclusiveGroup": "cutscenes",
       "blurb": "CutScenes Removed \u2014 skill checks kept.",
       "format": "ic-layer-v1",
