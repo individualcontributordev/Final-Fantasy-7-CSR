@@ -18,46 +18,7 @@ import json
 import sys
 from pathlib import Path
 
-
-def apply_layer(image: bytearray, layer: dict) -> None:
-    """Apply validated layer records to ``image`` in listed order.
-
-    The layer format permits later records to overwrite earlier records.
-    ``stats.originalBytes`` is trusted only when it matches the pre-apply image,
-    preventing metadata for another base image from controlling output growth.
-    """
-    if layer.get("format") != "ic-layer-v1":
-        raise SystemExit("expected format ic-layer-v1")
-    if layer.get("target") not in (None, "disc-image"):
-        raise SystemExit(f"unsupported target: {layer.get('target')}")
-    # Growth metadata describes the source image, so compare it with the
-    # pre-apply length rather than a length already extended by records.
-    baseline_len = len(image)
-    for rec in layer["records"]:
-        offset = int(rec["offset"])
-        data = bytes.fromhex(rec["hex"])
-        end = offset + len(data)
-        if end > len(image):
-            image.extend(b"\x00" * (end - len(image)))
-        image[offset:end] = data
-    # Grown images: trailing zeros often match zero-pad of a shorter original and
-    # are omitted from records. Honor stats.modifiedBytes when this layer was
-    # built against an image the same size as our baseline (before records).
-    # Always finish on a 2352-byte boundary if we grew (Mode2 safety).
-    stats = layer.get("stats") or {}
-    original = stats.get("originalBytes")
-    target = stats.get("modifiedBytes")
-    if (
-        isinstance(target, int)
-        and target > len(image)
-        and isinstance(original, int)
-        and original == baseline_len
-    ):
-        image.extend(b"\x00" * (target - len(image)))
-    SECTOR = 2352
-    if len(image) > baseline_len and len(image) % SECTOR:
-        image.extend(b"\x00" * (SECTOR - (len(image) % SECTOR)))
-
+from libs.layer import apply_layer
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -91,6 +52,7 @@ def main() -> int:
             return 1
         print("OK — layer apply matches --expect")
     if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_bytes(image)
         print(f"Wrote {args.output} ({len(image)} bytes)")
     elif not args.expect:

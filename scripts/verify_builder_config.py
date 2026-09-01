@@ -24,16 +24,12 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
 
-_SCRIPTS = Path(__file__).resolve().parent
-_ROOT = _SCRIPTS.parent
-if str(_SCRIPTS) not in sys.path:
-	sys.path.insert(0, str(_SCRIPTS))
+ROOT = Path(__file__).resolve().parent.parent
 
-from apply_layer import apply_layer  # noqa: E402
-from local_paths import default_pristine_arg, ensure_cached_base  # noqa: E402
+from libs.layer import apply_layer
+from libs.local_paths import default_pristine_arg, ensure_cached_base
 
 
 def _load_manifest(path: Path) -> tuple[Path, dict]:
@@ -116,7 +112,7 @@ def main() -> int:
 	ap.add_argument(
 		"--manifest",
 		type=Path,
-		default=_ROOT / "builder" / "manifest.json",
+		default=ROOT / "builder" / "manifest.json",
 		help="Primary builder/manifest.json (default: this repo)",
 	)
 	ap.add_argument(

@@ -11,12 +11,14 @@ so diffs do not bake zeroed footers into the layer JSON.
 
 Neill Corlett / ECM public-domain Mode2 Form1 algorithm (verified vs retail).
 
-Input and pristine images must have identical, sector-aligned lengths. When
-user data is unchanged, the known retail 280-byte EDC/ECC footer is restored
-verbatim; when Form 1 user data changed, EDC and P/Q parity are recomputed.
-Form 2 sectors are left untouched because their 2336-byte payload does not
-have a Form 1 ECC footer. The pristine image is never overwritten; ``-o`` may
-point at the input image. Make a backup before overwriting an edited BIN.
+The input image must be sector-aligned and at least as long as pristine
+(CSR+ and Highwind Disc 1 images grow past retail). Overlapping sectors
+restore a known retail footer when user data is unchanged, and recompute
+Form 1 EDC/P/Q when user data changed. Sectors past the pristine length
+have no retail footer to copy, so Form 1 footers are recomputed there.
+Form 2 sectors are left untouched. The pristine image is never overwritten;
+``-o`` may point at the input image. Make a backup before overwriting an
+edited BIN.
 """
 
 from __future__ import annotations
@@ -55,7 +57,9 @@ def _is_mode2_form1(sec: bytes | bytearray) -> bool:
 	"""Recognize the raw sync/mode envelope accepted by this repair pass."""
 	if sec[0] != 0 or sec[11] != 0 or sec[15] != 2:
 		return False
-	return all(sec[i] == 0xFF for i in range(1, 11))
+	has_sync = all(sec[i] == 0xFF for i in range(1, 11))
+	is_form2 = bool(sec[18] & 0x20)
+	return has_sync and not is_form2
 
 
 def generate_mode2_form1_edc_ecc(sector: bytearray) -> None:
@@ -99,43 +103,68 @@ def generate_mode2_form1_edc_ecc(sector: bytearray) -> None:
 	sector[12:16] = saved
 
 
+def _recompute_form1(sec_b: bytes | bytearray) -> bytearray | None:
+	"""Return a Form 1 sector with a fresh footer, or None to leave it alone."""
+	if not _is_mode2_form1(sec_b):
+		return None
+	sector = bytearray(sec_b)
+	generate_mode2_form1_edc_ecc(sector)
+	return sector
+
+
 def repair(pristine: Path, inp: Path, out: Path) -> dict:
 	"""Repair one image and return sector-count diagnostics."""
 	p = pristine.read_bytes()
 	b = bytearray(inp.read_bytes())
-	if len(p) != len(b):
-		raise SystemExit(f"size mismatch: pristine {len(p)} vs input {len(b)}")
+	if len(p) % SECTOR:
+		raise SystemExit("pristine length not multiple of 2352")
 	if len(b) % SECTOR:
 		raise SystemExit("image length not multiple of 2352")
+	if len(b) < len(p):
+		raise SystemExit(f"input shorter than pristine: {len(b)} vs {len(p)}")
 
 	nsect = len(b) // SECTOR
+	pristine_sectors = len(p) // SECTOR
 	restored = recomputed = already_ok = skipped = 0
 
 	for lba in range(nsect):
 		off = lba * SECTOR
-		sec_p = p[off : off + SECTOR]
 		sec_b = b[off : off + SECTOR]
-		pu = sec_p[USER_OFF : USER_OFF + USER]
-		bu = sec_b[USER_OFF : USER_OFF + USER]
-		pf = sec_p[EDC_OFF : EDC_OFF + FOOTER_LEN]
-		bf = sec_b[EDC_OFF : EDC_OFF + FOOTER_LEN]
 
-		if bf == pf:
+		if lba >= pristine_sectors:
+			repaired = _recompute_form1(sec_b)
+			if repaired is None:
+				skipped += 1
+				continue
+			b[off : off + SECTOR] = repaired
+			recomputed += 1
+			continue
+
+		sec_p = p[off : off + SECTOR]
+		if sec_b == sec_p:
 			already_ok += 1
 			continue
-
-		if pu == bu:
-			b[off + EDC_OFF : off + EDC_OFF + FOOTER_LEN] = pf
-			restored += 1
-			continue
-
 		if not _is_mode2_form1(sec_b):
 			skipped += 1
 			continue
 
-		sector = bytearray(sec_b)
-		generate_mode2_form1_edc_ecc(sector)
-		b[off : off + SECTOR] = sector
+		pf = sec_p[EDC_OFF : EDC_OFF + FOOTER_LEN]
+		bf = sec_b[EDC_OFF : EDC_OFF + FOOTER_LEN]
+		if bf == pf:
+			already_ok += 1
+			continue
+
+		pristine_edc_data = sec_p[OFFSET_MODE2_SUBHEADER:EDC_OFF]
+		image_edc_data = sec_b[OFFSET_MODE2_SUBHEADER:EDC_OFF]
+		edc_data_is_unchanged = pristine_edc_data == image_edc_data
+		if edc_data_is_unchanged:
+			b[off + EDC_OFF : off + EDC_OFF + FOOTER_LEN] = pf
+			restored += 1
+			continue
+
+		repaired = _recompute_form1(sec_b)
+		assert repaired is not None
+		b[off : off + SECTOR] = repaired
 		recomputed += 1
 
 	out.parent.mkdir(parents=True, exist_ok=True)
