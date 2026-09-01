@@ -13,10 +13,7 @@
       "discs": {
         "1": "./highwind/layers/disc1.layer.json"
       },
-      "enabled": true,
-      "beta": true,
-      "status": "beta",
-      "betaNote": "Single-disc is still playtesting; known freezes and glitches on some paths. Non-ending movies may show the wrong clip or glitch -- this is expected."
+      "enabled": true
     },
     {
       "id": "csr",
@@ -44,10 +41,7 @@
       "discs": {
         "1": "./csr-plus/layers/disc1.layer.json"
       },
-      "enabled": true,
-      "beta": true,
-      "status": "beta",
-      "betaNote": "Single-disc is still playtesting; known freezes and glitches on some paths. Non-ending movies may show the wrong clip or glitch -- this is expected."
+      "enabled": true
     }
   ],
   "addons": [],

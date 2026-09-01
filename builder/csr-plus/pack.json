@@ -8,8 +8,5 @@
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json"
-  },
-  "beta": true,
-  "status": "beta",
-  "betaNote": "Single-disc is still playtesting; known freezes and glitches on some paths. Non-ending movies may show the wrong clip or glitch -- this is expected."
+  }
 }

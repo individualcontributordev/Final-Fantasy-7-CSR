@@ -11,7 +11,6 @@ v(release).(feature).(bugfix) — newest at top.
   the CSR+ collapse plus 21 early Disc 1 field scripts, applied surgically.
 - Removes merge drift carried by v0.2.0 on BUGIN1A, LAS4_2, LAS4_3, LAS4_4,
   LASTMAP, NIVGATE, RCKTIN2, RCKTIN7 and WHITE2; those maps now match CSR+.
-- Marked beta: rebuilt content has not been playtested on console yet.
 
 ## v0.2.0
 
