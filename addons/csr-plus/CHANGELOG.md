@@ -1,5 +1,13 @@
 # CSR+ scene add-ons — changelog
 
+## 2026-09-01 — base csr-plus v0.2.0
+
+- The published layer now contains the ENDING2E sectors, so a builder-site disc
+  can play its own ending. The Disc 3 ending alias previously ran after the
+  layer was diffed, so end users got a disc with no ending at all.
+- Ending is truncated to 1106 sectors to fit the MOVIE/ slot it reuses; the
+  MOVIE_ID size field stops playback cleanly at the cut.
+
 ## 2026-09-01 — base csr-plus v0.1.1
 
 - Adds the City of the Ancients trim (BLIN70_4, LOSLAKE1) to the collapsed base.

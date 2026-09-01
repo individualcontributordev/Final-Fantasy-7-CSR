@@ -5,6 +5,14 @@ Index: [CHANGELOGS.md](../../CHANGELOGS.md).
 
 v(release).(feature).(bugfix) — newest at top.
 
+## v0.4.0
+
+- The published layer now contains the ENDING2E sectors, so a disc built on the
+  builder site can actually play its ending. Previously the alias ran after the
+  layer was diffed, so only locally built images ever had it.
+- Ending is truncated to 1106 sectors to fit the MOVIE/ slot it reuses, matching
+  the existing single-disc design; playback stops cleanly.
+
 ## v0.3.0
 
 - Rebuilt from the staged pipeline (`build_highwind_staged.py`): Highwind is now
