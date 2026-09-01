@@ -1,16 +1,11 @@
-"""Local disc paths: pristine/ (retail) and cache/ (reconstructed bases).
+"""Resolve and, when requested, cache repository-local base images.
 
-Mental model
-------------
-  pristine/                 retail ground truth (store once)
-  builder zip .bin          session working disc (edit in Makou)
-  builder/                  published layers (git)
-  cache/csr|highwind|...    reconstructed base images for verify + builds
-
-Scripts read and write cache/ when applying a published base layer so
-verification and pack builds do not re-apply huge base layers every run.
-
-Legacy workspace/ still resolves if present.
+Pristine BINs and builder layer JSON are inputs. ``ensure_cached_base`` either
+returns a verified path hit or reconstructs bytes into
+``cache/<flavor>/FINALFANTASY7_DN.bin``. Cache hits are existence-based here,
+not hash-based; staged CSR+/Highwind workflows use ``pipeline_cache`` when
+mutation detection is required. No path may resolve to another repository,
+and this module performs no network or source-control operations.
 """
 
 from __future__ import annotations
@@ -26,7 +21,6 @@ if str(_SCRIPTS) not in sys.path:
 
 PRISTINE_DIR = _ROOT / "pristine"
 CACHE_DIR = _ROOT / "cache"
-_LEGACY_WORKSPACE = _ROOT / "workspace"
 
 _BASE_FLAVOR = (
 	("highwind", "highwind"),
@@ -41,11 +35,6 @@ def repo_root() -> Path:
 
 
 def pristine_dir() -> Path:
-	if any(PRISTINE_DIR.glob("FINALFANTASY7_D*.bin")):
-		return PRISTINE_DIR
-	legacy = _LEGACY_WORKSPACE / "pristine"
-	if legacy.is_dir() and any(legacy.glob("FINALFANTASY7_D*.bin")):
-		return legacy
 	return PRISTINE_DIR
 
 
@@ -54,6 +43,7 @@ def cache_dir() -> Path:
 
 
 def flavor_for_base_id(base_id: str) -> str | None:
+	"""Map a builder base id to its local cache directory name."""
 	bid = (base_id or "").strip().lower()
 	if bid in ("clean", "unmodified", ""):
 		return None
@@ -65,12 +55,6 @@ def flavor_for_base_id(base_id: str) -> str | None:
 
 def pristine_bin(disc: int) -> Path:
 	name = f"FINALFANTASY7_D{disc}.bin"
-	primary = pristine_dir() / name
-	if primary.is_file():
-		return primary
-	legacy = _LEGACY_WORKSPACE / "pristine" / name
-	if legacy.is_file():
-		return legacy
 	return PRISTINE_DIR / name
 
 
@@ -79,12 +63,8 @@ def cache_bin_path(flavor: str, disc: int) -> Path:
 
 
 def cache_bin(flavor: str, disc: int) -> Path | None:
-	name = f"FINALFANTASY7_D{disc}.bin"
-	for base in (CACHE_DIR, _LEGACY_WORKSPACE):
-		p = base / flavor / name
-		if p.is_file():
-			return p
-	return None
+	path = cache_bin_path(flavor, disc)
+	return path if path.is_file() else None
 
 
 def default_pristine_arg(disc: int = 1) -> Path:
@@ -99,7 +79,12 @@ def ensure_cached_base(
 	pristine: Path | None = None,
 	write_cache: bool = True,
 ) -> tuple[bytes, Path | None]:
-	"""Base image bytes for base_id@disc; cache/ hit or build from pristine+layer."""
+	"""Return base bytes and the cache path used or created.
+
+	``clean``/``unmodified`` reads pristine directly. Other ids must map to a
+	known flavor and are reconstructed from the supplied layer on cache miss.
+	The caller remains responsible for semantic and EDC/ECC validation.
+	"""
 	from apply_layer import apply_layer
 
 	if base_id in ("clean", "unmodified"):

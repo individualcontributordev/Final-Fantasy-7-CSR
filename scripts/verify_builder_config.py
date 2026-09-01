@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify a builder configuration by stacking ic-layer packs like the site builder.
+"""Reconstruct and validate a local browser-builder pack selection.
 
 SRP: read-only resolve + apply + check. Does not publish or rewrite bins.
 
@@ -9,16 +9,15 @@ SRP: read-only resolve + apply + check. Does not publish or rewrite bins.
     --base csr \\
     --addon csr-plus-scene-aerith-house-v0.1.0
 
-  # Cross-repo (Modding add-ons on CSR/Highwind/clean):
-  python scripts/verify_builder_config.py \\
-    --pristine pristine/FINALFANTASY7_D1.bin \\
-    --disc 1 --base clean \\
-    --addon field-encounter-25-v0.1.2 \\
-    --manifest builder/manifest.json \\
-    --extra-manifest /path/to/Final-Fantasy-7-Modding/builder/manifest.json
-
 Exit 0 only if every selected pack has a disc layer, compatibleBases match,
 and each layer's records match the image after apply (builder-equivalent stack).
+
+The command reads ``builder/manifest.json``, selected pack metadata/layers,
+and a pristine disc (or repository cache unless ``--no-cache``). It applies
+the base followed by addons in builder order and checks each record after
+application. It does not publish or modify source layers; optional cache
+materialization is the only write. This validates configuration and byte
+application, not ISO layout, EDC/ECC, or gameplay.
 """
 
 from __future__ import annotations
@@ -38,6 +37,7 @@ from local_paths import default_pristine_arg, ensure_cached_base  # noqa: E402
 
 
 def _load_manifest(path: Path) -> tuple[Path, dict]:
+	"""Load a manifest and return its directory for relative layer resolution."""
 	path = path.expanduser().resolve()
 	data = json.loads(path.read_text(encoding="utf-8"))
 	return path.parent, data
@@ -56,6 +56,7 @@ def _index_packs(builder_dir: Path, data: dict) -> dict[str, dict]:
 
 
 def _layer_path(meta: dict, disc: int) -> Path:
+	"""Resolve the selected disc layer relative to its indexed pack root."""
 	entry = meta["entry"]
 	discs = entry.get("discs") or {}
 	rel = discs.get(str(disc)) or discs.get(disc)
@@ -79,6 +80,11 @@ def _check_records(image: bytes | bytearray, layer_path: Path) -> int:
 
 
 def _apply_and_check(image: bytearray, layer_path: Path) -> int:
+	"""Apply one layer and require every record to contain its requested bytes.
+
+	This catches malformed ordering or application failures at the same byte
+	boundary used by the browser builder; it is not a semantic disc check.
+	"""
 	layer = json.loads(layer_path.read_text(encoding="utf-8"))
 	if layer.get("format") != "ic-layer-v1":
 		raise SystemExit(f"{layer_path}: expected ic-layer-v1")

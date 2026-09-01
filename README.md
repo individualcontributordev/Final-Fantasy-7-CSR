@@ -1,159 +1,173 @@
 ![](images/banner.png)
 *Artist: @Cronosart99*
 
-## Final Fantasy VII PSX & PC CutScenes Removed (CSR)
+# Final Fantasy VII CutScenes Removed
 
-Category | CSR | CSR+ | Highwind
--------- | ------ | ------ | ------
-any% | 🟢 Done | 🔄 WIP | 🔄 WIP
-any% No Slots | 🟢 Done | 🔄 WIP | 🔄 WIP
-any% Slots | 🟢 Done | 🔄 WIP | 🔄 WIP
-any% No Major Skips | 🟢 Done | 🔄 WIP | 🔄 WIP
-any% All Bosses | 🔄 WIP | 🔄 WIP | 🔄 WIP
-100% No Slots | 🔄 WIP | 🔄 WIP | 🔄 WIP
+CSR shortens Final Fantasy VII while retaining skill checks, movement, choices,
+skips, and RNG manipulation. CSR+ adds scene trims and collapses the run onto
+Disc 1. Highwind is an independent, more aggressive Disc 1 route.
 
-*Est. Completion Time: 1 bazillion years*
+All commands run from this repository's root and require Python 3.10 or newer.
+Builds require clean NTSC-U raw MODE2/2352 images:
 
-Platforms: PS1 / PS2 disc, emulator, or PC via TMD's [PC installer](https://drive.google.com/file/d/1VXQtJZD6TrG3RXO6kPYduW5EGEBmQsAP/view?usp=drive_link).
-
-## Definitions
-
-### CSR (base)
-
-Skill checks stay (dialogue choices, movement in cutscenes, skips, RNG manip, etc.). Most FMVs removed, some cutscenes shortened, long mash sequences reduced. Plays like a normal run, shorter. Selectable in the builder as a base, alongside Unmodified.
-
-### CSR+ scene add-ons
-
-Individual, mixable trims that go further than CSR for a specific scene — pick and choose only the ones you want on top of the CSR base, instead of committing to a whole extra tier. Currently ships one: `csr-plus-scene-aerith-house` (Aerith's house cutscene). More will be added as they're decomposed from the old monolithic CSR+ pack.
-
-### Highwind (base)
-
-An aggressively trimmed playthrough — its own separate mod, not a bigger CSR+. Story mechanics, option choices, and complete dialogue are cut. Selectable in the builder as a base alongside Unmodified and CSR. Does **not** stack with CSR+ scene add-ons (overlapping scene edits).
-
-## Changelogs
-
-Full map: **[CHANGELOGS.md](CHANGELOGS.md)**.
-
-| Product | Changelog | Builder id | Current version |
-|---------|-----------|------------|------------------|
-| CSR (base) | [bases/csr/CHANGELOG.md](bases/csr/CHANGELOG.md) | `csr` | see `builder/csr/VERSION` |
-| Highwind (base) | [bases/highwind/CHANGELOG.md](bases/highwind/CHANGELOG.md) | `highwind` | see `builder/highwind/VERSION` |
-| CSR+ (base) | [addons/csr-plus/CHANGELOG.md](addons/csr-plus/CHANGELOG.md) | `csr-plus` | see `builder/csr-plus/VERSION` |
-
-Builder ids are stable across releases — only the `VERSION` file and
-changelog entry change per release. Old versioned directories are not kept
-on disk; use `git log` on the base's folder for history.
-
-## Play
-
-https://individualcontributor.dev/builder/
-
-1. Clean **NTSC-U** `.bin` (disc auto-detected)
-2. Pick a base: Unmodified, CSR, or Highwind
-3. On CSR: add any CSR+ scene add-ons and/or Field/World encounter density
-4. Build zip → `.bin` + `.cue` + `APPLIED.txt`
-
-Emulator: [DuckStation](https://github.com/stenzek/duckstation/releases) or RetroArch + SwanStation — open the `.cue`.
-
-PSX: soft-mod (e.g. [MechaPwn](https://github.com/MechaResearch/MechaPwn)), burn from the `.cue`.
-
-## Release a base (maintainers)
-
-Run these steps on the machine that has the disc images. The checklists below are a guide; they don't own the publish path when bins are only on the disc host.
-
-Publishable bases: **CSR** and **Highwind** only. CSR+ scene trims are add-ons (see `docs/ADDON_QUICK_REFERENCE.md` / skill `ship-csr-plus-scene`), not a third base.
-
-Local discs (gitignored):
-
-| Role | Path |
-|------|------|
-| Retail (required) | `pristine/FINALFANTASY7_DN.bin` |
-| CSR base cache | `cache/csr/FINALFANTASY7_DN.bin` (auto-built by verify/scripts) |
-| Highwind base cache | `cache/highwind/FINALFANTASY7_DN.bin` |
-| Session edits | builder zip extract (not under pristine/) |
-
-`cache/` holds reconstructed **bases** for faster verify and add-on rebuilds. First
-`verify_builder_config --base csr-v…` writes `cache/csr/` if missing.
-
-Missing CSR/Highwind images? Reconstruct from pristine + published layer:
-
-```bash
-python scripts/apply_layer.py \
-  pristine/FINALFANTASY7_D1.bin \
-  builder/csr/layers/disc1.layer.json \
-  -o cache/csr/FINALFANTASY7_D1.bin
+```text
+pristine/FINALFANTASY7_D1.bin
+pristine/FINALFANTASY7_D2.bin
+pristine/FINALFANTASY7_D3.bin
 ```
 
-### Clean EDC before layer rebuild (important)
+Never edit `pristine/`. Build outputs stay under `cache/` or `build/`; published
+browser-builder metadata and layers are under `builder/`.
 
-Makou/CDmage injects often **zero Mode2 Form1 footers**. Diffing that bakes EDC zeros into `builder/` layers.
+## CSR: build, edit, repair, publish
 
-Before `build_csr_base_layers.py`, repair each **base** disc against pristine:
+Materialize all three current CSR images:
 
 ```bash
-# names must be FINALFANTASY7_D1.bin … (rename Redump titles if needed)
-python scripts/repair_mode2_edc.py \
+mkdir -p cache/csr
+for disc in 1 2 3; do
+  python3 scripts/apply_layer.py \
+    pristine/FINALFANTASY7_D${disc}.bin \
+    builder/csr/layers/disc${disc}.layer.json \
+    -o cache/csr/FINALFANTASY7_D${disc}.bin
+done
+```
+
+Edit `cache/csr/FINALFANTASY7_D1.bin` through `D3.bin` in Makou Reactor. Before
+an in-place footer repair, keep one backup:
+
+```bash
+image=cache/csr/FINALFANTASY7_D1.bin
+test -e "$image.bak" || cp "$image" "$image.bak"
+python3 scripts/repair_mode2_edc.py \
   --pristine pristine/FINALFANTASY7_D1.bin \
-  --input cache/csr/FINALFANTASY7_D1.bin \
+  --input "$image" \
   --in-place
-# repeat for D2/D3 and for cache/highwind
 ```
 
-Then rebuild **one** base at a time. Expect far fewer records (no thousands of footer-only zeros).
+Repeat the repair for each edited disc, then regenerate the published layers,
+pack metadata, version, and manifest entry:
 
 ```bash
-cd /c/path/to/Final-Fantasy-7-CSR   # shell on the disc host
-git pull
-
-# CSR or Highwind only — bump version, update bases/<base>/CHANGELOG.md
-python scripts/build_csr_base_layers.py cache/csr --version 0.14.2
-# python scripts/build_csr_base_layers.py cache/highwind --version 0.1.2
-
-git add builder/ bases/
-git commit -m "Release CSR v0.14.2."
-git push
+python3 scripts/build_csr_base_layers.py cache/csr \
+  --version X.Y.Z --discs 1,2,3
+for disc in 1 2 3; do
+  python3 scripts/verify_builder_config.py --disc "$disc" --base csr --no-cache
+done
 ```
 
-Do **not** run `build_csr_base_layers.py cache/csr-plus` for a normal publish — that folder is Makou source for CSR+ scene increments.
+Outputs are `builder/csr/layers/disc{1,2,3}.layer.json`,
+`builder/csr/pack.json`, `builder/csr/VERSION`, and `builder/manifest.json`.
 
-Pages serves `builder/` JSON for the disc builder. Older packs stay enabled until you set `"enabled": false` in `builder/manifest.json`.
+## CSR+: prepare, Makou save, finalize, publish
 
-If the published base **id** changed (e.g. `csr-v0.14.2`), rebuild Field/World encounter packs in **Final-Fantasy-7-Modding** against the new ids.
-
-Checklists: `.agents/skills/release-csr-base`, `ship-csr-plus-scene`, `ship-makou-addon`.
-
-## Layout
-
-```
-bases/           base changelogs (csr, highwind)
-addons/          add-on family changelogs (csr-plus scenes)
-builder/         published layers + manifest.json (Pages CDN)
-scripts/         layer helpers + local_paths.py
-pristine/        retail discs (gitignored)
-cache/           optional reconstructed bases (gitignored)
-temp/            playtest apply_layer outputs (gitignored)
-images/          README assets
-CHANGELOGS.md    index of all release notes
+```bash
+python3 scripts/build_csrplus_staged.py prepare --run-name my-csrplus
 ```
 
-## Contributors
+Open `build/csr-plus/my-csrplus/03-working/CSRPLUS_D1.bin` in Makou Reactor.
+Keep that hash-checked checkpoint unchanged and save Makou's result to a
+different path.
 
-IndividualContributor, Okamikaze, AwesomeWaves, Teeejj, Shoutblaster, HopeDRG, Doumeis, Cornfed69, Phek1200, MuscleBelt, Rendall, Expans3, Katombaz, Jayrod, TMD
+```bash
+python3 scripts/build_csrplus_staged.py finalize \
+  --run-dir build/csr-plus/my-csrplus \
+  --edited-image /path/to/makou-saved.bin \
+  --version X.Y.Z
+python3 scripts/publish_release_candidate.py \
+  --run-dir build/csr-plus/my-csrplus \
+  --pack-id csr-plus
+python3 scripts/verify_builder_config.py \
+  --disc 1 --base csr-plus --no-cache
+```
 
-## Leaderboard / feedback
+The publish candidate is
+`build/csr-plus/my-csrplus/05-release-candidate/pack/csr-plus/`. The
+builder-round-trip image is under `05-release-candidate/verification/`; the
+BIN/CUE for emulator, burn, and console checks is
+`06-console-check/FINALFANTASY7_D1_CSRPLUS.{bin,cue}`.
 
-- [Submit time](https://forms.gle/byFWCT85gFWS2Vtp6) · [Leaderboard](https://docs.google.com/spreadsheets/d/19y6yHtODjS5R-VyvtHUKjAo3FL9Fif56p1REQsUzGWg)
-- [Feature requests / bugs](https://forms.gle/dW9rMCD9kQ3eBPSM8)
+Resume only reuses stages whose report hashes still match:
 
-![](images/leaderboard.PNG)
+```bash
+python3 scripts/build_csrplus_staged.py prepare \
+  --run-name my-csrplus --resume
+```
 
-## Troubleshooting
+To intentionally rebuild a stage and all later prepare stages:
 
-Keep each disc’s `.bin` and `.cue` in the same folder with the same stem. The `.cue` `FILE` line must match the `.bin` name. Update any `.m3u` to the patched cues.
-## Suggestions backlog
+```bash
+python3 scripts/build_csrplus_staged.py prepare \
+  --run-name my-csrplus --rebuild-from collapse
+```
 
-Community-prioritised CSR / CSR+ / Highwind ideas: [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
-## History
+Changed stage directories are moved under
+`build/csr-plus/my-csrplus/recovery/`; they are not discarded.
 
-Community development story (archived chats):
-https://individualcontributor.dev/history/
+## Highwind
+
+Highwind uses the same checkpoint, finalize, publish, and recovery contract:
+
+```bash
+python3 scripts/build_highwind_staged.py prepare --run-name my-highwind
+# Edit 03-working/HIGHWIND_D1.bin; save to another file.
+python3 scripts/build_highwind_staged.py finalize \
+  --run-dir build/highwind/my-highwind \
+  --edited-image /path/to/makou-saved.bin \
+  --version X.Y.Z
+python3 scripts/publish_release_candidate.py \
+  --run-dir build/highwind/my-highwind \
+  --pack-id highwind
+python3 scripts/verify_builder_config.py \
+  --disc 1 --base highwind --no-cache
+```
+
+The candidate pack is under
+`build/highwind/my-highwind/05-release-candidate/pack/highwind/`; the test
+BIN/CUE is `build/highwind/my-highwind/06-console-check/FINALFANTASY7_D1_HIGHWIND.{bin,cue}`.
+Use `--resume` or `--rebuild-from sources|collapse|working` exactly as for
+CSR+; recovery files stay under that run's `recovery/`.
+
+## Verification
+
+Finalization checks sector alignment, PVD bounds, ISO9660 extents, changed
+Form 1 EDC/ECC, and an exact layer-apply round trip. Run direct checks when
+diagnosing an image or layer:
+
+```bash
+python3 scripts/verify_iso_integrity.py /path/to/image.bin
+python3 scripts/apply_layer.py \
+  pristine/FINALFANTASY7_D1.bin \
+  builder/csr-plus/layers/disc1.layer.json \
+  --expect build/csr-plus/my-csrplus/06-console-check/FINALFANTASY7_D1_CSRPLUS.bin
+```
+
+Automated checks do not replace DuckStation/MiSTer testing, optical-media
+verification, or a console playtest.
+
+## Script reference
+
+| Command | Purpose |
+|---|---|
+| `apply_layer.py IMAGE LAYER [-o OUT\|--expect BIN]` | Apply or byte-verify an `ic-layer-v1` disc patch. |
+| `bin_diff_to_layer.py ORIGINAL MODIFIED -o LAYER --id ID` | Encode changed byte runs as a builder layer. |
+| `build_csr_base_layers.py BASE --version X.Y.Z` | Publish CSR-style disc layers plus pack and manifest metadata. |
+| `build_csrplus_staged.py prepare\|finalize ...` | Build, stabilize, and package the CSR+ single-disc workflow. |
+| `build_highwind_staged.py prepare\|finalize ...` | Run the equivalent independent Highwind workflow. |
+| `publish_release_candidate.py --run-dir RUN --pack-id ID` | Copy a finalized CSR+/Highwind candidate into `builder/` and update the manifest. |
+| `verify_builder_config.py --disc N --base ID [--addon ID]` | Reconstruct and validate the selected builder stack. |
+| `verify_iso_integrity.py IMAGE` | Report ISO9660 duplicate LBAs, overlaps, and ff7tk-unsafe gaps. |
+| `repair_mode2_edc.py --pristine BIN --input BIN (--in-place\|--output BIN)` | Restore or recompute MODE2 Form 1 footers after editing. |
+| `merge_rework_fields.py --bin BIN (--in-place\|-o BIN)` | Splice selected Disc 2 script slots into collapsed Disc 1 fields. |
+| `merge_safe_fields.py --bin BIN (--in-place\|-o BIN)` | Copy fields edited on only one later CSR disc. |
+| `fix_junair_air0_slot3.py --bin BIN (--in-place\|-o BIN)` | Apply the guarded JUNAIR slot/text-table splice. |
+| `fix_field_bin_table.py --bin BIN (--in-place\|-o BIN)` | Repair FIELD.BIN/WORLD.BIN embedded LBA/size lookup rows. |
+| `inject_movies_by_disc_id.py --d1 BIN --manifest FILE (--in-place\|-o BIN)` | Inject disc-local PMVIE slots while preserving raw XA sectors and MOVIE_ID metadata. |
+| `inject_snova_d3_to_d1.py --d1 BIN --d3 BIN (--in-place\|-o BIN)` | Append SNOVA and patch its ISO and BATTLE.X LBA references. |
+| `alias_d3_ending_lbas_on_d1.py --d1 BIN [--d3 BIN] (--in-place\|-o BIN)` | Place the ending stream at the hardcoded Disc 3 seek location. |
+| `compress_gzipps.py PATCHED.dec ORIGINAL.bin [OUT]` | Recompress a GZIPPS overlay without silently truncating an oversize result. |
+
+`disc_sources.py`, `local_paths.py`, `pipeline_cache.py`, `psx_mode2_iso.py`,
+`edc_ecc.py`, `lzs.py`, `ff7_opcodes.py`, `field_dat.py`,
+`field_dat_write.py`, and `highwind_pipeline.py` are support modules used by
+the commands above.

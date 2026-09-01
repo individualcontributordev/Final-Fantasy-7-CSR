@@ -1,27 +1,19 @@
 #!/usr/bin/env python3
-"""Build ic-layer-v1 packs for one publishable base (csr or highwind).
-
-Normal publish targets (base dir = edited images; often a builder-zip extract path):
+"""Build and locally publish a three-disc CSR-style base pack.
 
   python3 scripts/build_csr_base_layers.py cache/csr --version 0.14.0
   python3 scripts/build_csr_base_layers.py cache/highwind --version 0.1.0 --discs 1,2,3
-  python3 scripts/build_csr_base_layers.py /path/to/ff7-builder-d1+csr-…/ --slug csr --version …
-
-csr-plus under cache/ is legacy / scene increment *source* only — do not publish a
-monolithic CSR+ base. Ship scenes via update_addon_from_builder_zip / build_field_map_pack.
-
-Looks for:
-  pristine/FINALFANTASY7_DN.bin   (or legacy workspace/pristine/)
-  <base-dir>/FINALFANTASY7_DN.bin
+  python3 scripts/build_csr_base_layers.py /path/to/images --slug csr --version 0.14.0
 
 Writes builder/<slug>/layers/discN.layer.json, updates pack.json + VERSION +
 manifest.json, and verifies each layer against the patched image.
 
-Base directories are unversioned (builder/csr, builder/highwind, ...). Each
-holds a plain-text VERSION file with the current release version; re-running
-this script for the same slug overwrites its layers/pack.json/VERSION in
-place rather than creating a new builder/<slug>-v<version>/ folder. Git
-history is the version log — use it instead of keeping old versioned dirs.
+Inputs are pristine NTSC-U BINs and matching edited BINs under the selected
+cache/work directory. Outputs are JSON layers and catalog metadata only; BINs
+remain untouched. Each generated layer is applied back to pristine and must
+match the edited image byte-for-byte unless ``--skip-verify`` is explicitly
+used. The command does not repair MODE2 Form 1 footers, so edited images must
+be repaired before this diff step.
 """
 
 from __future__ import annotations
@@ -66,6 +58,7 @@ MANIFEST_PATH = _ROOT / "builder" / "manifest.json"
 
 
 def resolve_base(dir_or_slug: str) -> tuple[str, dict, Path]:
+    """Resolve a known base slug or explicit edited-image directory."""
     raw = Path(dir_or_slug)
     # Accept cache/csr, workspace/csr, csr, or an arbitrary directory of edited bins.
     key = raw.name if raw.name in BASES else dir_or_slug.strip().strip("/\\")
@@ -98,15 +91,17 @@ def resolve_base(dir_or_slug: str) -> tuple[str, dict, Path]:
 
 
 def disc_paths(base_dir: Path, disc: int) -> tuple[Path, Path]:
+    """Return the pristine and selected edited BIN paths for one disc."""
     pristine = pristine_bin(disc)
-    # Prefer plain name in the flavor folder; keep legacy "(patched)" as fallback.
+    # Exported builder archives may use the parenthesized alternate filename.
     plain = base_dir / f"FINALFANTASY7_D{disc}.bin"
-    legacy = base_dir / f"FINALFANTASY7_D{disc} (patched).bin"
-    patched = plain if plain.is_file() else legacy
+    alternate = base_dir / f"FINALFANTASY7_D{disc} (patched).bin"
+    patched = plain if plain.is_file() else alternate
     return pristine, patched
 
 
 def available_discs(base_dir: Path) -> list[int]:
+    """List discs having both pristine and edited BIN inputs."""
     found = []
     for disc in (1, 2, 3):
         pristine, patched = disc_paths(base_dir, disc)
@@ -116,6 +111,7 @@ def available_discs(base_dir: Path) -> list[int]:
 
 
 def parse_discs(spec: str | None, base_dir: Path) -> list[int]:
+    """Validate an explicit disc list or discover complete input pairs."""
     if spec:
         discs = []
         for part in spec.split(","):
@@ -137,6 +133,7 @@ def parse_discs(spec: str | None, base_dir: Path) -> list[int]:
 
 
 def write_pack_json(pack_dir: Path, info: dict, version: str, discs: list[int]) -> None:
+    """Write pack-local metadata and VERSION for the generated layers."""
     pack = {
         "id": info["slug"],
         "name": info["name"],
@@ -153,6 +150,7 @@ def write_pack_json(pack_dir: Path, info: dict, version: str, discs: list[int]) 
 
 
 def update_manifest(info: dict, version: str, discs: list[int]) -> None:
+    """Replace or append one enabled base while preserving other entries."""
     if not MANIFEST_PATH.is_file():
         raise SystemExit(f"Missing {MANIFEST_PATH}")
     data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
@@ -186,6 +184,7 @@ def update_manifest(info: dict, version: str, discs: list[int]) -> None:
 
 
 def verify(pristine: Path, layer_path: Path, patched: Path) -> None:
+    """Require an exact pristine + layer = patched round trip."""
     image = bytearray(pristine.read_bytes())
     layer = json.loads(layer_path.read_text(encoding="utf-8"))
     apply_layer(image, layer)
@@ -208,6 +207,7 @@ def build_one_disc(
     base_dir: Path,
     skip_verify: bool,
 ) -> Path:
+    """Diff, write, and optionally round-trip one disc layer."""
     pristine, patched = disc_paths(base_dir, disc)
     if not pristine.is_file():
         raise SystemExit(f"Missing pristine: {pristine}")

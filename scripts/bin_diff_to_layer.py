@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Diff two disc images into an ic-layer-v1 JSON file for the browser builder.
+"""Diff two raw disc images into an ``ic-layer-v1`` browser-builder patch.
 
 Example (Windows):
   python scripts/bin_diff_to_layer.py ^
@@ -9,7 +9,12 @@ Example (Windows):
     --id encounter-disc1-v0.1.0 ^
     --description "Encounter FORCE stub Disc 1"
 
-Does not read or write game content into git — only the layer JSON.
+The pristine and modified BINs are read-only inputs. Output records contain
+absolute byte offsets and modified bytes; adjacent changes are coalesced, then
+split into bounded JSON strings. Image lengths are recorded so ``apply_layer``
+can reproduce zero-filled growth. No ISO, EDC/ECC, or game-format validation
+occurs here: the caller must first stabilize the modified image and must verify
+an apply round trip before publishing.
 """
 
 from __future__ import annotations
@@ -75,6 +80,11 @@ def build_layer(
     layer_id: str,
     description: str,
 ) -> dict:
+    """Return a complete layer document for ``original`` -> ``modified``.
+
+    The layer is byte-exact rather than semantic: sector footers, padding, and
+    accidental editor changes are publishable differences if present.
+    """
     records = []
     total_bytes = 0
     for off, data in iter_runs(original, modified):

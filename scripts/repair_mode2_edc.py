@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Repair MODE2/2352 Form-1 EDC/ECC on a patched CSR working image.
+"""Repair MODE2/2352 Form 1 footers using a pristine same-disc reference.
 
 Before rebuilding ic-layer packs, run this on each cache/<base>/ or edited FINALFANTASY7_DN.bin
 so diffs do not bake zeroed footers into the layer JSON.
@@ -11,6 +11,13 @@ so diffs do not bake zeroed footers into the layer JSON.
     --output cache/csr/FINALFANTASY7_D1.bin --in-place
 
 Neill Corlett / ECM public-domain Mode2 Form1 algorithm (verified vs retail).
+
+Input and pristine images must have identical, sector-aligned lengths. When
+user data is unchanged, the known retail 280-byte EDC/ECC footer is restored
+verbatim; when Form 1 user data changed, EDC and P/Q parity are recomputed.
+Form 2 sectors are left untouched because their 2336-byte payload does not
+have a Form 1 ECC footer. Output is new unless ``--in-place`` is explicit;
+make a backup before choosing that mode.
 """
 
 from __future__ import annotations
@@ -46,12 +53,14 @@ for _i in range(256):
 
 
 def _is_mode2_form1(sec: bytes | bytearray) -> bool:
+	"""Recognize the raw sync/mode envelope accepted by this repair pass."""
 	if sec[0] != 0 or sec[11] != 0 or sec[15] != 2:
 		return False
 	return all(sec[i] == 0xFF for i in range(1, 11))
 
 
 def generate_mode2_form1_edc_ecc(sector: bytearray) -> None:
+	"""Regenerate one 2352-byte Form 1 sector's EDC and P/Q parity."""
 	edc = 0
 	for b in sector[OFFSET_MODE2_SUBHEADER : OFFSET_MODE2_SUBHEADER + MODE2_EDC_LEN]:
 		edc = (_edc[(edc ^ b) & 0xFF] ^ (edc >> 8)) & 0xFFFFFFFF
@@ -92,6 +101,7 @@ def generate_mode2_form1_edc_ecc(sector: bytearray) -> None:
 
 
 def repair(pristine: Path, inp: Path, out: Path) -> dict:
+	"""Repair one image and return sector-count diagnostics."""
 	p = pristine.read_bytes()
 	b = bytearray(inp.read_bytes())
 	if len(p) != len(b):
