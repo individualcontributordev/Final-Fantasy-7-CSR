@@ -1,5 +1,13 @@
 # CSR+ scene add-ons — changelog
 
+## 2026-09-01 — base csr-plus v0.1.1
+
+- Adds the City of the Ancients trim (BLIN70_4, LOSLAKE1) to the collapsed base.
+  The retired `build_collapsed_bases.py` merged the hojo and endgame scenes but
+  silently omitted cota, so v0.1.0 shipped untrimmed COTA maps while Highwind
+  shipped trimmed ones. The staged pipeline includes all four scenes.
+- Rebuilt from `build_csrplus_staged.py`; no other map content changed.
+
 ## 2026-08-01
 
 - csr-plus-scene-endgame-fd-manip-v0.1.0 (disc 3): Sliding down the cliff from the Highwind removed, trimmed green gas screen (FD manip list increments), removed Tifa jumping down from ledge at the top of FD spiral, conversation before final descent removed.
