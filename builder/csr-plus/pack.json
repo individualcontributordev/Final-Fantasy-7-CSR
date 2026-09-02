@@ -1,6 +1,6 @@
 {
   "id": "csr-plus",
-  "name": "CSR+ (single-disc)",
+  "name": "CSR+",
   "kind": "base",
   "exclusiveGroup": "cutscenes",
   "version": "0.2.1",
