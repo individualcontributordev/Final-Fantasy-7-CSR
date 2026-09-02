@@ -18,6 +18,7 @@ repaired before this diff step.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -82,7 +83,18 @@ def sorted_disc_map(discs: dict) -> dict[str, str]:
     return {k: discs[k] for k in sorted(discs, key=lambda d: int(d))}
 
 
-def upsert_pack_json(pack_dir: Path, info: dict, version: str, disc: int) -> dict:
+def layer_digest(path: Path) -> str:
+    """sha256 of a published layer file.
+
+    The builder keys its layer cache on this, so republished bytes always
+    invalidate even when the version string does not move.
+    """
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def upsert_pack_json(
+    pack_dir: Path, info: dict, version: str, disc: int, digest: str
+) -> dict:
     """Write or merge one disc; keep existing pack name/blurb when present."""
     pack_path = pack_dir / "pack.json"
     disc_rel = f"./layers/disc{disc}.layer.json"
@@ -111,6 +123,9 @@ def upsert_pack_json(pack_dir: Path, info: dict, version: str, disc: int) -> dic
             "format": "ic-layer-v1",
             "discs": {str(disc): disc_rel},
         }
+    digests = dict(pack.get("discDigests") or {})
+    digests[str(disc)] = digest
+    pack["discDigests"] = sorted_disc_map(digests)
     pack_dir.mkdir(parents=True, exist_ok=True)
     pack_path.write_text(json.dumps(pack, indent=2) + "\n", encoding="utf-8")
     (pack_dir / "VERSION").write_text(version + "\n", encoding="utf-8")
@@ -133,15 +148,18 @@ def update_manifest(pack: dict, disc: int, builder_dir: Path) -> None:
 
     bases = data.setdefault("bases", [])
     existing_discs: dict[str, str] = {}
+    existing_digests: dict[str, str] = {}
     existing_index = None
     existing = None
     for i, candidate in enumerate(bases):
         if str(candidate.get("id", "")) == pack_id:
             existing_discs = dict(candidate.get("discs") or {})
+            existing_digests = dict(candidate.get("discDigests") or {})
             existing_index = i
             existing = candidate
             break
     existing_discs[str(disc)] = disc_rel
+    existing_digests.update(pack.get("discDigests") or {})
 
     entry = {
         "id": pack_id,
@@ -152,6 +170,7 @@ def update_manifest(pack: dict, disc: int, builder_dir: Path) -> None:
         "blurb": pack.get("blurb") if "blurb" in pack else (existing or {}).get("blurb", ""),
         "format": pack.get("format") or "ic-layer-v1",
         "discs": sorted_disc_map(existing_discs),
+        "discDigests": sorted_disc_map(existing_digests),
         "enabled": True,
     }
     if existing_index is None:
@@ -268,7 +287,7 @@ def main() -> int:
     print(f"Disc:    {disc}")
     print(f"Output:  {pack_dir}")
 
-    build_one_disc(
+    out_path = build_one_disc(
         info=info,
         version=version,
         disc=disc,
@@ -277,7 +296,7 @@ def main() -> int:
         skip_verify=args.skip_verify,
     )
 
-    pack = upsert_pack_json(pack_dir, info, version, disc)
+    pack = upsert_pack_json(pack_dir, info, version, disc, layer_digest(out_path))
     update_manifest(pack, disc, builder_dir)
     print(f"Updated {pack_dir / 'pack.json'}")
     print(f"Updated {builder_dir / 'manifest.json'} (enabled=true)")

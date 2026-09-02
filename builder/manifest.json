@@ -13,7 +13,10 @@
       "discs": {
         "1": "./highwind/layers/disc1.layer.json"
       },
-      "enabled": true
+      "enabled": true,
+      "discDigests": {
+        "1": "bac0ed50f974cd19893028efe9d3a2d74ef724053f4c3c382878d5107a34d8e0"
+      }
     },
     {
       "id": "csr",
@@ -28,7 +31,12 @@
         "2": "./csr/layers/disc2.layer.json",
         "3": "./csr/layers/disc3.layer.json"
       },
-      "enabled": true
+      "enabled": true,
+      "discDigests": {
+        "1": "54063937d8926f2e2ff85c712366d1a208c924d15915eafbc9be6c133b5e59aa",
+        "2": "2fdd04022d93ae4a037aa9c92d0f78e05e0f51b0d1d2476fa2947dc691834cba",
+        "3": "840bd0fb984100fffecf7a48c82f62ae2d08ce117ecdc45381ee19378554bd36"
+      }
     },
     {
       "id": "csr-plus",
@@ -41,7 +49,10 @@
       "discs": {
         "1": "./csr-plus/layers/disc1.layer.json"
       },
-      "enabled": true
+      "enabled": true,
+      "discDigests": {
+        "1": "30c0925e4ca369933ce377366e85ced4e136da7a72cc67e532f04fbc302ca81a"
+      }
     }
   ],
   "addons": [],

@@ -10,5 +10,10 @@
     "1": "./layers/disc1.layer.json",
     "2": "./layers/disc2.layer.json",
     "3": "./layers/disc3.layer.json"
+  },
+  "discDigests": {
+    "1": "54063937d8926f2e2ff85c712366d1a208c924d15915eafbc9be6c133b5e59aa",
+    "2": "2fdd04022d93ae4a037aa9c92d0f78e05e0f51b0d1d2476fa2947dc691834cba",
+    "3": "840bd0fb984100fffecf7a48c82f62ae2d08ce117ecdc45381ee19378554bd36"
   }
 }

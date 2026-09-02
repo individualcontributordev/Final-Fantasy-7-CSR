@@ -8,5 +8,8 @@
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json"
+  },
+  "discDigests": {
+    "1": "30c0925e4ca369933ce377366e85ced4e136da7a72cc67e532f04fbc302ca81a"
   }
 }
