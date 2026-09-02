@@ -148,12 +148,13 @@ def repair(pristine: Path, inp: Path, out: Path) -> dict:
 			skipped += 1
 			continue
 
-		pf = sec_p[EDC_OFF : EDC_OFF + FOOTER_LEN]
-		bf = sec_b[EDC_OFF : EDC_OFF + FOOTER_LEN]
-		if bf == pf:
+		repaired = _recompute_form1(sec_b)
+		assert repaired is not None
+		if repaired == sec_b:
 			already_ok += 1
 			continue
 
+		pf = sec_p[EDC_OFF : EDC_OFF + FOOTER_LEN]
 		pristine_edc_data = sec_p[OFFSET_MODE2_SUBHEADER:EDC_OFF]
 		image_edc_data = sec_b[OFFSET_MODE2_SUBHEADER:EDC_OFF]
 		edc_data_is_unchanged = pristine_edc_data == image_edc_data
@@ -162,8 +163,6 @@ def repair(pristine: Path, inp: Path, out: Path) -> dict:
 			restored += 1
 			continue
 
-		repaired = _recompute_form1(sec_b)
-		assert repaired is not None
 		b[off : off + SECTOR] = repaired
 		recomputed += 1
 

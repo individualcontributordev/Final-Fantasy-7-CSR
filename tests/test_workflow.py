@@ -56,6 +56,18 @@ class RepairTests(unittest.TestCase):
 
         self.assertEqual(repaired, image_sector)
 
+    def test_changed_form1_payload_with_pristine_footer_is_recomputed(self) -> None:
+        pristine_sector = mode2_sector(form2=False)
+        generate_mode2_form1_edc_ecc(pristine_sector)
+        image_sector = bytearray(pristine_sector)
+        image_sector[24:28] = b"EDIT"
+
+        expected = bytearray(image_sector)
+        generate_mode2_form1_edc_ecc(expected)
+        repaired = self.repair(bytes(pristine_sector), bytes(image_sector))
+
+        self.assertEqual(repaired, expected)
+
     def test_appended_form2_sector_is_untouched(self) -> None:
         pristine_sector = mode2_sector(form2=False)
         generate_mode2_form1_edc_ecc(pristine_sector)
