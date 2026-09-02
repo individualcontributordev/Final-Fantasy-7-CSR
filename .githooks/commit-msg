@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if LC_ALL=C grep -Eiq '^[[:space:]]*Co-authored-by:.*<cursoragent@cursor\.com>[[:space:]]*$' "$1"; then
+	echo "Commit rejected: remove the Cursor co-author trailer." >&2
+	exit 1
+fi
