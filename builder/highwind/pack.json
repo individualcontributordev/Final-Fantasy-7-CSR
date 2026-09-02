@@ -3,8 +3,8 @@
   "name": "Highwind",
   "kind": "base",
   "exclusiveGroup": "cutscenes",
-  "version": "0.4.0",
-  "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. The ending movie plays but is shortened to fit the single-disc layout. Separate from CSR+.",
+  "version": "0.5.0",
+  "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. The ending movie plays but is shortened to fit the single-disc layout.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json"
