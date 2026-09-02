@@ -1,4 +1,9 @@
-"""Read, apply, and build ``ic-layer-v1`` disc-image patches."""
+"""Read, apply, and build ``ic-layer-v1`` disc-image patches.
+
+A layer is a list of ``{offset, hex}`` writes with no expected-before bytes.
+Apply order is the record list order. Callers must repair MODE2 Form 1 footers
+after editing a BIN and before publishing a new layer.
+"""
 
 from __future__ import annotations
 

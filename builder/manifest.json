@@ -57,7 +57,7 @@
   ],
   "addons": [],
   "explainer": {
-    "base": "Base experience \u2014 only one applies (Unmodified, CSR, Highwind, \u2026).",
+    "base": "Base experience \u2014 only one applies (Unmodified, CSR, CSR+, Highwind).",
     "mods": "Optional mods from other catalogs appear under Mods when available."
   }
 }

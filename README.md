@@ -76,20 +76,24 @@ and `builder/manifest.json`. CSR+ and Highwind Disc 1 images are longer than
 retail; repair uses pristine Disc 1 for overlapping sectors and recomputes
 Form 1 footers on appended sectors.
 
+Push `main` to publish. GitHub Pages deploys `builder/` to
+`https://individualcontributor.dev/Final-Fantasy-7-CSR/builder/`. The hosted
+builder fetches that URL; bumping a base version hides every Modding pack
+pinned to the previous version until those packs are rebuilt.
+
 ## Verification
 
 ```bash
 python3 scripts/apply_layer.py \
-  "pristine/FINALFANTASY7_D${DISCS}.bin" \
-  "builder/$BASE/layers/disc${DISCS}.layer.json" \
-  --expect "cache/$BASE/FINALFANTASY7_D${DISCS}.bin"
+  "pristine/FINALFANTASY7_D1.bin" \
+  "builder/$BASE/layers/disc1.layer.json" \
+  --expect "cache/$BASE/FINALFANTASY7_D1.bin"
 ```
 
 Automated checks do not replace DuckStation/MiSTer testing, optical-media
 verification, or a console playtest.
 
 ## Script reference
-
 
 | Command                                                    | Purpose                                                                 |
 | ---------------------------------------------------------- | ----------------------------------------------------------------------- |
@@ -98,6 +102,7 @@ verification, or a console playtest.
 | `repair_mode2_edc.py PRISTINE IMAGE -o OUT`                | Restore or recompute MODE2 Form 1 footers after editing.                |
 | `verify_builder_config.py --disc N --base ID [--addon ID]` | Reconstruct and validate the selected builder stack.                    |
 
-
 Shared implementation lives under `scripts/libs/`; files directly under
 `scripts/` are supported commands.
+
+Commit as `individualcontributordev <contributorindividual@gmail.com>`.

@@ -1,3 +1,5 @@
+# Deploy GitHub Pages (builder/ JSON + redirect index.html).
+# The hosted builder fetches https://individualcontributor.dev/Final-Fantasy-7-CSR/builder/
 name: Deploy GitHub Pages
 
 on:

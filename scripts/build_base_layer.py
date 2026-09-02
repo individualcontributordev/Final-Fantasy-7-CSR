@@ -29,6 +29,7 @@ from libs.layer import apply_layer, build_layer
 from libs.local_paths import pristine_bin
 
 BASES = {
+    # Product copy for a new pack.json. Existing packs keep their own name/blurb.
     "csr": {
         "slug": "csr",
         "name": "CSR",
