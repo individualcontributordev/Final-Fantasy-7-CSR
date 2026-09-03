@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Reconstruct and validate a local browser-builder pack selection.
 
-SRP: read-only resolve + apply + check. Does not publish or rewrite bins.
-
   python scripts/verify_builder_config.py \\
     --pristine pristine/FINALFANTASY7_D1.bin \\
     --disc 1 \\

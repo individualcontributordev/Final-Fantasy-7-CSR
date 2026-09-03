@@ -8,30 +8,18 @@ skips, and RNG manipulation. CSR+ adds scene trims and collapses the run onto
 Disc 1. Highwind is an independent, more aggressive Disc 1 route. The three
 bases are mutually exclusive: editing one does not rebuild another.
 
-All commands run from this repository's root and require Python 3.10 or newer.
-Builds require clean NTSC-U raw MODE2/2352 images:
+## Setup
 
-```text
-pristine/FINALFANTASY7_D1.bin
-pristine/FINALFANTASY7_D2.bin
-pristine/FINALFANTASY7_D3.bin
-```
-
-Never edit `pristine/`. Working BINs stay under `cache/<base>/`; published
-browser-builder metadata and layers are under `builder/`.
-
-## Build, edit, repair, publish
-
-Every base uses the same loop: apply the published layer onto pristine, edit
-the BIN, repair Form 1 footers, then publish a replacement layer.
-
-Choose the base and its discs:
+Python 3.10+, all commands from the repo root. Retail NTSC-U MODE2/2352 images
+go at `pristine/FINALFANTASY7_D{1,2,3}.bin` and are never edited. Working BINs
+stay in `cache/<base>/`; published metadata and layers in `builder/`.
 
 ```bash
-# set in terminal env
-BASE=csr # csr-plus, highwind
-DISCS=(1 2 3) # DISCS=(1)
+BASE=csr          # or csr-plus, highwind
+DISCS=(1 2 3)     # csr-plus and highwind are Disc 1 only
 ```
+
+## Build, edit, repair, publish
 
 Materialize the currently published base:
 
@@ -45,9 +33,7 @@ for disc in "${DISCS[@]}"; do
 done
 ```
 
-Edit the `cache/<base>/FINALFANTASY7_DN.bin` files in Makou Reactor. Before
-overwriting an edited BIN, keep one backup. Repair and publish every edited
-disc with the same loop:
+Edit those BINs in Makou Reactor, then repair footers and publish each disc:
 
 ```bash
 VERSION=X.Y.Z
@@ -56,18 +42,12 @@ for disc in "${DISCS[@]}"; do
   test -e "$image.bak" || cp "$image" "$image.bak"
 
   python3 scripts/repair_mode2_edc.py \
-    "pristine/FINALFANTASY7_D${disc}.bin" \
-    "$image" \
-    -o "$image"
+    "pristine/FINALFANTASY7_D${disc}.bin" "$image" -o "$image"
 
-  python3 scripts/build_base_layer.py \
-    "$image" \
-    --version "$VERSION"
+  python3 scripts/build_base_layer.py "$image" --version "$VERSION"
 
   python3 scripts/verify_builder_config.py \
-    --disc "$disc" \
-    --base "$BASE" \
-    --no-cache
+    --disc "$disc" --base "$BASE" --no-cache
 done
 ```
 
@@ -76,12 +56,7 @@ and `builder/manifest.json`. CSR+ and Highwind Disc 1 images are longer than
 retail; repair uses pristine Disc 1 for overlapping sectors and recomputes
 Form 1 footers on appended sectors.
 
-Push `main` to publish. GitHub Pages deploys `builder/` to
-`https://individualcontributor.dev/Final-Fantasy-7-CSR/builder/`. The hosted
-builder fetches that URL; bumping a base version hides every Modding pack
-pinned to the previous version until those packs are rebuilt.
-
-## Verification
+## Verify
 
 ```bash
 python3 scripts/apply_layer.py \
@@ -90,19 +65,28 @@ python3 scripts/apply_layer.py \
   --expect "cache/$BASE/FINALFANTASY7_D1.bin"
 ```
 
-Automated checks do not replace DuckStation/MiSTer testing, optical-media
-verification, or a console playtest.
+Not a substitute for DuckStation/MiSTer, optical-media verification, or a
+console playtest.
+
+## Publish
+
+Push `main`. GitHub Pages deploys `builder/` to
+`https://individualcontributor.dev/Final-Fantasy-7-CSR/builder/`, which is what
+the hosted builder reads.
+
+**Bumping a base version hides every Modding pack pinned to the old version**
+until those packs are recut (`rebuild_on_base.py` in the Modding repo).
 
 ## Script reference
 
 | Command                                                    | Purpose                                                                 |
-| ---------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `apply_layer.py IMAGE LAYER [-o OUT\|--expect BIN]`         | Apply or byte-verify an `ic-layer-v1` disc patch.                       |
-| `build_base_layer.py IMAGE --version X.Y.Z`                | Publish one exclusive-base disc layer and merge pack/manifest metadata. |
-| `repair_mode2_edc.py PRISTINE IMAGE -o OUT`                | Restore or recompute MODE2 Form 1 footers after editing.                |
-| `verify_builder_config.py --disc N --base ID [--addon ID]` | Reconstruct and validate the selected builder stack.                    |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `apply_layer.py IMAGE LAYER [-o OUT\|--expect BIN]`         | Apply or byte-verify an `ic-layer-v1` disc patch.                        |
+| `build_base_layer.py IMAGE --version X.Y.Z`                | Publish one base disc layer and merge pack/manifest metadata.            |
+| `repair_mode2_edc.py PRISTINE IMAGE -o OUT`                | Restore or recompute MODE2 Form 1 footers after editing.                 |
+| `verify_builder_config.py --disc N --base ID [--addon ID]` | Reconstruct and validate the selected builder stack.                     |
 
-Shared implementation lives under `scripts/libs/`; files directly under
-`scripts/` are supported commands.
+Shared code lives in `scripts/libs/`; files directly under `scripts/` are
+supported commands.
 
 Commit as `individualcontributordev <contributorindividual@gmail.com>`.
