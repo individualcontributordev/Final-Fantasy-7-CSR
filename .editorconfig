@@ -1,0 +1,9 @@
+# Editors that honor this (VS Code, Visual Studio, most IDEs) write LF
+# instead of CRLF. Published JSON is hashed byte-for-byte; a CRLF save would
+# make discDigests describe bytes git never serves.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true

@@ -87,9 +87,9 @@ Push `main`. GitHub Pages deploys `builder/` to
 the hosted builder reads.
 
 Checksums cover the exact bytes git serves, so `builder/*.json` is pinned to LF
-by `.gitattributes` and `build_base_layer.py` refuses to start without that
-rule. Building bases on Windows and mods on a Mac is fine; publishing from a
-CRLF checkout is not.
+by `.gitattributes` and `.editorconfig`, and `build_base_layer.py` refuses to
+start without that rule. Building bases on Windows and mods on a Mac is fine;
+publishing from a CRLF checkout is not.
 
 **Bumping a base version hides every Modding pack pinned to the old version**
 until those packs are recut (`rebuild_on_base.py` in the Modding repo).
