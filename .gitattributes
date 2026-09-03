@@ -1,0 +1,5 @@
+# Layer and catalog JSON is hashed byte-for-byte (discDigests) and served
+# verbatim by Pages, so the working tree must match the committed bytes on
+# every platform. Without this, a Windows checkout gets CRLF and the digest
+# no longer describes what the builder downloads.
+*.json text eol=lf

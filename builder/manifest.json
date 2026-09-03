@@ -14,7 +14,7 @@
         "1": "./highwind/layers/disc1.layer.json"
       },
       "discDigests": {
-        "1": "7fb07ff24d595472b7606f097b33b3d1f65e7857dd3d8c542ef357ff4d718128"
+        "1": "c7612befc0c5afc8603b05166313d1371557d49e5bf3fa8057aa43dde081658d"
       },
       "enabled": true
     },
@@ -50,7 +50,7 @@
         "1": "./csr-plus/layers/disc1.layer.json"
       },
       "discDigests": {
-        "1": "f5caf12a225821900390c0af0a53318350831dc11e53bdfc042c13fb79207678"
+        "1": "c9e00de341c19ad5546be7ca01681339050435f34baf74f3598519d92f3ef8a7"
       },
       "enabled": true
     }

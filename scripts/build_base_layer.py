@@ -87,10 +87,18 @@ def sorted_disc_map(discs: dict) -> dict[str, str]:
 def layer_digest(path: Path) -> str:
     """sha256 of a published layer file.
 
-    The builder keys its layer cache on this, so republished bytes always
-    invalidate even when the version string does not move.
+    The builder keys its layer cache on this and refuses a body that does not
+    match, so republished bytes always invalidate even when the version string
+    does not move. CRLF is fatal here: git publishes LF, so a digest taken
+    from a CRLF working copy describes bytes nobody will ever download.
     """
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    raw = path.read_bytes()
+    if b"\r\n" in raw:
+        raise SystemExit(
+            f"{path} has CRLF line endings. Git publishes LF, so this digest "
+            "would not match what the builder downloads. Check .gitattributes."
+        )
+    return hashlib.sha256(raw).hexdigest()
 
 
 def upsert_pack_json(
@@ -128,8 +136,8 @@ def upsert_pack_json(
     digests[str(disc)] = digest
     pack["discDigests"] = sorted_disc_map(digests)
     pack_dir.mkdir(parents=True, exist_ok=True)
-    pack_path.write_text(json.dumps(pack, indent=2) + "\n", encoding="utf-8")
-    (pack_dir / "VERSION").write_text(version + "\n", encoding="utf-8")
+    pack_path.write_text(json.dumps(pack, indent=2) + "\n", encoding="utf-8", newline="\n")
+    (pack_dir / "VERSION").write_text(version + "\n", encoding="utf-8", newline="\n")
     return pack
 
 
@@ -179,7 +187,7 @@ def update_manifest(pack: dict, disc: int, builder_dir: Path) -> None:
     else:
         bases[existing_index] = entry
 
-    manifest_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
 def verify(pristine: Path, layer: dict, patched: Path) -> None:
@@ -236,7 +244,7 @@ def build_one_disc(
         verify(pristine, layer, patched)
         print("  OK -- layer apply matches patched image")
 
-    out_path.write_text(json.dumps(layer, indent=2) + "\n", encoding="utf-8")
+    out_path.write_text(json.dumps(layer, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(
         f"  wrote {out_path}  "
         f"records={stats['records']} changedBytes={stats['changedBytes']}"
