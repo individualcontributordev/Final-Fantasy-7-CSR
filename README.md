@@ -76,7 +76,8 @@ python3 scripts/validate_manifest.py
 
 Run this before pushing. The builder refuses any layer whose bytes do not hash
 to the checksum published beside it, so a stale or mistaken `discDigests` entry
-takes that base offline with no other warning.
+takes that base offline with no other warning. Failures print the fix for each
+problem.
 
 Push `main`. GitHub Pages deploys `builder/` to
 `https://individualcontributor.dev/Final-Fantasy-7-CSR/builder/`, which is what

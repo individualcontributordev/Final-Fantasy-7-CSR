@@ -8,17 +8,70 @@ with the pack's own ``pack.json``; and no published JSON may contain CRLF,
 because the digests describe the LF bytes git serves. ``autoIncludeWhen`` ids
 must name another entry in this file (unless they start with DISABLED-).
 
-Prints every error and returns nonzero. Does not fetch the network or rewrite
-files."""
+Every problem carries a fix, and identical fixes are printed once no matter how
+many entries hit them. Returns nonzero on any problem. Does not fetch the
+network or rewrite files."""
 from __future__ import annotations
 
 import hashlib
 import json
 import sys
 from pathlib import Path
+from typing import NamedTuple
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "builder" / "manifest.json"
+
+
+class Problem(NamedTuple):
+    """One validation failure and the way out of it."""
+
+    message: str
+    fix: str
+
+
+FIX_CRLF = """\
+CRLF in published JSON. Digests describe the LF bytes git serves, so a CRLF
+working copy publishes hashes that nothing can match. Restore LF:
+    git add --renormalize .
+    git checkout -- builder
+If that changes nothing, .gitattributes is missing the rule that pins it:
+    *.json text eol=lf
+Any digest already recorded from a CRLF copy stays wrong until republished."""
+
+FIX_STALE_DIGEST = """\
+Stale digest. The builder refuses a layer whose bytes do not hash to the
+checksum published beside it, so the entry goes offline with no other
+warning. Republish the pack to restamp pack.json and manifest.json from the
+layer now on disk:
+    Final-Fantasy-7-CSR      python3 scripts/build_base_layer.py IMAGE
+    Final-Fantasy-7-Modding  python3 scripts/rebuild_on_base.py BASE
+Check line endings before rebuilding: if the layer on disk is already the one
+you meant to ship, only the recorded hash is wrong."""
+
+FIX_MISSING_LAYER = """\
+Missing layer file. The manifest points at a layer that is not on disk, so
+the entry cannot be built at all. Either republish the pack to regenerate the
+layer, or delete the entry from manifest.json if it is retired."""
+
+FIX_PACK_DISAGREES = """\
+pack.json and manifest.json disagree. Both are published, so a half-finished
+release leaves them describing different bytes. Republish the pack to rewrite
+the pair together."""
+
+FIX_AUTOINCLUDE = """\
+Dangling autoIncludeWhen. Auto-included entries are hidden from the UI, so a
+typo silently drops the pack instead of erroring. Point addonSelected at an id
+that exists in this manifest, or prefix it with DISABLED- to retire the rule."""
+
+FIX_STRUCTURE = """\
+Malformed entry. Every base and add-on needs a unique, non-empty string id and
+an object 'discs' map. Edit manifest.json by hand."""
+
+FIX_UNREADABLE = """\
+Unreadable JSON, usually a partial write or a bad merge. Restore the committed
+copy:
+    git checkout -- builder"""
 
 
 def crlf_offenders(builder_dir: Path) -> list[Path]:
@@ -32,36 +85,42 @@ def crlf_offenders(builder_dir: Path) -> list[Path]:
     return [p for p in sorted(builder_dir.rglob("*.json")) if b"\r\n" in p.read_bytes()]
 
 
-def validate(manifest_path: Path) -> list[str]:
-    """Return a list of error strings; empty list means the catalog is valid."""
-    errors: list[str] = []
+def validate(manifest_path: Path) -> list[Problem]:
+    """Return every problem found; an empty list means the catalog is valid."""
+    problems: list[Problem] = []
 
     try:
         text = manifest_path.read_text(encoding="utf-8")
     except OSError as e:
-        return [f"cannot read {manifest_path}: {e}"]
+        return [Problem(f"cannot read {manifest_path}: {e}", FIX_UNREADABLE)]
 
     try:
         manifest = json.loads(text)
     except json.JSONDecodeError as e:
-        return [f"invalid JSON in {manifest_path}: {e}"]
+        return [Problem(f"invalid JSON in {manifest_path}: {e}", FIX_UNREADABLE)]
 
     builder_dir = manifest_path.parent
 
     for p in crlf_offenders(builder_dir):
-        errors.append(f"{p.relative_to(builder_dir)}: CRLF line endings (must be LF)")
+        problems.append(
+            Problem(f"{p.relative_to(builder_dir)}: CRLF line endings", FIX_CRLF)
+        )
 
     entries: list[tuple[str, dict]] = []
     for section in ("bases", "addons"):
         items = manifest.get(section) or []
         if not isinstance(items, list):
-            errors.append(f"{section!r} is not a list")
+            problems.append(Problem(f"{section!r} is not a list", FIX_STRUCTURE))
             continue
         for i, item in enumerate(items):
             if not isinstance(item, dict):
-                errors.append(f"{section}[{i}] is not an object")
+                problems.append(
+                    Problem(f"{section}[{i}] is not an object", FIX_STRUCTURE)
+                )
             elif not item.get("id"):
-                errors.append(f"{section}[{i}] missing 'id'")
+                problems.append(
+                    Problem(f"{section}[{i}] missing 'id'", FIX_STRUCTURE)
+                )
             else:
                 entries.append((section, item))
 
@@ -69,76 +128,104 @@ def validate(manifest_path: Path) -> list[str]:
     for section, entry in entries:
         eid = entry["id"]
         if eid in seen:
-            errors.append(f"duplicate {section} id: {eid}")
+            problems.append(
+                Problem(f"duplicate {section} id: {eid}", FIX_STRUCTURE)
+            )
         seen.add(eid)
 
         discs = entry.get("discs") or {}
         if not isinstance(discs, dict):
-            errors.append(f"{eid}: 'discs' is not an object")
+            problems.append(Problem(f"{eid}: 'discs' is not an object", FIX_STRUCTURE))
             discs = {}
         digests = entry.get("discDigests") or {}
 
         for disc, rel in discs.items():
             if not rel:
-                errors.append(f"{eid}: discs[{disc!r}] is empty")
+                problems.append(
+                    Problem(f"{eid}: discs[{disc!r}] is empty", FIX_STRUCTURE)
+                )
                 continue
             layer_path = (builder_dir / str(rel).lstrip("./")).resolve()
             if not layer_path.is_file():
-                errors.append(
-                    f"{eid}: discs[{disc!r}] -> {rel!r} does not exist "
-                    f"(resolved {layer_path})"
+                problems.append(
+                    Problem(
+                        f"{eid}: discs[{disc!r}] -> {rel!r} does not exist",
+                        FIX_MISSING_LAYER,
+                    )
                 )
                 continue
-            # The builder refuses a layer whose bytes do not hash to the
-            # published digest, so a stale one takes the entry offline.
             want = digests.get(str(disc))
             if want:
                 got = hashlib.sha256(layer_path.read_bytes()).hexdigest()
                 if got != want:
-                    errors.append(
-                        f"{eid}: discs[{disc!r}] digest is stale "
-                        f"(manifest {want[:12]}..., file {got[:12]}...)"
+                    problems.append(
+                        Problem(
+                            f"{eid}: disc {disc} digest is stale "
+                            f"(manifest {want[:12]}..., file {got[:12]}...)",
+                            FIX_STALE_DIGEST,
+                        )
                     )
 
-        # pack.json ships alongside the manifest, so a half-finished publish
-        # leaves the two disagreeing about the same layer.
         pack_path = builder_dir / eid / "pack.json"
         if digests and pack_path.is_file():
             try:
                 pack = json.loads(pack_path.read_text(encoding="utf-8"))
             except json.JSONDecodeError as e:
-                errors.append(f"{eid}: invalid pack.json: {e}")
+                problems.append(
+                    Problem(f"{eid}: invalid pack.json: {e}", FIX_UNREADABLE)
+                )
             else:
-                pack_digests = pack.get("discDigests") or {}
-                for disc, want in pack_digests.items():
+                for disc, want in (pack.get("discDigests") or {}).items():
                     if digests.get(disc) and digests[disc] != want:
-                        errors.append(
-                            f"{eid}: pack.json disc {disc} digest disagrees "
-                            f"with manifest"
+                        problems.append(
+                            Problem(
+                                f"{eid}: pack.json disc {disc} digest disagrees "
+                                f"with manifest",
+                                FIX_PACK_DISAGREES,
+                            )
                         )
 
-    # Auto-included entries are hidden, so a typo silently drops the pack.
     for section, entry in entries:
         aiw = entry.get("autoIncludeWhen") or {}
         if not isinstance(aiw, dict) or not entry.get("enabled", True):
             continue
         parent = aiw.get("addonSelected")
         if parent and not str(parent).startswith("DISABLED-") and parent not in seen:
-            errors.append(
-                f"{entry['id']}: autoIncludeWhen.addonSelected={parent!r} "
-                f"does not match any id in manifest"
+            problems.append(
+                Problem(
+                    f"{entry['id']}: autoIncludeWhen.addonSelected={parent!r} "
+                    f"matches no id in manifest",
+                    FIX_AUTOINCLUDE,
+                )
             )
 
-    return errors
+    return problems
+
+
+def report(manifest_path: Path, problems: list[Problem]) -> None:
+    """Print each problem, then each distinct fix once."""
+    noun = "problem" if len(problems) == 1 else "problems"
+    print(f"INVALID: {manifest_path} ({len(problems)} {noun})", file=sys.stderr)
+    for p in problems:
+        print(f"  - {p.message}", file=sys.stderr)
+
+    # One cause can produce dozens of problems (a bad checkout hits every
+    # pack), so collapse the advice instead of repeating it per line.
+    fixes = list(dict.fromkeys(p.fix for p in problems))
+    label = "fix" if len(fixes) == 1 else "fixes"
+    print(f"\n{len(fixes)} {label}:", file=sys.stderr)
+    for n, fix in enumerate(fixes, 1):
+        print("", file=sys.stderr)
+        for i, line in enumerate(fix.splitlines()):
+            bullet = f"  {n}. " if i == 0 else "     "
+            print(f"{bullet}{line}" if line else "", file=sys.stderr)
 
 
 def main(argv: list[str]) -> int:
     manifest_path = Path(argv[1]).resolve() if len(argv) > 1 else DEFAULT_MANIFEST
-    errors = validate(manifest_path)
-    if errors:
-        print(f"INVALID: {manifest_path} ({len(errors)} error(s))", file=sys.stderr)
-        for e in errors:
-            print(f"  - {e}", file=sys.stderr)
+    problems = validate(manifest_path)
+    if problems:
+        report(manifest_path, problems)
         return 1
     print(f"OK: {manifest_path} is valid ({manifest_path.stat().st_size:,} bytes)")
     return 0
