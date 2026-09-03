@@ -3,3 +3,7 @@
 # every platform. Without this, a Windows checkout gets CRLF and the digest
 # no longer describes what the builder downloads.
 *.json text eol=lf
+
+# VERSION is published beside pack.json and written LF by build_base_layer.py.
+# Nothing hashes it yet, so pin it now rather than discover the drift later.
+builder/*/VERSION text eol=lf

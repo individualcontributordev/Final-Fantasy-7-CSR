@@ -42,14 +42,17 @@ for disc in "${DISCS[@]}"; do
   test -e "$image.bak" || cp "$image" "$image.bak"
 
   python3 scripts/repair_mode2_edc.py \
-    "pristine/FINALFANTASY7_D${disc}.bin" "$image" -o "$image"
+    "pristine/FINALFANTASY7_D${disc}.bin" "$image" -o "$image" || break
 
-  python3 scripts/build_base_layer.py "$image" --version "$VERSION"
+  python3 scripts/build_base_layer.py "$image" --version "$VERSION" || break
 
   python3 scripts/verify_builder_config.py \
-    --disc "$disc" --base "$BASE" --no-cache
+    --disc "$disc" --base "$BASE" --no-cache || break
 done
 ```
+
+Keep the `|| break`. Without it a failed publish is followed by a verify of the
+*previously* published layer, which prints `PASS` and hides the failure.
 
 Outputs are `builder/<base>/layers/discN.layer.json`, `pack.json`, `VERSION`,
 and `builder/manifest.json`. CSR+ and Highwind Disc 1 images are longer than
@@ -105,3 +108,10 @@ Shared code lives in `scripts/libs/`; files directly under `scripts/` are
 supported commands.
 
 Commit as `individualcontributordev <contributorindividual@gmail.com>`.
+
+## Archive
+
+The last PPF release of old CSR is v0.14.1 (CSR+ / CSR++ v0.1.1), in
+[`a0fd3f2`](https://github.com/individualcontributordev/Final-Fantasy-7-CSR/commit/a0fd3f229073363911f376ac07f310285db23186).
+`fc7c421` kept only the `patcher/` copies; `b33652c` deleted those too. Current
+releases are `ic-layer-v1` JSON only.
