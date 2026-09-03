@@ -9,8 +9,10 @@ because the digests describe the LF bytes git serves. ``autoIncludeWhen`` ids
 must name another entry in this file (unless they start with DISABLED-).
 
 Every problem carries a fix, and identical fixes are printed once no matter how
-many entries hit them. Returns nonzero on any problem. Does not fetch the
-network or rewrite files."""
+many entries hit them. Fixes name the cheap causes first -- a stale clone or a
+CRLF checkout -- so that a misconfigured workstation does not read as a reason
+to rebuild. Returns nonzero on any problem. Does not fetch the network or
+rewrite files."""
 from __future__ import annotations
 
 import hashlib
@@ -31,23 +33,41 @@ class Problem(NamedTuple):
 
 
 FIX_CRLF = """\
-CRLF in published JSON. Digests describe the LF bytes git serves, so a CRLF
-working copy publishes hashes that nothing can match. Restore LF:
-    git add --renormalize .
-    git checkout -- builder
-If that changes nothing, .gitattributes is missing the rule that pins it:
-    *.json text eol=lf
-Any digest already recorded from a CRLF copy stays wrong until republished."""
+CRLF in published JSON. This is a checkout problem, not a build problem: the
+digests on main are correct, so nothing here needs rebuilding.
+
+First get the commit that pins LF, and confirm the rule reaches these files.
+Expect "eol: lf"; "unspecified" means the commit is still missing:
+    git pull
+    git check-attr eol -- builder/manifest.json
+
+Files checked out before that commit keep their CRLF, because pulling it does
+not rewrite them. Restore them from the committed bytes:
+    git checkout HEAD -- builder
+
+That discards uncommitted changes under builder/, so commit or stash any
+layers you have just built first."""
 
 FIX_STALE_DIGEST = """\
 Stale digest. The builder refuses a layer whose bytes do not hash to the
-checksum published beside it, so the entry goes offline with no other
-warning. Republish the pack to restamp pack.json and manifest.json from the
-layer now on disk:
+checksum published beside it, so the entry goes offline with no other warning.
+
+Rule out the cheap causes before rebuilding anything:
+    git pull                                      published digests move too
+    git status --short builder                    local edits to a layer?
+    git check-attr eol -- builder/manifest.json   expect "eol: lf"
+
+If the clone is current and clean, the layer really has drifted from its
+checksum. Republish the pack to restamp pack.json and manifest.json:
     Final-Fantasy-7-CSR      python3 scripts/build_base_layer.py IMAGE
-    Final-Fantasy-7-Modding  python3 scripts/rebuild_on_base.py BASE
-Check line endings before rebuilding: if the layer on disk is already the one
-you meant to ship, only the recorded hash is wrong."""
+    Final-Fantasy-7-Modding  python3 scripts/rebuild_on_base.py BASE"""
+
+FIX_DIGEST_AFTER_CRLF = """\
+Stale digests, listed above alongside CRLF files. Almost certainly the same
+fault: a CRLF working copy hashes differently from the bytes git serves.
+
+Fix the line endings, then re-run this check. Do not republish anything yet:
+these digests are most likely correct on main already."""
 
 FIX_MISSING_LAYER = """\
 Missing layer file. The manifest points at a layer that is not on disk, so
@@ -56,8 +76,10 @@ layer, or delete the entry from manifest.json if it is retired."""
 
 FIX_PACK_DISAGREES = """\
 pack.json and manifest.json disagree. Both are published, so a half-finished
-release leaves them describing different bytes. Republish the pack to rewrite
-the pair together."""
+release leaves them describing different bytes. Pull first, in case you are
+looking at one half of someone else's release:
+    git pull
+If they still disagree, republish the pack to rewrite the pair together."""
 
 FIX_AUTOINCLUDE = """\
 Dangling autoIncludeWhen. Auto-included entries are hidden from the UI, so a
@@ -101,10 +123,15 @@ def validate(manifest_path: Path) -> list[Problem]:
 
     builder_dir = manifest_path.parent
 
-    for p in crlf_offenders(builder_dir):
+    crlf_paths = crlf_offenders(builder_dir)
+    for p in crlf_paths:
         problems.append(
             Problem(f"{p.relative_to(builder_dir)}: CRLF line endings", FIX_CRLF)
         )
+
+    # A CRLF checkout makes every digest look stale, so pointing at the publish
+    # scripts here would send the reader on a rebuild that cannot help.
+    digest_fix = FIX_DIGEST_AFTER_CRLF if crlf_paths else FIX_STALE_DIGEST
 
     entries: list[tuple[str, dict]] = []
     for section in ("bases", "addons"):
@@ -162,7 +189,7 @@ def validate(manifest_path: Path) -> list[Problem]:
                         Problem(
                             f"{eid}: disc {disc} digest is stale "
                             f"(manifest {want[:12]}..., file {got[:12]}...)",
-                            FIX_STALE_DIGEST,
+                            digest_fix,
                         )
                     )
 
