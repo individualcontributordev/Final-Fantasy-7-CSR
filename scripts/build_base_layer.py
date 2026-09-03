@@ -21,6 +21,7 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -82,6 +83,43 @@ def resolve_info(patched: Path) -> dict:
 def sorted_disc_map(discs: dict) -> dict[str, str]:
     """Keep disc keys in 1, 2, 3 order for stable JSON."""
     return {k: discs[k] for k in sorted(discs, key=lambda d: int(d))}
+
+
+def require_lf_json() -> None:
+    """Refuse to start if git will not round-trip published layer bytes.
+
+    Digests are taken from the file on disk, but Pages serves the committed
+    bytes. Windows silently checks JSON out as CRLF when ``core.autocrlf`` is
+    on, which makes every digest describe bytes nobody downloads --- and you
+    would only find out when the builder rejected the layer. ``.gitattributes``
+    pins ``eol=lf``; ask git whether that rule is actually live here.
+    """
+    try:
+        attrs = subprocess.run(
+            ["git", "check-attr", "eol", "--", "builder/manifest.json"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        ).stdout
+    except OSError as exc:
+        raise SystemExit(f"cannot run git to check line-ending rules: {exc}")
+
+    if "eol: lf" not in attrs:
+        raise SystemExit(
+            "builder JSON is not pinned to LF here "
+            f"(git reports: {attrs.strip() or 'nothing'}).\n"
+            "Add '*.json text eol=lf' to .gitattributes before publishing."
+        )
+
+    crlf = [p for p in (ROOT / "builder").rglob("*.json") if b"\r\n" in p.read_bytes()]
+    if crlf:
+        raise SystemExit(
+            f"{len(crlf)} published JSON files have CRLF line endings, "
+            f"starting with {crlf[0].relative_to(ROOT)}.\n"
+            "Normalise the checkout first:\n"
+            "  git add --renormalize .\n"
+            "  git checkout -- builder"
+        )
 
 
 def layer_digest(path: Path) -> str:
@@ -278,6 +316,7 @@ def main() -> int:
         help=argparse.SUPPRESS,
     )
     args = ap.parse_args()
+    require_lf_json()
 
     version = args.version.strip()
     if not re.fullmatch(r"[0-9]+(\.[0-9]+)*", version):

@@ -70,9 +70,22 @@ console playtest.
 
 ## Publish
 
+```bash
+python3 scripts/validate_manifest.py
+```
+
+Run this before pushing. The builder refuses any layer whose bytes do not hash
+to the checksum published beside it, so a stale or mistaken `discDigests` entry
+takes that base offline with no other warning.
+
 Push `main`. GitHub Pages deploys `builder/` to
 `https://individualcontributor.dev/Final-Fantasy-7-CSR/builder/`, which is what
 the hosted builder reads.
+
+Checksums cover the exact bytes git serves, so `builder/*.json` is pinned to LF
+by `.gitattributes` and `build_base_layer.py` refuses to start without that
+rule. Building bases on Windows and mods on a Mac is fine; publishing from a
+CRLF checkout is not.
 
 **Bumping a base version hides every Modding pack pinned to the old version**
 until those packs are recut (`rebuild_on_base.py` in the Modding repo).
@@ -85,6 +98,7 @@ until those packs are recut (`rebuild_on_base.py` in the Modding repo).
 | `build_base_layer.py IMAGE --version X.Y.Z`                | Publish one base disc layer and merge pack/manifest metadata.            |
 | `repair_mode2_edc.py PRISTINE IMAGE -o OUT`                | Restore or recompute MODE2 Form 1 footers after editing.                 |
 | `verify_builder_config.py --disc N --base ID [--addon ID]` | Reconstruct and validate the selected builder stack.                     |
+| `validate_manifest.py [PATH]`                              | Check ids, layer paths, published checksums, and LF line endings.        |
 
 Shared code lives in `scripts/libs/`; files directly under `scripts/` are
 supported commands.
