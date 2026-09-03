@@ -60,7 +60,7 @@ def ensure_cached_base(
     if not layer_path.is_file():
         raise SystemExit(f"Missing base layer: {layer_path}")
 
-    print(f"  cache miss — apply {layer_path.name} onto pristine → cache/{flavor}/D{disc}")
+    print(f"  cache miss -- apply {layer_path.name} onto pristine -> cache/{flavor}/D{disc}")
     image = bytearray(pristine_path.read_bytes())
     layer = json.loads(layer_path.read_text(encoding="utf-8"))
     apply_layer(image, layer)

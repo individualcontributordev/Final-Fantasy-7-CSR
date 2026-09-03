@@ -50,13 +50,13 @@ def main() -> int:
                 return 1
             print("MISMATCH (unknown)", file=sys.stderr)
             return 1
-        print("OK — layer apply matches --expect")
+        print("OK -- layer apply matches --expect")
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_bytes(image)
         print(f"Wrote {args.output} ({len(image)} bytes)")
     elif not args.expect:
-        print(f"Applied OK ({len(layer['records'])} records, {len(image)} bytes) — pass -o to write")
+        print(f"Applied OK ({len(layer['records'])} records, {len(image)} bytes) -- pass -o to write")
     return 0
 
 

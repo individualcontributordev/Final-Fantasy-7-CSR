@@ -156,7 +156,7 @@ def main() -> int:
 
 	if base_id not in ("clean", "unmodified"):
 		if base_id not in catalog:
-			raise SystemExit(f"Unknown base id {base_id!r}. Known: {sorted(catalog)[:20]}…")
+			raise SystemExit(f"Unknown base id {base_id!r}. Known: {sorted(catalog)[:20]}...")
 		meta = catalog[base_id]
 		lp = _layer_path(meta, args.disc)
 		# Prefer cache/<flavor>/; on miss, apply base layer once and store there.
@@ -172,7 +172,7 @@ def main() -> int:
 		total_recs += n
 		where = str(cache_path) if cache_path else str(lp)
 		stack.append(f"base:{base_id} ({n} records via cache/layer)")
-		print(f"  OK base {base_id} ← {lp.relative_to(meta['builder_dir'])} ({n} records, src={where})")
+		print(f"  OK base {base_id} <- {lp.relative_to(meta['builder_dir'])} ({n} records, src={where})")
 	else:
 		image = bytearray(pristine.read_bytes())
 		stack.append("base:clean (pristine only)")
@@ -196,7 +196,7 @@ def main() -> int:
 		n = _apply_and_check(image, lp)
 		total_recs += n
 		stack.append(f"addon:{addon_id} ({lp.name}, {n} records)")
-		print(f"  OK addon {addon_id} ← {lp.relative_to(meta['builder_dir'])} ({n} records)")
+		print(f"  OK addon {addon_id} <- {lp.relative_to(meta['builder_dir'])} ({n} records)")
 
 	if args.output:
 		args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -206,7 +206,7 @@ def main() -> int:
 	print("Stack:")
 	for line in stack:
 		print(f"  - {line}")
-	print(f"PASS — builder config applies cleanly ({total_recs} total records)")
+	print(f"PASS -- builder config applies cleanly ({total_recs} total records)")
 	return 0
 
 
