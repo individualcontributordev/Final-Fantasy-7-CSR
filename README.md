@@ -111,7 +111,6 @@ Commit as `individualcontributordev <contributorindividual@gmail.com>`.
 
 ## Archive
 
-The last PPF release of old CSR is v0.14.1 (CSR+ / CSR++ v0.1.1), in
-[`a0fd3f2`](https://github.com/individualcontributordev/Final-Fantasy-7-CSR/commit/a0fd3f229073363911f376ac07f310285db23186).
-`fc7c421` kept only the `patcher/` copies; `b33652c` deleted those too. Current
+Retired scripts, docs, and the old PPF releases are indexed in
+[`ARCHIVE.md`](ARCHIVE.md) with the commit that removed each one. Current
 releases are `ic-layer-v1` JSON only.
