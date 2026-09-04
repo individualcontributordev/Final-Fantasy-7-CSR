@@ -15,17 +15,21 @@ def _fmt(seconds: float) -> str:
     return f"{seconds:.2f}s"
 
 
+@contextmanager
+def stage(name: str) -> Iterator[None]:
+    started = time.perf_counter()
+    yield
+    print(f"time {name}: {_fmt(time.perf_counter() - started)}")
+
+
 class Timer:
     """One instance per command; call ``total()`` before exit."""
 
     def __init__(self) -> None:
         self._t0 = time.perf_counter()
 
-    @contextmanager
-    def stage(self, name: str) -> Iterator[None]:
-        started = time.perf_counter()
-        yield
-        print(f"time {name}: {_fmt(time.perf_counter() - started)}")
+    def stage(self, name: str):
+        return stage(name)
 
     def total(self) -> None:
         print(f"time total: {_fmt(time.perf_counter() - self._t0)}")
