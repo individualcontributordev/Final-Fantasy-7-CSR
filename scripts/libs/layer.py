@@ -10,6 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 
 CHUNK = 1024 * 1024
+BLOCK = 4096
 MAX_RECORD_BYTES = 4096
 SECTOR = 2352
 
@@ -43,7 +44,14 @@ def apply_layer(image: bytearray, layer: dict) -> None:
 
 
 def _iter_changed_runs(original: Path, modified: Path):
-    """Yield bounded runs of bytes that differ between two images."""
+    """Yield bounded runs of bytes that differ between two images.
+
+    A disc image differs from its parent in a few kilobytes out of hundreds of
+    megabytes, so equal regions are rejected wholesale by comparing bytes
+    objects, which is a C memcmp. Only a block that already failed that
+    comparison is walked byte by byte. Walking all 750 MB in Python instead
+    costs about a minute per diff.
+    """
     with original.open("rb") as original_stream, modified.open("rb") as modified_stream:
         offset = 0
         run_offset: int | None = None
@@ -73,13 +81,25 @@ def _iter_changed_runs(original: Path, modified: Path):
             original_chunk = original_chunk.ljust(chunk_size, b"\x00")
             modified_chunk = modified_chunk.ljust(chunk_size, b"\x00")
 
-            for index, (before, after) in enumerate(zip(original_chunk, modified_chunk)):
-                if before != after:
-                    if run_offset is None:
-                        run_offset = offset + index
-                    run.append(after)
-                elif run_offset is not None:
+            if original_chunk == modified_chunk:
+                yield from flush()
+                offset += chunk_size
+                continue
+
+            for start in range(0, chunk_size, BLOCK):
+                stop = min(start + BLOCK, chunk_size)
+                before_block = original_chunk[start:stop]
+                after_block = modified_chunk[start:stop]
+                if before_block == after_block:
                     yield from flush()
+                    continue
+                for index, (before, after) in enumerate(zip(before_block, after_block)):
+                    if before != after:
+                        if run_offset is None:
+                            run_offset = offset + start + index
+                        run.append(after)
+                    elif run_offset is not None:
+                        yield from flush()
             offset += chunk_size
 
         yield from flush()
