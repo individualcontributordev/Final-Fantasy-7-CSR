@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 from libs.layer import apply_layer
 from libs.local_paths import default_pristine_arg, ensure_cached_base
+from libs.timing import Timer
 
 
 def _load_manifest(path: Path) -> tuple[Path, dict]:
@@ -133,6 +134,7 @@ def main() -> int:
 		help="Do not read/write cache/<flavor>/ for the base image",
 	)
 	args = ap.parse_args()
+	timer = Timer()
 
 	pristine = (
 		args.pristine.expanduser().resolve()
@@ -160,15 +162,17 @@ def main() -> int:
 		meta = catalog[base_id]
 		lp = _layer_path(meta, args.disc)
 		# Prefer cache/<flavor>/; on miss, apply base layer once and store there.
-		base_bytes, cache_path = ensure_cached_base(
-			base_id=base_id,
-			disc=args.disc,
-			layer_path=lp,
-			pristine=pristine,
-			write_cache=not args.no_cache,
-		)
-		image = bytearray(base_bytes)
-		n = _check_records(image, lp)
+		with timer.stage("load_base"):
+			base_bytes, cache_path = ensure_cached_base(
+				base_id=base_id,
+				disc=args.disc,
+				layer_path=lp,
+				pristine=pristine,
+				write_cache=not args.no_cache,
+			)
+			image = bytearray(base_bytes)
+		with timer.stage("check_base"):
+			n = _check_records(image, lp)
 		total_recs += n
 		where = str(cache_path) if cache_path else str(lp)
 		stack.append(f"base:{base_id} ({n} records via cache/layer)")
@@ -193,20 +197,23 @@ def main() -> int:
 				f"{addon_id}: compatibleBases={compat} does not include base {need!r}"
 			)
 		lp = _layer_path(meta, args.disc)
-		n = _apply_and_check(image, lp)
+		with timer.stage(f"addon {addon_id}"):
+			n = _apply_and_check(image, lp)
 		total_recs += n
 		stack.append(f"addon:{addon_id} ({lp.name}, {n} records)")
 		print(f"  OK addon {addon_id} <- {lp.relative_to(meta['builder_dir'])} ({n} records)")
 
 	if args.output:
-		args.output.parent.mkdir(parents=True, exist_ok=True)
-		args.output.write_bytes(image)
+		with timer.stage("write"):
+			args.output.parent.mkdir(parents=True, exist_ok=True)
+			args.output.write_bytes(image)
 		print(f"Wrote {args.output} ({len(image)} bytes)")
 
 	print("Stack:")
 	for line in stack:
 		print(f"  - {line}")
 	print(f"PASS -- builder config applies cleanly ({total_recs} total records)")
+	timer.total()
 	return 0
 
 

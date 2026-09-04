@@ -24,7 +24,10 @@ edited BIN.
 from __future__ import annotations
 
 import argparse
+from contextlib import nullcontext
 from pathlib import Path
+
+from libs.timing import Timer
 
 SECTOR = 2352
 USER_OFF = 24
@@ -112,10 +115,12 @@ def _recompute_form1(sec_b: bytes | bytearray) -> bytearray | None:
 	return sector
 
 
-def repair(pristine: Path, inp: Path, out: Path) -> dict:
+def repair(pristine: Path, inp: Path, out: Path, timer: Timer | None = None) -> dict:
 	"""Repair one image and return sector-count diagnostics."""
-	p = pristine.read_bytes()
-	b = bytearray(inp.read_bytes())
+	stage = timer.stage if timer is not None else lambda _name: nullcontext()
+	with stage("read"):
+		p = pristine.read_bytes()
+		b = bytearray(inp.read_bytes())
 	if len(p) % SECTOR:
 		raise SystemExit("pristine length not multiple of 2352")
 	if len(b) % SECTOR:
@@ -127,47 +132,49 @@ def repair(pristine: Path, inp: Path, out: Path) -> dict:
 	pristine_sectors = len(p) // SECTOR
 	restored = recomputed = already_ok = skipped = 0
 
-	for lba in range(nsect):
-		off = lba * SECTOR
-		sec_b = b[off : off + SECTOR]
+	with stage("repair"):
+		for lba in range(nsect):
+			off = lba * SECTOR
+			sec_b = b[off : off + SECTOR]
 
-		if lba >= pristine_sectors:
-			repaired = _recompute_form1(sec_b)
-			if repaired is None:
+			if lba >= pristine_sectors:
+				repaired = _recompute_form1(sec_b)
+				if repaired is None:
+					skipped += 1
+					continue
+				b[off : off + SECTOR] = repaired
+				recomputed += 1
+				continue
+
+			sec_p = p[off : off + SECTOR]
+			if sec_b == sec_p:
+				already_ok += 1
+				continue
+			if not _is_mode2_form1(sec_b):
 				skipped += 1
 				continue
+
+			repaired = _recompute_form1(sec_b)
+			assert repaired is not None
+			if repaired == sec_b:
+				already_ok += 1
+				continue
+
+			pf = sec_p[EDC_OFF : EDC_OFF + FOOTER_LEN]
+			pristine_edc_data = sec_p[OFFSET_MODE2_SUBHEADER:EDC_OFF]
+			image_edc_data = sec_b[OFFSET_MODE2_SUBHEADER:EDC_OFF]
+			edc_data_is_unchanged = pristine_edc_data == image_edc_data
+			if edc_data_is_unchanged:
+				b[off + EDC_OFF : off + EDC_OFF + FOOTER_LEN] = pf
+				restored += 1
+				continue
+
 			b[off : off + SECTOR] = repaired
 			recomputed += 1
-			continue
-
-		sec_p = p[off : off + SECTOR]
-		if sec_b == sec_p:
-			already_ok += 1
-			continue
-		if not _is_mode2_form1(sec_b):
-			skipped += 1
-			continue
-
-		repaired = _recompute_form1(sec_b)
-		assert repaired is not None
-		if repaired == sec_b:
-			already_ok += 1
-			continue
-
-		pf = sec_p[EDC_OFF : EDC_OFF + FOOTER_LEN]
-		pristine_edc_data = sec_p[OFFSET_MODE2_SUBHEADER:EDC_OFF]
-		image_edc_data = sec_b[OFFSET_MODE2_SUBHEADER:EDC_OFF]
-		edc_data_is_unchanged = pristine_edc_data == image_edc_data
-		if edc_data_is_unchanged:
-			b[off + EDC_OFF : off + EDC_OFF + FOOTER_LEN] = pf
-			restored += 1
-			continue
-
-		b[off : off + SECTOR] = repaired
-		recomputed += 1
 
 	out.parent.mkdir(parents=True, exist_ok=True)
-	out.write_bytes(b)
+	with stage("write"):
+		out.write_bytes(b)
 	return {
 		"sectors": nsect,
 		"footer_already_ok": already_ok,
@@ -186,13 +193,16 @@ def main() -> None:
 	ap.add_argument("image", type=Path, help="Edited BIN to repair")
 	ap.add_argument("-o", "--output", type=Path, required=True, help="Repaired BIN")
 	args = ap.parse_args()
+	timer = Timer()
 	stats = repair(
 		args.pristine.expanduser(),
 		args.image.expanduser(),
 		args.output.expanduser(),
+		timer=timer,
 	)
 	for k, v in stats.items():
 		print(f"{k}: {v}")
+	timer.total()
 
 
 if __name__ == "__main__":

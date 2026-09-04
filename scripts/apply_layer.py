@@ -19,6 +19,7 @@ import sys
 from pathlib import Path
 
 from libs.layer import apply_layer
+from libs.timing import Timer
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -27,15 +28,22 @@ def main() -> int:
     ap.add_argument("-o", "--output", type=Path)
     ap.add_argument("--expect", type=Path, help="Patched image that must match after apply")
     args = ap.parse_args()
+    timer = Timer()
 
-    image = bytearray(args.image.read_bytes())
-    layer = json.loads(args.layer.read_text(encoding="utf-8"))
-    apply_layer(image, layer)
+    with timer.stage("read_image"):
+        image = bytearray(args.image.read_bytes())
+    with timer.stage("parse_layer"):
+        layer = json.loads(args.layer.read_text(encoding="utf-8"))
+    with timer.stage("apply"):
+        apply_layer(image, layer)
 
     if args.expect:
-        expect = args.expect.read_bytes()
-        # Compare overlapping length; allow trailing pad differences only if sizes match
-        if bytes(image) != expect:
+        with timer.stage("compare"):
+            expect = args.expect.read_bytes()
+            # Compare overlapping length; allow trailing pad differences only if sizes match
+            mismatch = bytes(image) != expect
+        if mismatch:
+            timer.total()
             # find first mismatch
             lim = min(len(image), len(expect))
             for i in range(lim):
@@ -52,11 +60,13 @@ def main() -> int:
             return 1
         print("OK -- layer apply matches --expect")
     if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_bytes(image)
+        with timer.stage("write"):
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_bytes(image)
         print(f"Wrote {args.output} ({len(image)} bytes)")
     elif not args.expect:
         print(f"Applied OK ({len(layer['records'])} records, {len(image)} bytes) -- pass -o to write")
+    timer.total()
     return 0
 
 

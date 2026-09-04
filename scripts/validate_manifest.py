@@ -24,6 +24,8 @@ from typing import NamedTuple
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "builder" / "manifest.json"
 
+from libs.timing import Timer
+
 
 class Problem(NamedTuple):
     """One validation failure and the way out of it."""
@@ -249,12 +251,16 @@ def report(manifest_path: Path, problems: list[Problem]) -> None:
 
 
 def main(argv: list[str]) -> int:
+    timer = Timer()
     manifest_path = Path(argv[1]).resolve() if len(argv) > 1 else DEFAULT_MANIFEST
-    problems = validate(manifest_path)
+    with timer.stage("validate"):
+        problems = validate(manifest_path)
     if problems:
         report(manifest_path, problems)
+        timer.total()
         return 1
     print(f"OK: {manifest_path} is valid ({manifest_path.stat().st_size:,} bytes)")
+    timer.total()
     return 0
 
 

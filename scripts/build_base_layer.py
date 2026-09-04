@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 from libs.layer import apply_layer, build_layer
 from libs.local_paths import pristine_bin
+from libs.timing import Timer
 
 BASES = {
     # Product copy for a new pack.json. Existing packs keep their own name/blurb.
@@ -251,6 +252,7 @@ def build_one_disc(
     patched: Path,
     builder_dir: Path,
     skip_verify: bool,
+    timer: Timer,
 ) -> Path:
     """Diff, write, and optionally round-trip one disc layer."""
     pristine = pristine_bin(disc)
@@ -269,20 +271,23 @@ def build_one_disc(
     print(f"=== Disc {disc}: diff ===")
     print(f"  pristine: {pristine}")
     print(f"  patched:  {patched}")
-    layer = build_layer(
-        pristine,
-        patched,
-        layer_id=layer_id,
-        description=description,
-    )
+    with timer.stage("diff"):
+        layer = build_layer(
+            pristine,
+            patched,
+            layer_id=layer_id,
+            description=description,
+        )
     stats = layer["stats"]
 
     if not skip_verify:
         print(f"=== Disc {disc}: verify ===")
-        verify(pristine, layer, patched)
+        with timer.stage("verify"):
+            verify(pristine, layer, patched)
         print("  OK -- layer apply matches patched image")
 
-    out_path.write_text(json.dumps(layer, indent=2) + "\n", encoding="utf-8", newline="\n")
+    with timer.stage("write_layer"):
+        out_path.write_text(json.dumps(layer, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(
         f"  wrote {out_path}  "
         f"records={stats['records']} changedBytes={stats['changedBytes']}"
@@ -316,7 +321,9 @@ def main() -> int:
         help=argparse.SUPPRESS,
     )
     args = ap.parse_args()
-    require_lf_json()
+    timer = Timer()
+    with timer.stage("lf_check"):
+        require_lf_json()
 
     version = args.version.strip()
     if not re.fullmatch(r"[0-9]+(\.[0-9]+)*", version):
@@ -342,13 +349,16 @@ def main() -> int:
         patched=patched,
         builder_dir=builder_dir,
         skip_verify=args.skip_verify,
+        timer=timer,
     )
 
-    pack = upsert_pack_json(pack_dir, info, version, disc, layer_digest(out_path))
-    update_manifest(pack, disc, builder_dir)
+    with timer.stage("catalog"):
+        pack = upsert_pack_json(pack_dir, info, version, disc, layer_digest(out_path))
+        update_manifest(pack, disc, builder_dir)
     print(f"Updated {pack_dir / 'pack.json'}")
     print(f"Updated {builder_dir / 'manifest.json'} (enabled=true)")
     print("Commit JSON under builder/ only -- not .bin/.cue.")
+    timer.total()
     return 0
 
 
