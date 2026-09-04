@@ -4,8 +4,7 @@
   python scripts/verify_builder_config.py \\
     --pristine pristine/FINALFANTASY7_D1.bin \\
     --disc 1 \\
-    --base csr \\
-    --addon csr-plus-scene-aerith-house-v0.1.0
+    --base csr-plus
 
 Exit 0 only if every selected pack has a disc layer, compatibleBases match,
 and each layer's records match the image after apply (builder-equivalent stack).
