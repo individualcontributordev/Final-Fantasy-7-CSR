@@ -4,7 +4,7 @@
   "kind": "base",
   "exclusiveGroup": "cutscenes",
   "version": "0.5.4",
-  "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. The ending movie plays but is shortened to fit the single-disc layout.",
+  "blurb": "Heavily shortened story on one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened to fit the single-disc layout.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json"

@@ -40,15 +40,17 @@ BASES = {
     "csr-plus": {
         "slug": "csr-plus",
         "name": "CSR+",
+        # The builder shows only the first sentence, so lead with the pitch and
+        # leave the caveats to the sentences after it.
         "blurb": (
-            "CutScenes Removed and collapsed onto one Disc 1 image. Supernova included, ending credits movies removed due to space constraints."
+            "CutScenes Removed plus extra scene trims, whole game on one Disc 1 image. Supernova included, ending credits movies removed due to space constraints."
         ),
     },
     "highwind": {
         "slug": "highwind",
         "name": "Highwind",
         "blurb": (
-            "Heavily shortened story, collapsed onto one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened due to space constraints."
+            "Heavily shortened story on one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened due to space constraints."
         ),
     },
 }

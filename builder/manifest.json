@@ -8,7 +8,7 @@
       "kind": "base",
       "version": "0.5.4",
       "exclusiveGroup": "cutscenes",
-      "blurb": "Heavily shortened story. Many dialogue choices and scenes are cut. The ending movie plays but is shortened to fit the single-disc layout.",
+      "blurb": "Heavily shortened story on one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened to fit the single-disc layout.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./highwind/layers/disc1.layer.json"
@@ -44,7 +44,7 @@
       "kind": "base",
       "version": "0.2.6",
       "exclusiveGroup": "cutscenes",
-      "blurb": "CutScenes Removed + scene trims (Hojo, Aerith house, City of the Ancients, endgame), collapsed onto one Disc 1 image. Ask-menu removed, Supernova granted. The ending movie plays but is shortened to fit the single-disc layout; other non-ending movies are not preserved.",
+      "blurb": "CutScenes Removed plus extra scene trims, whole game on one Disc 1 image. Trims cover Hojo, Aerith house, City of the Ancients, and the endgame. Ask-menu removed, Supernova granted. The ending movie plays but is shortened to fit the single-disc layout; other non-ending movies are not preserved.",
       "format": "ic-layer-v1",
       "discs": {
         "1": "./csr-plus/layers/disc1.layer.json"

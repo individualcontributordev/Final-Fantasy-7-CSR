@@ -4,7 +4,7 @@
   "kind": "base",
   "exclusiveGroup": "cutscenes",
   "version": "0.2.6",
-  "blurb": "CutScenes Removed + scene trims (Hojo, Aerith house, City of the Ancients, endgame), collapsed onto one Disc 1 image. Ask-menu removed, Supernova granted. The ending movie plays but is shortened to fit the single-disc layout; other non-ending movies are not preserved.",
+  "blurb": "CutScenes Removed plus extra scene trims, whole game on one Disc 1 image. Trims cover Hojo, Aerith house, City of the Ancients, and the endgame. Ask-menu removed, Supernova granted. The ending movie plays but is shortened to fit the single-disc layout; other non-ending movies are not preserved.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json"
