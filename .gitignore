@@ -48,3 +48,4 @@ Thumbs.db
 *.code-workspace
 
 *.bin.bak
+*.bin.makoutemp
