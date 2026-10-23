@@ -1,7 +1,7 @@
 {
   "format": "ic-layer-v1",
   "id": "highwind-disc1",
-  "description": "Highwind v0.5.7 -- NTSC-U Disc 1",
+  "description": "Highwind v0.5.8 -- NTSC-U Disc 1",
   "target": "disc-image",
   "stats": {
     "originalBytes": 747435024,

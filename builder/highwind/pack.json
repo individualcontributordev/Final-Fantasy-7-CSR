@@ -3,13 +3,13 @@
   "name": "Highwind",
   "kind": "base",
   "exclusiveGroup": "cutscenes",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "blurb": "Heavily shortened story on one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened to fit the single-disc layout.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json"
   },
   "discDigests": {
-    "1": "3e4e4049abbff86f1454132deb5b05438bc84d7dbfb5d2fc26173b184e413d9f"
+    "1": "5b03c0d8612d69609e045affb5384a34a87bcc127ed2c3915f81a8429099c55d"
   }
 }

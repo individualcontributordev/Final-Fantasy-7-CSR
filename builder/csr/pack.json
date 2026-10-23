@@ -3,7 +3,7 @@
   "name": "CSR",
   "kind": "base",
   "exclusiveGroup": "cutscenes",
-  "version": "0.14.3",
+  "version": "0.14.4",
   "blurb": "CutScenes Removed \u2014 skill checks kept.",
   "format": "ic-layer-v1",
   "discs": {
@@ -12,8 +12,8 @@
     "3": "./layers/disc3.layer.json"
   },
   "discDigests": {
-    "1": "54063937d8926f2e2ff85c712366d1a208c924d15915eafbc9be6c133b5e59aa",
-    "2": "2fdd04022d93ae4a037aa9c92d0f78e05e0f51b0d1d2476fa2947dc691834cba",
-    "3": "840bd0fb984100fffecf7a48c82f62ae2d08ce117ecdc45381ee19378554bd36"
+    "1": "b509fcc5414567bb640d3163702ee5290b199b735d9e6f6433aa2e17a9c768b1",
+    "2": "91b768435fc31dfa04abd8a63cd0b17aa975d52f625ca1f8519c9a75246de91b",
+    "3": "ce56d5f208e7a2e67e884d9aa5267443391ffc95b73bb840bb93c0e4fdbfbcd5"
   }
 }

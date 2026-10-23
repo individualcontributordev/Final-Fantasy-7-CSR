@@ -6,7 +6,7 @@
       "id": "highwind",
       "name": "Highwind",
       "kind": "base",
-      "version": "0.5.7",
+      "version": "0.5.8",
       "exclusiveGroup": "cutscenes",
       "blurb": "Heavily shortened story on one Disc 1 image. Many dialogue choices and scenes are cut. The ending movie plays but is shortened to fit the single-disc layout.",
       "format": "ic-layer-v1",
@@ -14,7 +14,7 @@
         "1": "./highwind/layers/disc1.layer.json"
       },
       "discDigests": {
-        "1": "3e4e4049abbff86f1454132deb5b05438bc84d7dbfb5d2fc26173b184e413d9f"
+        "1": "5b03c0d8612d69609e045affb5384a34a87bcc127ed2c3915f81a8429099c55d"
       },
       "enabled": true
     },
@@ -22,7 +22,7 @@
       "id": "csr",
       "name": "CSR",
       "kind": "base",
-      "version": "0.14.3",
+      "version": "0.14.4",
       "exclusiveGroup": "cutscenes",
       "blurb": "CutScenes Removed \u2014 skill checks kept.",
       "format": "ic-layer-v1",
@@ -31,18 +31,18 @@
         "2": "./csr/layers/disc2.layer.json",
         "3": "./csr/layers/disc3.layer.json"
       },
-      "enabled": true,
       "discDigests": {
-        "1": "54063937d8926f2e2ff85c712366d1a208c924d15915eafbc9be6c133b5e59aa",
-        "2": "2fdd04022d93ae4a037aa9c92d0f78e05e0f51b0d1d2476fa2947dc691834cba",
-        "3": "840bd0fb984100fffecf7a48c82f62ae2d08ce117ecdc45381ee19378554bd36"
-      }
+        "1": "b509fcc5414567bb640d3163702ee5290b199b735d9e6f6433aa2e17a9c768b1",
+        "2": "91b768435fc31dfa04abd8a63cd0b17aa975d52f625ca1f8519c9a75246de91b",
+        "3": "ce56d5f208e7a2e67e884d9aa5267443391ffc95b73bb840bb93c0e4fdbfbcd5"
+      },
+      "enabled": true
     },
     {
       "id": "csr-plus",
       "name": "CSR+",
       "kind": "base",
-      "version": "0.3.7",
+      "version": "0.3.8",
       "exclusiveGroup": "cutscenes",
       "blurb": "CutScenes Removed plus extra scene trims, whole game on one Disc 1 image. Trims cover Hojo, Aerith house, City of the Ancients, and the endgame. Ask-menu removed, Supernova granted. The ending movie plays but is shortened to fit the single-disc layout; other non-ending movies are not preserved.",
       "format": "ic-layer-v1",
@@ -50,7 +50,7 @@
         "1": "./csr-plus/layers/disc1.layer.json"
       },
       "discDigests": {
-        "1": "e058157836bb5e0736e0c2da02f90d4ae5222cd8ae448b75efe5a77224230184"
+        "1": "64dfcc01d96a54c506b32e71c4248f3f6afb1ca1e9cf911ab68b04be1993561a"
       },
       "enabled": true
     },

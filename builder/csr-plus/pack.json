@@ -3,13 +3,13 @@
   "name": "CSR+",
   "kind": "base",
   "exclusiveGroup": "cutscenes",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "blurb": "CutScenes Removed plus extra scene trims, whole game on one Disc 1 image. Trims cover Hojo, Aerith house, City of the Ancients, and the endgame. Ask-menu removed, Supernova granted. The ending movie plays but is shortened to fit the single-disc layout; other non-ending movies are not preserved.",
   "format": "ic-layer-v1",
   "discs": {
     "1": "./layers/disc1.layer.json"
   },
   "discDigests": {
-    "1": "e058157836bb5e0736e0c2da02f90d4ae5222cd8ae448b75efe5a77224230184"
+    "1": "64dfcc01d96a54c506b32e71c4248f3f6afb1ca1e9cf911ab68b04be1993561a"
   }
 }
