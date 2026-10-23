@@ -56,6 +56,10 @@ for _i in range(256):
 	_edc[_i] = _edc_v & 0xFFFFFFFF
 
 
+def _bcd(n: int) -> int:
+	return (n // 10) << 4 | n % 10
+
+
 def _is_mode2_form1(sec: bytes | bytearray) -> bool:
 	"""Recognize the raw sync/mode envelope accepted by this repair pass."""
 	if sec[0] != 0 or sec[11] != 0 or sec[15] != 2:
@@ -193,10 +197,24 @@ def repair(pristine: Path, inp: Path, out: Path, timer: Timer | None = None) -> 
 			b[off : off + SECTOR] = repaired
 			recomputed += 1
 
+	# CSR+ leaves stale MSF addresses on some padding sectors (disc 1 LBA 198594+);
+	# drives rewrite them, so verify fails. The header is outside EDC/ECC, so just patch it.
+	header_fixed = 0
+	for lba in range(nsect):
+		off = lba * SECTOR
+		if b[off] or b[off + 11] or b[off + 15] != 2 or any(x != 0xFF for x in b[off + 1 : off + 11]):
+			continue
+		a = lba + 150
+		want = bytes(_bcd(x) for x in (a // 4500, a // 75 % 60, a % 75)) + b""
+		if b[off + 12 : off + 16] != want:
+			b[off + 12 : off + 16] = want
+			header_fixed += 1
+
 	out.parent.mkdir(parents=True, exist_ok=True)
 	with stage("write"):
 		out.write_bytes(b)
 	return {
+		"header_msf_fixed": header_fixed,
 		"sectors": nsect,
 		"footer_already_ok": already_ok,
 		"footer_restored_from_pristine": restored,
