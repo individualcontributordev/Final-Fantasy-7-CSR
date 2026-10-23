@@ -16,7 +16,7 @@ The input image must be sector-aligned and at least as long as pristine
 restore a known retail footer when user data is unchanged, and recompute
 Form 1 EDC/P/Q when user data changed. Sectors past the pristine length
 have no retail footer to copy, so Form 1 footers are recomputed there.
-Form 2 sectors are left untouched. The pristine image is never overwritten;
+Form 2 sectors keep their data; a stale non-zero Form 2 EDC is recomputed. The pristine image is never overwritten;
 ``-o`` may point at the input image. Make a backup before overwriting an
 edited BIN.
 """
@@ -115,6 +115,22 @@ def _recompute_form1(sec_b: bytes | bytearray) -> bytearray | None:
 	return sector
 
 
+def _fix_form2_edc(sec: bytearray) -> bool:
+	"""Refresh a stale Form 2 EDC (bytes 16..2347). A zero EDC means unused; keep it."""
+	if sec[0] != 0 or sec[11] != 0 or sec[15] != 2 or not sec[18] & 0x20:
+		return False
+	if not any(sec[2348:2352]):
+		return False
+	edc = 0
+	for b in sec[16:2348]:
+		edc = (_edc[(edc ^ b) & 0xFF] ^ (edc >> 8)) & 0xFFFFFFFF
+	new = edc.to_bytes(4, "little")
+	if sec[2348:2352] == new:
+		return False
+	sec[2348:2352] = new
+	return True
+
+
 def repair(pristine: Path, inp: Path, out: Path, timer: Timer | None = None) -> dict:
 	"""Repair one image and return sector-count diagnostics."""
 	stage = timer.stage if timer is not None else lambda _name: nullcontext()
@@ -130,7 +146,7 @@ def repair(pristine: Path, inp: Path, out: Path, timer: Timer | None = None) -> 
 
 	nsect = len(b) // SECTOR
 	pristine_sectors = len(p) // SECTOR
-	restored = recomputed = already_ok = skipped = 0
+	restored = recomputed = already_ok = skipped = form2_fixed = 0
 
 	with stage("repair"):
 		for lba in range(nsect):
@@ -151,7 +167,12 @@ def repair(pristine: Path, inp: Path, out: Path, timer: Timer | None = None) -> 
 				already_ok += 1
 				continue
 			if not _is_mode2_form1(sec_b):
-				skipped += 1
+				fixed = bytearray(sec_b)
+				if _fix_form2_edc(fixed):
+					b[off : off + SECTOR] = fixed
+					form2_fixed += 1
+				else:
+					skipped += 1
 				continue
 
 			repaired = _recompute_form1(sec_b)
@@ -180,6 +201,7 @@ def repair(pristine: Path, inp: Path, out: Path, timer: Timer | None = None) -> 
 		"footer_already_ok": already_ok,
 		"footer_restored_from_pristine": restored,
 		"footer_recomputed": recomputed,
+		"form2_edc_recomputed": form2_fixed,
 		"non_form1_left_alone": skipped,
 		"output": str(out),
 	}
