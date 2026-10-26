@@ -53,54 +53,6 @@
         "1": "164d0dd038d3cee9f56ca40fe90ba1442e5badb72ce79ae832d10e33901b65cc"
       },
       "enabled": true
-    },
-    {
-      "id": "csr-plus-0.2.13",
-      "name": "CSR+ 0.2.13 (archive)",
-      "kind": "base",
-      "version": "0.2.13",
-      "exclusiveGroup": "cutscenes",
-      "blurb": "Archived CSR+ 0.2.13, kept for testing. Superseded by the current CSR+.",
-      "format": "ic-layer-v1",
-      "discs": {
-        "1": "./archive/csr-plus/0.2.13/disc1.layer.json"
-      },
-      "discDigests": {
-        "1": "9e2e502536553c2b153358e35929298efed9e3624ea39522f4da99cad5d63c26"
-      },
-      "enabled": false
-    },
-    {
-      "id": "csr-plus-0.3.0",
-      "name": "CSR+ 0.3.0 (archive)",
-      "kind": "base",
-      "version": "0.3.0",
-      "exclusiveGroup": "cutscenes",
-      "blurb": "Archived CSR+ 0.3.0, kept for testing. Superseded by the current CSR+.",
-      "format": "ic-layer-v1",
-      "discs": {
-        "1": "./archive/csr-plus/0.3.0/disc1.layer.json"
-      },
-      "discDigests": {
-        "1": "7c362ecaa773e38893666480aa86214380ebaf0c0aca8dd9597c24028c053d23"
-      },
-      "enabled": false
-    },
-    {
-      "id": "csr-plus-0.3.1",
-      "name": "CSR+ 0.3.1 (archive)",
-      "kind": "base",
-      "version": "0.3.1",
-      "exclusiveGroup": "cutscenes",
-      "blurb": "Archived CSR+ 0.3.1, kept for testing. Superseded by the current CSR+.",
-      "format": "ic-layer-v1",
-      "discs": {
-        "1": "./archive/csr-plus/0.3.1/disc1.layer.json"
-      },
-      "discDigests": {
-        "1": "239bf1936573371b218a90e323f3d3ee8b788c6f1d47856084724dac8409d7e1"
-      },
-      "enabled": false
     }
   ],
   "addons": [],
