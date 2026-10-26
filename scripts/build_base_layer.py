@@ -309,7 +309,7 @@ def main() -> int:
     ap.add_argument(
         "--version",
         required=True,
-        help="Version string, e.g. 0.14.0 or 0.2.1",
+        help="Version string, e.g. 0.14.0, 0.2.1 or 1.0.0rc1",
     )
     ap.add_argument(
         "--skip-verify",
@@ -328,8 +328,10 @@ def main() -> int:
         require_lf_json()
 
     version = args.version.strip()
-    if not re.fullmatch(r"[0-9]+(\.[0-9]+)*", version):
-        raise SystemExit(f"Weird version '{version}' -- expected like 0.14.0")
+    if not re.fullmatch(r"[0-9]+(\.[0-9]+)*([-.]?(a|b|rc|alpha|beta|pre)[0-9]*)?", version):
+        raise SystemExit(
+            f"Weird version '{version}' -- expected like 0.14.0 or 1.0.0rc1"
+        )
 
     patched = args.image.expanduser().resolve()
     disc = disc_from_bin_path(patched)
