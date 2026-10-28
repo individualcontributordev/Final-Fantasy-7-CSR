@@ -61,12 +61,18 @@ def _bcd(n: int) -> int:
 
 
 def _is_mode2_form1(sec: bytes | bytearray) -> bool:
-	"""Recognize the raw sync/mode envelope accepted by this repair pass."""
+	"""Plain Mode 2 Form 1 data sector; same rule as builder/edc.js isMode2Form1.
+
+	FMV/XA sectors can have the Form 2 bit clear (video 0x42) but carry a
+	2324-byte payload, so a Form 1 footer would overwrite it. Require the Data bit
+	and none of Form 2 / audio / video.
+	"""
 	if sec[0] != 0 or sec[11] != 0 or sec[15] != 2:
 		return False
-	has_sync = all(sec[i] == 0xFF for i in range(1, 11))
-	is_form2 = bool(sec[18] & 0x20)
-	return has_sync and not is_form2
+	if not all(sec[i] == 0xFF for i in range(1, 11)):
+		return False
+	submode = sec[18]
+	return bool(submode & 0x08) and not submode & 0x26
 
 
 def generate_mode2_form1_edc_ecc(sector: bytearray) -> None:

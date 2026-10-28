@@ -20,9 +20,7 @@ def mode2_sector(*, form2: bool, lba: int = 0) -> bytearray:
     sector = bytearray(SECTOR)
     sector[0:12] = b"\x00" + (b"\xff" * 10) + b"\x00"
     sector[12:16] = HEADER[lba]
-    if form2:
-        sector[18] = 0x20
-        sector[22] = 0x20
+    sector[18] = sector[22] = 0x20 if form2 else 0x08
     return sector
 
 
@@ -55,6 +53,16 @@ class RepairTests(unittest.TestCase):
         pristine_sector = mode2_sector(form2=True)
         image_sector = bytearray(pristine_sector)
         image_sector[2200:2204] = b"XA!!"
+
+        repaired = self.repair(bytes(pristine_sector), bytes(image_sector))
+
+        self.assertEqual(repaired, image_sector)
+
+    def test_changed_video_sector_with_form2_bit_clear_is_untouched(self) -> None:
+        pristine_sector = mode2_sector(form2=False)
+        pristine_sector[18] = pristine_sector[22] = 0x42
+        image_sector = bytearray(pristine_sector)
+        image_sector[2200:2204] = b"STR!"
 
         repaired = self.repair(bytes(pristine_sector), bytes(image_sector))
 
