@@ -24,6 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Validate manifest and run tests
+        run: |
+          python3 scripts/validate_manifest.py
+          python3 -m unittest discover -s tests
       - name: Stage builder packs only
         run: |
           mkdir -p _site

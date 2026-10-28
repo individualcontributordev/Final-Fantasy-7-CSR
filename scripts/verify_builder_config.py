@@ -20,6 +20,7 @@ application, not ISO layout, EDC/ECC, or gameplay.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -84,6 +85,22 @@ def _apply_and_check(image: bytearray, layer_path: Path) -> int:
 		raise SystemExit(f"{layer_path}: expected ic-layer-v1")
 	apply_layer(image, layer)
 	return _check_records(image, layer_path)
+
+
+def _check_pristine_size(pristine: Path, layer_path: Path) -> None:
+	"""Layers hold no expected-before bytes, so size is the only cheap wrong-disc guard.
+
+	Same rule as the browser builder: a disc 2 file or another dump would
+	otherwise "apply cleanly" and pass every record check below.
+	"""
+	layer = json.loads(layer_path.read_text(encoding="utf-8"))
+	want = (layer.get("stats") or {}).get("originalBytes")
+	have = pristine.stat().st_size
+	if want is not None and int(want) != have:
+		raise SystemExit(
+			f"{pristine.name} is {have} bytes but {layer_path.name} expects {int(want)}; "
+			"use the unmodified NTSC-U image for this disc"
+		)
 
 
 def main() -> int:
@@ -152,6 +169,10 @@ def main() -> int:
 	print(f"Config: base={base_id} addons={args.addons or []} disc={args.disc}")
 	print(f"Pristine: {pristine}")
 
+	first_id = base_id if base_id not in ("clean", "unmodified") else (args.addons or [None])[0]
+	if first_id in catalog:
+		_check_pristine_size(pristine, _layer_path(catalog[first_id], args.disc))
+
 	total_recs = 0
 	stack: list[str] = []
 
@@ -211,6 +232,7 @@ def main() -> int:
 	print("Stack:")
 	for line in stack:
 		print(f"  - {line}")
+	print(f"Image sha256: {hashlib.sha256(image).hexdigest()} ({len(image)} bytes)")
 	print(f"PASS -- builder config applies cleanly ({total_recs} total records)")
 	timer.total()
 	return 0

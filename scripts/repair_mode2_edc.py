@@ -205,7 +205,7 @@ def repair(pristine: Path, inp: Path, out: Path, timer: Timer | None = None) -> 
 		if b[off] or b[off + 11] or b[off + 15] != 2 or any(x != 0xFF for x in b[off + 1 : off + 11]):
 			continue
 		a = lba + 150
-		want = bytes(_bcd(x) for x in (a // 4500, a // 75 % 60, a % 75)) + b""
+		want = bytes(_bcd(x) for x in (a // 4500, a // 75 % 60, a % 75)) + b"\x02"
 		if b[off + 12 : off + 16] != want:
 			b[off + 12 : off + 16] = want
 			header_fixed += 1

@@ -76,6 +76,10 @@ Missing layer file. The manifest points at a layer that is not on disk, so
 the entry cannot be built at all. Either republish the pack to regenerate the
 layer, or delete the entry from manifest.json if it is retired."""
 
+FIX_MISSING_DIGEST = """Layer has no published sha256. Without it the builder cannot reject a stale or
+swapped layer body and falls back to a cache key that id@version can reuse for
+different bytes. Republish the pack so manifest.json gets its discDigests."""
+
 FIX_PACK_DISAGREES = """\
 pack.json and manifest.json disagree. Both are published, so a half-finished
 release leaves them describing different bytes. Pull first, in case you are
@@ -184,7 +188,14 @@ def validate(manifest_path: Path) -> list[Problem]:
                 )
                 continue
             want = digests.get(str(disc))
-            if want:
+            if not want:
+                problems.append(
+                    Problem(
+                        f"{eid}: disc {disc} has no discDigests entry",
+                        FIX_MISSING_DIGEST,
+                    )
+                )
+            else:
                 got = hashlib.sha256(layer_path.read_bytes()).hexdigest()
                 if got != want:
                     problems.append(

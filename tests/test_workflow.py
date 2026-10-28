@@ -12,10 +12,14 @@ from libs.layer import apply_layer, build_layer
 from repair_mode2_edc import SECTOR, generate_mode2_form1_edc_ecc, repair
 
 
-def mode2_sector(*, form2: bool) -> bytearray:
+# MSF header (BCD minute/second/frame of lba+150, then mode 2) for the LBAs used below.
+HEADER = {0: b"\x00\x02\x00\x02", 1: b"\x00\x02\x01\x02"}
+
+
+def mode2_sector(*, form2: bool, lba: int = 0) -> bytearray:
     sector = bytearray(SECTOR)
     sector[0:12] = b"\x00" + (b"\xff" * 10) + b"\x00"
-    sector[15] = 2
+    sector[12:16] = HEADER[lba]
     if form2:
         sector[18] = 0x20
         sector[22] = 0x20
@@ -71,7 +75,7 @@ class RepairTests(unittest.TestCase):
     def test_appended_form2_sector_is_untouched(self) -> None:
         pristine_sector = mode2_sector(form2=False)
         generate_mode2_form1_edc_ecc(pristine_sector)
-        form2 = mode2_sector(form2=True)
+        form2 = mode2_sector(form2=True, lba=1)
         form2[100:104] = b"XA!!"
 
         repaired = self.repair(bytes(pristine_sector), bytes(pristine_sector + form2))
@@ -81,7 +85,7 @@ class RepairTests(unittest.TestCase):
     def test_appended_form1_sector_gets_fresh_footer(self) -> None:
         pristine_sector = mode2_sector(form2=False)
         generate_mode2_form1_edc_ecc(pristine_sector)
-        appended = mode2_sector(form2=False)
+        appended = mode2_sector(form2=False, lba=1)
         appended[24:28] = b"DATA"
 
         expected = bytearray(appended)
@@ -89,6 +93,17 @@ class RepairTests(unittest.TestCase):
         repaired = self.repair(bytes(pristine_sector), bytes(pristine_sector + appended))
 
         self.assertEqual(repaired[SECTOR:], expected)
+
+    def test_stale_msf_header_is_rewritten(self) -> None:
+        pristine_sector = mode2_sector(form2=False)
+        generate_mode2_form1_edc_ecc(pristine_sector)
+        stale = mode2_sector(form2=False, lba=1)
+        generate_mode2_form1_edc_ecc(stale)
+        stale[12:16] = HEADER[0]  # padding sector carrying lba 0's address at lba 1
+
+        repaired = self.repair(bytes(pristine_sector), bytes(pristine_sector + stale))
+
+        self.assertEqual(repaired[SECTOR + 12 : SECTOR + 16], HEADER[1])
 
     def repair(self, pristine_data: bytes, image_data: bytes) -> bytes:
         with tempfile.TemporaryDirectory() as directory:
