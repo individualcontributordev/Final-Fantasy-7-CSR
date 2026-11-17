@@ -10,6 +10,8 @@ import time
 from collections.abc import Iterator
 from contextlib import contextmanager
 
+from .log import vprint
+
 
 def _fmt(seconds: float) -> str:
     return f"{seconds:.2f}s"
@@ -19,7 +21,7 @@ def _fmt(seconds: float) -> str:
 def stage(name: str) -> Iterator[None]:
     started = time.perf_counter()
     yield
-    print(f"time {name}: {_fmt(time.perf_counter() - started)}")
+    vprint(f"time {name}: {_fmt(time.perf_counter() - started)}")
 
 
 class Timer:
@@ -32,4 +34,4 @@ class Timer:
         return stage(name)
 
     def total(self) -> None:
-        print(f"time total: {_fmt(time.perf_counter() - self._t0)}")
+        vprint(f"time total: {_fmt(time.perf_counter() - self._t0)}")
